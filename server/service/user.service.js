@@ -18,9 +18,19 @@ const updateUser = function(id, req ) {
     return model.User.findByIdAndUpdate(id, req);
 }
 
+const addPost = function(userId, title, body, photos){
+    return model.Post.create({userId, title, body, photos});
+}
+
+const fetchPost = function(user_id) {
+    return model.Post.find({userId : user_id}).exec();
+}
+
 module.exports = {
     fetch_user,
     createUser,
     find_user,
-    updateUser
+    updateUser,
+    addPost,
+    fetchPost
 }

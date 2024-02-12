@@ -4,6 +4,9 @@ const User = mongoose.Schema({
     name: String,
     username: String,
     email: String,
+    description: String,
+    languages: [String],
+    Interests: [String],
     password: String,
     address: {
         type: Object,
@@ -11,20 +14,10 @@ const User = mongoose.Schema({
         suite: String,
         city: String,
         zipcode: String,
-        geo: {
-            type: Object,
-            lat: String,
-            lng: String
-        }
     },
     phone: String,
-    website: String,
-    company: {
-        type: Object,
-        name: String,
-        catchPhrase: String,
-        bs: String
-    }
+    skill: [String],
+    company: String
 })
 
 
