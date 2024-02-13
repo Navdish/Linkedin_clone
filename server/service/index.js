@@ -1,3 +1,5 @@
 module.exports = {
-    userService: require('./user.service'),   
+    userService: require('./user.service'),  
+    postService: require('./post.service'),
+    commentService: require('./comment.service')
 }

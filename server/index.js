@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-// require("dotenv").config();
+require("dotenv").config();
 // const Users = require('./models/users');
 // const mongoose = require('mongoose')
 const multer = require('multer');
@@ -17,8 +17,8 @@ const mongoose = require('./config/mongoDB');
 app.use("/", require("./routes"));
 
 
-app.listen('8080', function () {
-    console.log("server running at 8080");
+app.listen(process.env.PORT, function () {
+    console.log(`server running at ${process.env.PORT}`);
 })
 
 

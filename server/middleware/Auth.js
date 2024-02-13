@@ -11,6 +11,7 @@ function authenticateUser(req, res, next) {
         req.user = user;
         next();
     })
+    console.log("...")
 }
 
 module.exports = {

@@ -3,5 +3,7 @@ module.exports = {
     Post: require('./posts'),
     Project: require("./projects"),
     Experience: require('./experience'),
-    Education: require('./education')
+    Education: require('./education'),
+    Comment: require('./comments'),
+    Reaction: require('./reactions')
 }
