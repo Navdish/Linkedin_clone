@@ -6,7 +6,7 @@ exports.create_user = async (req, res)=>{
       if(!user){
         throw new Error("User not created", 500);
       }
-      res.status(200).json({message : "user added successfully"})
+      res.status(201).json({message : "user added successfully"})
     }
     catch (error) {
       res.status(error?.code).json({message : error?.message});

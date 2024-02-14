@@ -1,7 +1,8 @@
-const { User } = require('../models/reactions')
+const { User } = require('../models')
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
+const CustomError = require('../lib/error');
 
 exports.createUser = async({data})=> {
 
@@ -17,7 +18,7 @@ exports.createUser = async({data})=> {
         const response = await User.create({name, email, password : hash});
         return response;
     }
-    throw new CustomError("User credentials not found", 400);
+    throw new CustomError("User credentials not found", 422);
 }
 
 exports.login = async function({data}) {
@@ -37,5 +38,5 @@ exports.login = async function({data}) {
         }
         throw new CustomError("User doesn't exist", 404);
     }
-    throw new CustomError("User credentials not found", 404);
+    throw new CustomError("User credentials not found", 422);
 }
