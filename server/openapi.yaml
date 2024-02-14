@@ -6,8 +6,30 @@ info:
   description: Linkedin Clone
 servers:
   - url: http://localhost:8080
-path: 
+paths: 
   /auth:
-    /login:
-    /signup:
+    paths:
+      /login:
+        post:
+          tags:
+           - 
+      /signup:
+        post:
+  /users:
+    put:
+  /posts:
+    get:
+    post:
+    put:
+    delete:
+  /comments:
+    get:
+    post:
+    put:
+    delete:
+  /reactions:
+    get:
+    post:
+    put:
+    delete:
 
