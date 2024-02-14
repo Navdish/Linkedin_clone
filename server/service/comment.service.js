@@ -1,10 +1,7 @@
 const CustomError = require('../lib/error');
 const model = require('../models');
-const bcrypt = require("bcrypt");
-const saltRounds = 10;
-const jwt = require("jsonwebtoken");
 
-const fetchComments = async ({post_id, time})=>{
+exports.fetchComments = async ({post_id, time})=>{
     if(post_id && time){
         const responses = await model.Comment.find({post_id: post_id, Date: { $gte: (new Date(time)) }}).sort({Date :-1}).limit(5);
         if(!responses)
@@ -16,7 +13,7 @@ const fetchComments = async ({post_id, time})=>{
     throw new CustomError("details not found", 404);
 }
 
-const updateComments = async function({userId,data}) {
+exports.updateComments = async function({userId,data}) {
     const {commentId, body} = data;
     if(commentId && body)
     {
@@ -32,7 +29,7 @@ const updateComments = async function({userId,data}) {
     throw new CustomError("details  not found", 404);
 }
 
-const postComments = async ({user_id, data}) => {
+exports.postComments = async ({user_id, data}) => {
     const {body, post_id} = data;
     if(body && post_id){
         const response = await model.Comment.create({user_id , post_id, body});
@@ -44,7 +41,7 @@ const postComments = async ({user_id, data}) => {
     throw new CustomError("User credentials not found", 404);
 }
 
-const deleteComments = async ({data, userId}) =>{
+exports.deleteComments = async ({data, userId}) =>{
     
     const commentId= data;
     if(commentId && userId){
@@ -61,9 +58,3 @@ const deleteComments = async ({data, userId}) =>{
     throw new CustomError("User credentials not found", 404);
 }
 
-module.exports = {
-    fetchComments,
-    updateComments, 
-    postComments,
-    deleteComments
-}
