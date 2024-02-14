@@ -23,7 +23,7 @@ const Reaction = mongoose.Schema({
     date: {
         type: Date,
         default: Date.now,
-        require: false
+        required: false
     },
 })
 

@@ -1,8 +1,8 @@
 const router = require('express').Router();
 
 router.use('/auth', require('./auth'));
-router.use('/', require('./user'));
-router.use('/', require('./post'));
-router.use('/', require('./comment'));
+router.use('/user', require('./user'));
+router.use('/post', require('./post'));
+router.use('/comment', require('./comment'));
 
 module.exports = router;
