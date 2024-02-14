@@ -5,12 +5,12 @@ const Reaction = require('../models/reactions')
 exports.createReaction= async({userId, data})=>{
     const {type, postId} = data;
     if(type, postId) {
-        const newReaction = await Reaction.create({userId:userId , postId:postId , type:type});
-        if(!newReaction)
+        const response = await Reaction.create({userId:userId , postId:postId , type:type});
+        if(!response)
         {
             throw new CustomError("Reaction not created", 500);
         }
-        return newReaction;
+        return response;
     }
     throw new CustomError("details not found", 404);
 };
@@ -51,10 +51,10 @@ exports.updateReaction=async({userId, data})=>{
 exports.deleteReaction=async({userId, data})=>{
     const {reactionId}= data;
     if(reactionId && userId){
-        const reaction = Comment.findById(reactionId);
+        const reaction = Reaction.findById(reactionId);
         if(reaction){
             if(userId == await reaction.userId){
-                const delComment = await CommentModel.findByIdAndDelete(reactionId);
+                const delComment = await Reaction.findByIdAndDelete(reactionId);
                 return delComment;
             }
             throw new CustomError("Cannot delete reaction", 403);

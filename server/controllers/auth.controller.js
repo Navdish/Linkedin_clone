@@ -1,6 +1,6 @@
 const {authService} = require('../service');
 
-exports.create_user = async function(req, res){
+exports.create_user = async (req, res)=>{
     try {
       const user = await authService.createUser({data : req?.body})
       if(!user){
@@ -13,7 +13,7 @@ exports.create_user = async function(req, res){
     }
 }
 
-exports.login = async function(req, res){
+exports.login = async (req, res)=>{
     try {
       const user = await authService.login({data : req?.body});
       if(!user){

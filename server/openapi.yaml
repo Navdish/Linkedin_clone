@@ -1,10 +1,13 @@
 openapi: "3.0.0"
 info: 
-  title: Linkedin Clone
+  title: Linkedin 
 
   version: "1.0.0"
+  description: Linkedin Clone
 servers:
   - url: http://localhost:8080
 path: 
   /auth:
-    
+    /login:
+    /signup:
+

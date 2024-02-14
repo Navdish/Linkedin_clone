@@ -1,62 +1,49 @@
+const CustomError = require('../lib/error');
 const {postService} = require('../service');
-// const bcrypt = require("bcrypt");
-// const saltRounds = 10;
 const jwt = require("jsonwebtoken");
 
 
-const add_posts = async function(req, res) {
-    console.log("jwt details",req.user);
-    const user_id = req.user.id;
-    let entry = [];
-    for(file of req.files){
-        entry = [...entry, file.path];
-    }
-    console.log(entry);
-    const {title, body} = req.body;
-    console.log(title, body, jwt);
+exports.add_posts = async(req, res)=> {
     try {
-        const response = await postService.addPost(user_id, title, body, entry);
+        const response = await postService.addPost({user_id : req?.user?.id, files: req?.files, body: req?.body});
+        if(!response)
+        {
+            throw new CustomError("Post not added", 500)
+        }
     } catch (error) {
-        return res.status(400).json({message: 'Error recieved'});
+        res.status(error?.code).json({message : error?.message});
     }
 }
 
-const fetch_posts = async function(req, res) {
-    const user_id = req.user.id;
+exports.fetch_posts = async(req, res)=> {
     try {
-        const response = await service.postService.fetchPost(user_id);
+        const response = await postService.fetchPost({user_id : req?.user?.id});
+        if(!response)
+        {
+            throw new CustomError("Posts not fetched", 500)
+        }
         res.status(200).json(response);
     } catch (error) {
-        res.status(400).json({message: 'Error recieved'});
+        res.status(error?.code).json({message : error?.message});
     }
 }
 
-const update_posts = async function(req, res) {
-    const {post_id, post_details} = req.body;
+exports.update_posts = async(req, res)=> {
     try {
-        const response = await service.postService.updatePost(post_id, post_details);
+        const response = await postService.updatePost({body : req?.body});
         res.status(200).json(response);
     }
     catch (error) {
-        res.status(500).json({message: "unable to update"})
+        res.status(error?.code).json({message : error?.message});
     }   
 }
 
-const remove_posts = async function(req, res) {
-    //getting post_id from req
-    const {post_id} = req.body;
+exports.remove_posts = async(req, res)=> {
     try {
-        const response = await service.postService.deletePost(post_id);
+        const response = await postService.deletePost({user_id : req?.res?.user,body : req?.body});
         res.status(200).json(response);
     }
     catch (error) {
-        res.status(500).json({message : 'Unable to delete'})
+        res.status(error?.code).json({message : error?.message});
     }
-}
-
-module.exports = {
-    add_posts,
-    fetch_posts,
-    update_posts,
-    remove_posts
 }

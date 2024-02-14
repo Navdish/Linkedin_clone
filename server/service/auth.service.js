@@ -3,9 +3,9 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
 
-exports.createUser = async function(req) {
+exports.createUser = async({data})=> {
 
-    const {name, email, password} = req?.data;
+    const {name, email, password} = data;
     if(name && email && password)
     {
         const user = await User.findOne({email : email}).exec();
@@ -20,8 +20,8 @@ exports.createUser = async function(req) {
     throw new CustomError("User credentials not found", 400);
 }
 
-exports.login = async function(req) {
-    const {email, password} = req?.data;
+exports.login = async function({data}) {
+    const {email, password} = data;
     if(email && password)
     {
         const user = await User.findOne({email : email}).exec();
