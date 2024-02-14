@@ -3,18 +3,18 @@ const Users = require('./users');
 const Posts = require('./posts');
 
 const Comment = mongoose.Schema({
-    user_id : {
-        type: mongoose.Schema.Types.ObjectId,
+    userId : {
+        type: String,
         ref: Users
     },
-    post_id : {
-        type : mongoose.Schema.Types.ObjectId,
+    postId : {
+        type : String,
         ref: Posts
     },
     body: {
         type : String,
     },
-    Date: {
+    date: {
         type: Date,
         default: Date.now,
         require: false

@@ -3,7 +3,7 @@ const Users = require('./users');
 
 const Post = mongoose.Schema({
     userId : {
-        type : mongoose.Schema.Types.ObjectId,
+        type : String,
         ref : Users
     },
     title : String,

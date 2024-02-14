@@ -10,25 +10,49 @@ paths:
   /auth/login:
     post:
       tags:
-       - User
-      summary: Create a new User
-      description: Creates a new user
+       - Auth
+      summary: Login a user
+      description: Creates a new token for the loggedin user
+      
       requestBody:
         description: Request to create user
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
         required: true
       responses:
         '200':
-          description: User created successfully
+          description: User loggedin successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/Token'
+        '401':
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: User password is wrong
         '404':
-          description: 'Not Found: This response is shown if the request for information is not there or it could not be imported'
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: User not found
         '422':
           description: User credentials not provided
           content:
@@ -38,6 +62,7 @@ paths:
                   properties:
                     error:
                       type: string
+                      example: User credentials not found
         '500':
             description: Internal server error
             content:
@@ -47,18 +72,43 @@ paths:
                   properties:
                     error:
                       type: string
+                      example: Internal server error
   /auth/signup:
     post:
       tags:
-       - User
+       - Auth
       summary: Create a new User
       description: Creates a new user
+      parameters:
+        - name: user
+          in: header
+          required: true
+          schema:
+            type: object
+            properties:
+              user:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  iat:
+                    type: string
+                  expat:
+                    type: string
+
       requestBody:
         description: Request to create user
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
         required: true
       responses:
         '201':
@@ -100,33 +150,29 @@ paths:
       tags:
         - User
       parameters:
-        - name: 'User details'
-          in: path
+        - name: 'user'
+          in: header
           required: true
-          description: User details
-          example: {name:"username", languages:"Hindi"}
+          description: User ID token
           schema:
-            type: object
-            format: JSON
+            $ref: '#/components/schemas/Token'
       summary: Edit the user
       description: Updates the user
-      requestBody:
-        description: Request to edit advisor
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
+      
       responses:
         '200':
-          description: Advisor updated successfully
+          description: User updated successfully
           content:
             application/json:
               schema:
                 type: object
                 properties:
+                  # user:
+                  #   type: object
+                  #   $ref: "#/components/schemas/User"
                   message:
                     type: string
-                    example: Advisor edited successfully.
+                    example: user edited successfully.
         '404':
           description: Not Found
           content:
@@ -136,9 +182,9 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: Advisor not found
-        '400':
-          description: Invalid request payload
+                    example: User not found
+        '401':
+          description: Unauthorized 
           content:
             application/json:
               schema:
@@ -146,7 +192,17 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: The provided advisorId is not valid, 1234 
+                    example: The provided userID is not valid, 1234 
+        "498":
+          description: Authentication token not provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided userID is null.
         '500':
           description: Internal server error
           content:
@@ -158,17 +214,483 @@ paths:
                     type: string
   /posts:
     get:
+      summary: Get a list of posts
+      description: Returns an array containing all the posts
+      operationId: getUsers
+      tags:
+        - Post
+      parameters:
+        - name: "user"
+          in: header
+          example: {eYvsgxvasxasixh.saiuxaxsuh8exask.sabxashbx, iat:"", expat:""}
+          description: "User jwt"
+          schema:
+            type: object
+            format: JSON
+      responses:
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+        "498":
+          description: Authentication token not provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided userID is null.
+        "401":
+          description: Unauthorized 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided userID is not valid
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
     post:
+      tags:
+       - Post
+      summary: Create a new post
+      description: Creates a new post
+      requestBody:
+        description: Request to create post
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+        required: true
+      responses:
+        '201':
+          description: Post created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Advisor not found
+        '409':
+            description: Conflict
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                      example: The provided email already exists
+        '422':
+          description: User credentials not provided
+          content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+        "498":
+          description: Authentication token not provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided userID is null.
+        '500':
+            description: Internal server error
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string      
     put:
+      tags:
+        - Post
+      parameters:
+        - name: 'Post details'
+          in: path
+          required: true
+          description: User details
+          example: {name:"username", languages:"Hindi"}
+          schema:
+            type: object
+            format: JSON
+        - name: 'user'
+          in: header
+          required: true
+          description: User token
+          example: {eYgxyaugxsagx.isaxbkasjbxkajsnxjasoxh.ducboauhcaishcia, iat:"", expat:""}
+          schema:
+            type: object
+            format: JSON
+      summary: Edit the post
+      description: Updates the post
+      requestBody:
+        description: Request to edit advisor
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+      responses:
+        '200':
+          description: Post updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: post upadted successfully.
+        '401':
+          description: Unauthorized 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided userID is not valid
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Post not found
+        
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
     delete:
+      tags:
+        - Post
+      parameters:
+        - name: 'user'
+          in: path
+          required: true
+          description: User token
+          example: {id: "xhuaiuhsiuxh.aixsbisu.sxiabixia", iat:"", expat:""}
+          schema:
+            type: object
+            format: JSON
+      summary: Delete the post
+      description: Deletes the post
+      responses:
+        '200':
+          description: Post deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Post deleted successfully.
+        '400':
+          description: Invalid request payload
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided advisorId is not valid, 1234
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Post not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
   /comments:
     get:
+      summary: Get a list of comments of a post
+      description: Returns an array containing all the comments
+      tags:
+        - Comment
+      parameters:
+        - name: "postId"
+          in: path
+          example: postId=syuaxguysxugsua
+          description: "postId"
+          required: true
+          schema:
+            type: string
+        - name: "time"
+          in: path
+          required: true
+          example: time="2023-07-25T08:30:00Z"
+          description: "time of creation of last post sent to frontend"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+        "401":
+          description: Unauthorized 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided userID is not valid
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Post not found
+        "498":
+          description: Authentication token not provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided userID is null.
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
     post:
-    put:
-    delete:
-  /reactions:
-    get:
-    post:
-    put:
-    delete:
+      tags:
+       - Comment
+      summary: Create a new comment
+      description: Creates a new comment
+      requestBody:
+        description: Request to create comment
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+        required: true
+      responses:
+        '201':
+          description: comment created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        '422':
+          description: User credentials not provided
+          content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+        "498":
+          description: Authentication token not provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided userID is null.
+        '500':
+            description: Internal server error
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string      
+  #   put:
+  #   delete:
+  # /reactions:
+  #   get:
+  #   post:
+  #   put:
+  #   delete:
 
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        description:
+          type: string
+        languages:
+          type: array
+          items:
+            type: string
+        Interests:
+          type: array
+          items:
+            type: string
+        password:
+          type: string
+        address:
+          type: object
+          properties:
+            street: 
+              type: string
+            suite:
+              type: string
+            city:
+              type: string
+            zipcode:
+              type: string
+        phone:
+          type: string
+        skill:
+          type: array
+          items:
+            type: string
+        company:
+          type: string
+
+    Comment: 
+      type: object
+      properties:
+        _id:
+          type: string
+        userId: 
+          type: string
+          $ref: '#/components/schemas/User'
+        postId:
+          type: string
+          $ref: '#/components/schemas/Post'
+        body: 
+          type: string
+        date:
+          type: string
+          format: date-time
+          
+    Post:
+      type: object
+      properties:
+        _id:
+          type: string
+        userId:
+          type: string
+          $ref: '#/components/schemas/User'
+        title:
+          type: string
+        body:
+          type: string
+        photos:
+          type: array
+          items:
+            type: string
+    
+    Reaction: 
+      type: object
+      properties:
+        _id:
+          type: string
+        userId:
+          type: string
+          $ref: '#/components/schemas/User'
+        postId:
+          type: string
+          $ref: '#/components/schemas/Post'
+        commentId:
+          type: string
+          $ref: '#/components/schemas/Comment'
+        type:
+          type: string
+        date:
+          type: string
+          format: date-time
+      required:
+        - type
+
+    Token:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+            iat:
+              type: string
+            expat:
+              type: string
+
+
+
+        
+        
+      

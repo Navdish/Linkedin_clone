@@ -11,7 +11,7 @@ exports.addPost = async({user_id, files, boddy})=>{
         const response = await Post.create({user_id, title, body, entry});
         if(!response)
         {
-            throw new CustomError("Reaction not created", 500);
+            throw new CustomError("Post not created", 500);
         }
         return response;
     }
@@ -19,10 +19,10 @@ exports.addPost = async({user_id, files, boddy})=>{
 }
 
 exports.fetchPost = async({user_id})=> {
-    const response = await Post.find({userId : user_id});
+    const response = await Post.find({userId : user_id}).populate("userId", "name");
     if(!response)
     {
-        throw new CustomError("Reaction not created", 500);
+        throw new CustomError("Post not created", 500);
     }
     return response;
 }
@@ -32,7 +32,7 @@ exports.updatePost = async({body})=> {
     const response= await Post.findByIdAndUpdate(post_id,{post_details});
     if(!response)
     {
-        throw new CustomError("Reaction not created", 500);
+        throw new CustomError("Post not created", 500);
     }
     return response;
 }

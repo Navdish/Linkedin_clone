@@ -2,7 +2,7 @@ const CustomError = require('../lib/error');
 const {User} = require('../models');
 
 
-exports.updateUser = async function({user_id, data}) {
+exports.updateUser = async({user_id, data})=> {
     const user = await User.findById(user_id);
     if(user){
         if(String(user._id) === user_id){
@@ -13,7 +13,7 @@ exports.updateUser = async function({user_id, data}) {
             }
             return response;
         }
-        throw new CustomError("Not authorized to change this user", 403);
+        throw new CustomError("Not authorized to change this user", 401);
     }
     throw new CustomError("User not found", 404);
 }

@@ -5,20 +5,20 @@ const Comments = require('./comments');
 
 const Reaction = mongoose.Schema({
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: Users,
     },
     postId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: Posts,
     },
     commentId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: Comments,
     },
     type: { 
         type: String,
-        require: true
+        required: true
     },
     date: {
         type: Date,

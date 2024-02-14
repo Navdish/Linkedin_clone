@@ -9,7 +9,7 @@ exports.createUser = async({data})=> {
     const {name, email, password} = data;
     if(name && email && password)
     {
-        const user = await User.findOne({email : email}).exec();
+        const user = await User.findOne({email}).exec();
         if(user)
         {
             throw new CustomError("email already exists", 409);
@@ -35,6 +35,7 @@ exports.login = async function({data}) {
                 })
                 return token;
             }
+            throw new CustomError("User password is wrong", 401)
         }
         throw new CustomError("User doesn't exist", 404);
     }

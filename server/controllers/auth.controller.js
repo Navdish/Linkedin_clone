@@ -19,7 +19,7 @@ exports.login = async (req, res)=>{
       if(!user){
         throw new Error("Token not created", 500);
       }
-      res.status(200).json(user);
+      res.status(200).json({user, message: "user loggedin successfully"});
     }
     catch(error) {
       res.status(error?.code).json({message : error?.message});
