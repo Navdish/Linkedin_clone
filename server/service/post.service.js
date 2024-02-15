@@ -1,5 +1,5 @@
 const CustomError = require('../lib/error');
-const {Post} = require('../models');
+const {Post, Comment, Reaction} = require('../models');
 
 exports.addPost = async({userId, files, data})=>{
     let photos = [];
@@ -39,5 +39,7 @@ exports.deletePost = async({userId, query})=> {
     if(!post) throw new CustomError("Post doesn't exist", 404);
     if(post.userId !== userId) throw new CustomError("Cannot delete post", 403);
     const response = await Post.deleteOne({_id});
+    const delComment = await Comment.deleteMany({postId : _id});
+    const delReaction = await Reaction.deleteMany({postId : _id});
     return response;        
 }

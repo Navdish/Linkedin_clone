@@ -1,5 +1,5 @@
 const CustomError = require('../lib/error');
-const {Comment} = require('../models');
+const {Comment, Reaction} = require('../models');
 
 exports.fetchComments = async ({query})=>{
     console.log(query)
@@ -16,7 +16,8 @@ exports.updateComments = async function({userId,data}) {
     if(!(commentId && body)) throw new CustomError("details  not found", 404);
     const comment= await Comment.findById(commentId);
     if(!comment)throw new CustomError("Comment not found", 404);
-    if(userId !== comment.user_id) throw new CustomError("user not authorized to change comment", 401);
+    if(userId !== comment.userId) throw new CustomError("user not authorized to change comment", 401);
+    if(postId !== comment.postId) throw new CustomError("bad request, user not authorized to change postId of comment", 400);
     const updateComment= await Comment.findByIdAndUpdate(commentId,{body:body}, {new:true});
     return updateComment;            
 }
@@ -36,6 +37,7 @@ exports.deleteComments = async ({query, userId}) =>{
     if(!comment) throw new CustomError("Cannot find Comment", 404);
     if(userId !== comment.userId) throw new CustomError("Cannot delete Comment", 403);
     const delComment = await Comment.findByIdAndDelete(commentId);
+    const delReaction = await Reaction.deleteMany({commentId});
     return delComment;
 }
 
