@@ -2,9 +2,9 @@ const router = require('express').Router();
 const { commentController } = require('../controllers');
 const {Auth} = require("../middleware/index");
 
-router.get('/', Auth.authenticateUser, commentController.fetch_comments);
-router.post('/', Auth.authenticateUser, commentController.post_comments);
-router.put('/', Auth.authenticateUser, commentController.update_comments);
-router.delete('/', Auth.authenticateUser, commentController.delete_comments);
+router.get('/', Auth.authenticateUser, commentController.fetchComment);
+router.post('/', Auth.authenticateUser, commentController.postComment);
+router.put('/', Auth.authenticateUser, commentController.updateComment);
+router.delete('/', Auth.authenticateUser, commentController.deleteComment);
 
 module.exports = router;

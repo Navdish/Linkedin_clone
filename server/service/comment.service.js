@@ -1,60 +1,41 @@
 const CustomError = require('../lib/error');
 const {Comment} = require('../models');
 
-exports.fetchComments = async ({post_id, time})=>{
-    if(post_id && time){
-        const responses = await Comment.find({post_id: post_id, Date: { $gte: (new Date(time)) }}).sort({Date :-1}).limit(5);
-        if(!responses)
-        {
-            throw new CustomError("Comments not found", 500);
-        }
-        return responses;
-    }
-    throw new CustomError("details not found", 404);
+exports.fetchComments = async ({query})=>{
+    console.log(query)
+    const {postId, date} = query;
+    if(!(postId && date)) throw new CustomError("details not found", 404);
+    // userId is needed for more info to the frontend, but is a risk for User data
+    const responses = await Comment.find({postId, Date: { $gte: (new Date(date)) }}).sort({Date :-1}).limit(5);
+    if(!responses) throw new CustomError("Comments not found", 500);    
+    return responses;
 }
 
 exports.updateComments = async function({userId,data}) {
     const {commentId, body} = data;
-    if(commentId && body)
-    {
-        const comment= await Comment.findById(commentId);
-        if(comment){
-            if(userId == comment.user_id){
-                const updateComment= await Comment.findByIdAndUpdate(commentId,{body:body}, {new:true});
-                return updateComment;
-            }
-        }
-        throw new CustomError("Comment not found", 404);
-    }
-    throw new CustomError("details  not found", 404);
+    if(!(commentId && body)) throw new CustomError("details  not found", 404);
+    const comment= await Comment.findById(commentId);
+    if(!comment)throw new CustomError("Comment not found", 404);
+    if(userId !== comment.user_id) throw new CustomError("user not authorized to change comment", 401);
+    const updateComment= await Comment.findByIdAndUpdate(commentId,{body:body}, {new:true});
+    return updateComment;            
 }
 
-exports.postComments = async ({user_id, data}) => {
-    const {body, post_id} = data;
-    if(body && post_id){
-        const response = await Comment.create({user_id , post_id, body});
-        if(!response){
-            throw new CustomError("comment not created", 500);
-        }
-        return response;
-    }
-    throw new CustomError("User credentials not found", 404);
+exports.postComments = async ({userId, data}) => {
+    const {body, postId} = data;
+    if(!(body && postId)) throw new CustomError("User credentials not found", 404);
+    const response = await Comment.create({userId , postId, body});
+    if(!response) throw new CustomError("comment not created", 500);
+    return response;    
 }
 
-exports.deleteComments = async ({data, userId}) =>{
-    
+exports.deleteComments = async ({query, userId}) =>{
     const commentId= data;
-    if(commentId && userId){
-        const comment = await Comment.findById(commentId);
-        if(comment){
-            if(userId == await comment.userId){
-                const delComment = await Comment.findByIdAndDelete(commentId);
-                return delComment;
-            }
-            throw new CustomError("Cannot delete Comment", 403);
-        }
-        throw new CustomError("Cannot find Comment", 404);
-    }
-    throw new CustomError("User credentials not found", 404);
+    if(!(commentId && userId)) throw new CustomError("User credentials not found", 404);
+    const comment = await Comment.findById(commentId);
+    if(!comment) throw new CustomError("Cannot find Comment", 404);
+    if(userId !== comment.userId) throw new CustomError("Cannot delete Comment", 403);
+    const delComment = await Comment.findByIdAndDelete(commentId);
+    return delComment;
 }
 

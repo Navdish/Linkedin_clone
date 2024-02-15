@@ -1,8 +1,8 @@
 const { reactionService } = require("../service");
 
-exports.post_reaction = async(req,res)=>{
+exports.postReaction = async(req,res)=>{
     try{
-        const response = await reactionService.createReaction({user_id : req?.res?.id, data : req?.body});
+        const response = await reactionService.createReactions({user_id : req?.res?.id, data : req?.body});
         return res.status(200).json(response);
     }
     catch(error){
@@ -10,9 +10,9 @@ exports.post_reaction = async(req,res)=>{
     }
 };
 
-exports.fetch_reaction = async(req,res)=>{
+exports.fetchReaction = async(req,res)=>{
     try{
-        const response = await reactionService.getReaction({data : req?.body});
+        const response = await reactionService.getReactions({query : req?.query});
         return res.status(200).json(response)
     }
     catch(error){
@@ -20,18 +20,18 @@ exports.fetch_reaction = async(req,res)=>{
     }
 };
 
-exports.delete_reaction = async(req,res)=>{
+exports.deleteReaction = async(req,res)=>{
     try{
-        const response = await reactionService.deleteReaction({data : req?.body, userId: req?.res?.id});
+        const response = await reactionService.deletReactions({data : req?.body, userId: req?.res?.id});
         return res.status(200).json(response);
     }
     catch(error){
         res.status(error?.code).json({message : error?.message});
     }
 };
-exports.update_reaction = async(req,res)=>{
+exports.updateReaction = async(req,res)=>{
     try{
-        const response = await reactionService.updateReaction({user_id : req?.res?.id,data : req?.body});
+        const response = await reactionService.updateReactions({user_id : req?.res?.id,data : req?.body});
         return res.status(200).json(response);
     }
     catch(error){

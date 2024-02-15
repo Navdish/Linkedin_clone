@@ -2,64 +2,46 @@ const CustomError = require('../lib/error');
 const Reaction = require('../models/reactions')
 
 
-exports.createReaction= async({userId, data})=>{
+exports.createReactions= async({userId, data})=>{
     const {type, postId} = data;
-    if(type, postId) {
-        const response = await Reaction.create({userId:userId , postId:postId , type:type});
-        if(!response)
-        {
-            throw new CustomError("Reaction not created", 500);
-        }
-        return response;
-    }
-    throw new CustomError("details not found", 404);
+    if(!(type && postId)) throw new CustomError("details not found", 404);
+    const response = await Reaction.create({userId:userId , postId:postId , type:type});
+    if(!response) throw new CustomError("Reaction not created", 500);
+    return response;
 };
 
-exports.getReaction = async({data})=>{
-    const {postId} = data;
-    if(postId) { 
-        const response = await Reaction.find({postId : postId});
-        if(!response)
-        {
-            throw new CustomError("Reaction not created", 500);
-        }
-        return response;
-    }
-    throw new CustomError("details not found", 404);
+exports.getReactions = async({query})=>{
+    const {postId} = query;
+    if(!(postId )) throw new CustomError("details not found", 404);
+    const response = await Reaction.find({postId});
+    if(!response) throw new CustomError("Reaction not created", 500);
+    return response;    
 };
 
-exports.updateReaction=async({userId, data})=>{
-    const {reactionId, body} = data;
-    if(reactionId && body)
+exports.updateReactions=async({userId, data})=>{
+    const {reactionId, type, commentId, postId} = data;
+    if(!(reactionId && type)) throw new CustomError("details  not found", 404);
+    const reaction= await Reaction.findById(reactionId);
+    if(!(reaction && reaction.type)) throw new CustomError("reaction not found", 404);
+    if(userId !== reaction.userId) throw new CustomError("User not authorised to change reaction", 401)
+    if( reaction.commentId !== commentId) throw new CustomError("Bad request, can't change commentId ", 400) 
+    if( reaction.postId !== postId) throw new CustomError("Bad request, can't change postId ", 400) 
+    if(type === reaction.type) //reactionController.delete_reaction();// delete reaction
     {
-        const reaction= await Reaction.findById(reactionId);
-        if(reaction){
-            if(userId == reaction.userId){
-                const response= await Reaction.findByIdAndUpdate(reactionId,{type:type});
-                if(!response)
-                {
-                    throw new CustomError("Reaction not created", 500);
-                }
-                return response;
-            }
-        }
-        throw new CustomError("reaction not found", 404);
+        const delComment = await Reaction.findByIdAndDelete(reaction._id);
+        return delComment;
     }
-    throw new CustomError("details  not found", 404);
+    const response= await Reaction.findByIdAndUpdate(reactionId,{type});
+    if(!response) throw new CustomError("Reaction not created", 500);
+    return response;        
 };
 
-exports.deleteReaction=async({userId, data})=>{
+exports.deleteReactions=async({userId, data})=>{
     const {reactionId}= data;
-    if(reactionId && userId){
-        const reaction = Reaction.findById(reactionId);
-        if(reaction){
-            if(userId == await reaction.userId){
-                const delComment = await Reaction.findByIdAndDelete(reactionId);
-                return delComment;
-            }
-            throw new CustomError("Cannot delete reaction", 403);
-        }
-        throw new CustomError("Cannot find reaction", 404);
-    }
-    throw new CustomError("User credentials not found", 404);
+    if(!(reactionId && userId)) throw new CustomError("User credentials not found", 404);
+    const reaction = Reaction.findById(reactionId);
+    if(!reaction) throw new CustomError("Cannot find reaction", 404);
+    if(userId !== reaction.userId) throw new CustomError("Cannot delete reaction", 403);
+    const delComment = await Reaction.findByIdAndDelete(reactionId);
+    return delComment;
 };

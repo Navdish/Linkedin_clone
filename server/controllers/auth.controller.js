@@ -1,11 +1,8 @@
 const {authService} = require('../service');
 
-exports.create_user = async (req, res)=>{
+exports.createUser = async (req, res)=>{
     try {
-      const user = await authService.createUser({data : req?.body})
-      if(!user){
-        throw new Error("User not created", 500);
-      }
+      const user = await authService.create({data : req?.body})
       res.status(201).json({message : "user added successfully"})
     }
     catch (error) {
@@ -13,12 +10,9 @@ exports.create_user = async (req, res)=>{
     }
 }
 
-exports.login = async (req, res)=>{
+exports.loginUser = async (req, res)=>{
     try {
       const user = await authService.login({data : req?.body});
-      if(!user){
-        throw new Error("Token not created", 500);
-      }
       res.status(200).json({user, message: "user loggedin successfully"});
     }
     catch(error) {
