@@ -282,8 +282,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Post'
-        '404':
-          description: Not Found
+        "401":
+          description: Unauthorized 
           content:
             application/json:
               schema:
@@ -291,17 +291,7 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: Advisor not found
-        '409':
-            description: Conflict
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    error:
-                      type: string
-                      example: The provided email already exists
+                    example: The provided userID is not valid
         '422':
           description: User credentials not provided
           content:
@@ -334,14 +324,6 @@ paths:
       tags:
         - Post
       parameters:
-        - name: 'Post details'
-          in: path
-          required: true
-          description: User details
-          example: {name:"username", languages:"Hindi"}
-          schema:
-            type: object
-            format: JSON
         - name: 'user'
           in: header
           required: true
@@ -389,6 +371,16 @@ paths:
                   error:
                     type: string
                     example: Post not found
+        "498":
+          description: Authentication token not provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided userID is null.
         
         '500':
           description: Internal server error
@@ -404,13 +396,20 @@ paths:
         - Post
       parameters:
         - name: 'user'
-          in: path
+          in: header
           required: true
           description: User token
           example: {id: "xhuaiuhsiuxh.aixsbisu.sxiabixia", iat:"", expat:""}
           schema:
             type: object
             format: JSON
+        - name: 'post_id'
+          in: path
+          required: true
+          description: Post_id
+          example: jkasnjsaanxjakjsxnlas
+          schema:
+            type: string
       summary: Delete the post
       description: Deletes the post
       responses:
@@ -433,7 +432,7 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: The provided advisorId is not valid, 1234
+                    example: The provided postId is not valid
         '404':
           description: Not Found
           content:
@@ -444,6 +443,16 @@ paths:
                   error:
                     type: string
                     example: Post not found
+        "498":
+          description: Authentication token not provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided userID is null.
         '500':
           description: Internal server error
           content:
@@ -460,6 +469,14 @@ paths:
       tags:
         - Comment
       parameters:
+        - name: 'user'
+          in: header
+          required: true
+          description: User token
+          example: {id: "xhuaiuhsiuxh.aixsbisu.sxiabixia", iat:"", expat:""}
+          schema:
+            type: object
+            format: JSON
         - name: "postId"
           in: path
           example: postId=syuaxguysxugsua
@@ -539,6 +556,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Comment'
+        "401":
+          description: Unauthorized 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided userID is not valid
         '422':
           description: User credentials not provided
           content:
@@ -567,13 +594,430 @@ paths:
                   properties:
                     error:
                       type: string      
-  #   put:
-  #   delete:
-  # /reactions:
-  #   get:
-  #   post:
-  #   put:
-  #   delete:
+    put:
+      tags:
+        - Comment
+      parameters:
+        - name: 'user'
+          in: header
+          required: true
+          description: User token
+          example: {eYgxyaugxsagx.isaxbkasjbxkajsnxjasoxh.ducboauhcaishcia, iat:"", expat:""}
+          schema:
+            type: object
+            format: JSON
+      summary: Edit the post
+      description: Updates the post
+      requestBody:
+        description: Request to edit advisor
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      responses:
+        '200':
+          description: Comment updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: post upadted successfully.
+        '401':
+          description: Unauthorized 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided userID is not valid
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Post not found
+        "498":
+          description: Authentication token not provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided userID is null.
+        
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+    delete:
+      tags:
+        - Comment
+      parameters:
+        - name: 'user'
+          in: header
+          required: true
+          description: User token
+          example: {id: "xhuaiuhsiuxh.aixsbisu.sxiabixia", iat:"", expat:""}
+          schema:
+            type: object
+            format: JSON
+        - name: 'comment_id'
+          in: path
+          required: true
+          description: Comment Id
+          example: jkasnjsaanxjakjsxnlas
+          schema:
+            type: string
+      summary: Delete the post
+      description: Deletes the post
+      responses:
+        '200':
+          description: Comment deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Comment deleted successfully.
+        '401':
+          description: Invalid request payload
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided userId is not valid
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Comment not found
+        "498":
+          description: Authentication token not provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided userID is null.
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  
+  /reactions:
+    get:
+      summary: Get a list of reactions
+      description: Returns an array containing all the reactions
+      tags:
+        - Reaction
+      parameters:
+        - name: 'user'
+          in: header
+          required: true
+          description: User token
+          example: {id: "xhuaiuhsiuxh.aixsbisu.sxiabixia", iat:"", expat:""}
+          schema:
+            type: object
+            format: JSON
+        - name: "postId"
+          in: path
+          example: postId=syuaxguysxugsua
+          description: "postId"
+          required: true
+          schema:
+            type: string
+        - name: "commentId"
+          in: path
+          example: commentId=syuaxguysxugsua
+          description: "commentId"
+          required: true
+          schema:
+            type: string
+        - name: "time"
+          in: path
+          required: true
+          example: time="2023-07-25T08:30:00Z"
+          description: "time of creation of last post sent to frontend"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Reaction"
+        "401":
+          description: Unauthorized 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided userID is not valid
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Reaction not found
+        "498":
+          description: Authentication token not provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided userID is null.
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+    post:
+      tags:
+       - Reaction
+      summary: Create a new Reaction
+      description: Creates a new Reaction
+      requestBody:
+        description: Request to create Reaction
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Reaction'
+        required: true
+      responses:
+        '201':
+          description: Reaction created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reaction'
+        "401":
+          description: Unauthorized 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided userID is not valid
+        '422':
+          description: Reaction credentials not provided
+          content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+        "498":
+          description: Authentication token not provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided userID is null.
+        '500':
+            description: Internal server error
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string      
+    put:
+      tags:
+        - Reaction
+      parameters:
+        - name: 'user'
+          in: header
+          required: true
+          description: User token
+          example: {eYgxyaugxsagx.isaxbkasjbxkajsnxjasoxh.ducboauhcaishcia, iat:"", expat:""}
+          schema:
+            type: object
+            format: JSON
+      summary: Edit the post
+      description: Updates the post
+      requestBody:
+        description: Request to edit advisor
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Reaction'
+      responses:
+        '200':
+          description: Reaction updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Reaction upadted successfully.
+        '401':
+          description: Unauthorized 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided userID is not valid
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Reaction not found
+        "498":
+          description: Authentication token not provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided userID is null.
+        
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+    delete:
+      tags:
+        - Reaction
+      parameters:
+        - name: 'user'
+          in: header
+          required: true
+          description: User token
+          example: {id: "xhuaiuhsiuxh.aixsbisu.sxiabixia", iat:"", expat:""}
+          schema:
+            type: object
+            format: JSON
+        - name: 'reaction_id'
+          in: path
+          required: true
+          description: Reaction Id
+          example: jkasnjsaanxjakjsxnlas
+          schema:
+            type: string
+      summary: Delete the reaction
+      description: Deletes the reaction
+      responses:
+        '200':
+          description: Reaction deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Reaction deleted successfully.
+        '401':
+          description: Invalid request payload
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided userId is not valid
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Reaction not found
+        "498":
+          description: Authentication token not provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided userID is null.
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
 
 components:
   schemas:
