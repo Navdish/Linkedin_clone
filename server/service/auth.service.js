@@ -5,13 +5,13 @@ const jwt = require("jsonwebtoken");
 const CustomError = require('../lib/error');
 
 exports.create = async({data})=> {
-    const {name, email, password} = data;
-    if(!(name && email && password)) throw new CustomError("User credentials not found", 422);
+    const {email, password} = data;
+    if(!(email && password)) throw new CustomError("User credentials not found", 422);
     const user = await User.findOne({email}).exec();
     if(user) throw new CustomError("email already exists", 409);
     const hash = await bcrypt.hash(password, saltRounds);
     if(!hash) throw new CustomError("hash not created", 500);
-    const response = await User.create({name, email, password : hash});
+    const response = await User.create({ email, password : hash});
     if(!response) throw new CustomError("internal server error", 500)
     return response;
 }

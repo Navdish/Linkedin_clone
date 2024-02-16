@@ -1,11 +1,8 @@
-
-body {
-    background-color: #F3F2F0;
-}
-
 .outside{
     display: flex;
     justify-content: center;
+    background-color: #F3F2F0;
+    min-height: 100vh;
 }
 
 .outside2{
@@ -47,15 +44,12 @@ body {
     align-items: center;
     height: 454px;
     width: 400px;
+    box-sizing: border-box;
     background-color: white;
     border-radius: 10px;
     padding-left: 24px;
     padding-right: 24px;
     padding-top: 24px;
-}
-
-.complete-input {
-    width: 100%;
 }
 
 .form-input-label{
@@ -104,3 +98,4 @@ body {
     font-style: normal;
     line-height: 24px;
 }
+
