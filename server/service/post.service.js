@@ -5,9 +5,10 @@ exports.addPost = async({userId, files, data})=>{
     let photos = [];
     const {title, body} = data;
     if(!(title && body && files)) throw new CustomError("details not found", 404);
-    for(fil of files){
-        photos = [...photos, fil.path];
-    }
+    // for(fil of files){
+    //     photos = [...photos, fil.path];
+    // }
+    photos = files.map((x)=> x.path);
     const response = await Post.create({userId, title, body, photos});
     if(!response) throw new CustomError("Post not created", 500);
     return response;
@@ -28,18 +29,18 @@ exports.updatePost = async({tokenUserId, body, params})=> {
     // it should not contain different userId
     const {userId} = body;
     if(userId && userId !== tokenUserId) throw new CustomError("bad request, trying to change the userId of post",400);
-    const response= await Post.findByIdAndUpdate(postId, body);
+    const response= await Post.findByIdAndUpdate(postId, body, {new: true});
     if(!response) throw new CustomError("Post not updated", 500);
     return response;
 }
 
-exports.deletePost = async({userId, query})=> {
-    const {postId} = query;
+exports.deletePost = async({userId, params})=> {
+    const {postId} = params;
     if(! postId) throw new CustomError("Post id not available", 400)
     const post = await Post.findById(postId);
     if(!post) throw new CustomError("Post doesn't exist", 404);
     if(post.userId !== userId) throw new CustomError("(Not authorized) Cannot delete post", 403);
-    const response = await Post.deleteOne({postId});
+    const response = await Post.deleteOne({_id: postId});
     const delComment = await Comment.deleteMany({postId});
     const delReaction = await Reaction.deleteMany({postId});
     return response;        

@@ -14,7 +14,7 @@ exports.fetchComment = async(req, res)=>{
 exports.postComment = async (req, res)=>{
     try {
         const comment = await commentService.postComments({userId : req?.user?.id, data : req?.body});
-        res.status(200).json({message: "Comment posted successfully"})
+        res.status(200).json(comment)
     } catch (error) {
         res.status(error?.code).json({message : error?.message});
     }

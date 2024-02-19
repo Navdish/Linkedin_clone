@@ -20,12 +20,11 @@ export const login = createAsyncThunk(
     'user/login',
     async(data)=> {
         try{
-            const response = await axios.post('http://localhost/auth/login', data)
+            const response = await axios.post('http://localhost:8080/auth/login', data)
             const resData = await response.data
             return resData
         }
         catch(error) {
-            console.log("error",error);
             throw error;
         }
     }
@@ -33,8 +32,9 @@ export const login = createAsyncThunk(
 
 const initialState = {
     isLoading : false,
-    user: [],
-    error: null
+    user: {},
+    error: null,
+    isLoggedIn: false
 }
 
 export const userSlice = createSlice({
@@ -59,10 +59,10 @@ export const userSlice = createSlice({
         builder.addCase(login.fulfilled, (state, action)=> {
             state.isLoading = false;
             state.user = action.payload;
+            state.isLoggedIn = true;
         })
         builder.addCase(login.rejected, (state, action)=> {
             state.isLoading = false;
-            console.log(action.error);
             state.error = action.error;
         })
     }

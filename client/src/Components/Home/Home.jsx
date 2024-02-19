@@ -2,44 +2,38 @@ import { useState, useEffect, useNavigate } from 'react';
 import './Home.css'
 import axios from 'axios';
 import {Link} from 'react-router-dom'
+import { Box } from '@mui/material';
+import ResponsiveDialog from '../Dialog/Dialog';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 function Home() {
-    // const navigate = useNavigate();
-    // const[page, setPage] = useState(1);
-    // const[users_num, setUsers_num] = useState(4);
-    // const[userData, setUserData] = useState("");
+
+    
     // useEffect(()=> {
-    //     async function users_func(){
-    //         const Data = await users();
-    //         setUserData(Data.data);
-    //         Data&&console.log(Data.data);
-    //     }
-    //     users_func();
-    // }, [page, users_num])
-    // const users = async() => axios.get("http://localhost:8080/users", {params : {
-    //     page_num : page,
-    //     users_num : users_num
-    // }});
+    //     dispatchEvent()
+    // }, [])
     
     
     
     return (
-        <div>
-            {/* <h1>Home page</h1>
-            <ul>
-                {userData && userData.map((x)=>{
-                    return(
-                        // <li><Link to ={`/user?id=${x._id}`}> {x.name}</Link></li>
-                        <li><Link to ={`/user/${x._id}`}> {x.name}</Link></li>
-                    )
-                })}
-            </ul>
-            <input type="number" defaultValue={users_num} onChange={(e)=> setUsers_num(e.target.value)}></input>
-            <button onClick={(e)=> setPage(page-1)}>Previous</button>
-                {page}
-            <button onClick={(e)=> setPage(page+1)}>Next</button> */}
-            Home
-        </div>
+        <Box>
+            <Box sx={{backgroundColor: "#F4F2EE", minHeight: "100vh", minWidth:"100vw", display: "flex",
+                       flexDirection:"column",
+                       alignItems:"center",
+                       paddingTop: "24px",
+                       boxSizing:"border-box"
+                       }}>
+                <Box sx={{width:"555px"}}>
+                    <Box sx={{width:"100%", height:"116px", backgroundColor:"white", borderRadius:"0.4rem"}}>
+                        <Box sx={{height:"56px", display:"flex", marginLeft:"16px", marginRight:"16px", paddingTop:"8px"}}>
+                            <Box ><AccountCircleIcon sx={{width:"48px", height:"48px"}}/></Box>
+                            <ResponsiveDialog sx={{marginTop:"4px" ,marginBottom:"4px", border:"1px solid black"}}/>
+                        </Box>
+                    </Box>
+                </Box>
+                
+            </Box>
+        </Box>
     )
 }
 

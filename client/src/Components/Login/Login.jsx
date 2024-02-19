@@ -9,39 +9,36 @@ import link from '../../Assets/images/link.svg';
 import Footer from "../Footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import {login} from '../../App/Slice/contentSlice';
+import { login } from '../../App/Slice/contentSlice';
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+
 
 
 function Login(){
-    // axios.defaults.headers.common['jwt-token'] = localStorage.getItem("token");
+    axios.defaults.headers.common['jwt-token'] = localStorage.getItem("token");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    // const login = async(data) => axios.post('http://localhost:8080/login', data);
-    // async function handleSubmit(e) {
-    //     e.preventDefault();
-    //     const response_token = await login({email, password});
-    //     localStorage.setItem("token", response_token.data);
-    // }
+    
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const isLoading = useSelector((state)=> state.isLoading);
     const error = useSelector((state)=> state.error);
 
     const handleSubmit = async(e) => {
+        console.log(email, password);
         dispatch(login({email, password})).then((response)=> {
-            console.log(response)
+            console.log("response --",response)
             if(!response.payload) console.log(response.error.message,'error')
+            localStorage.setItem("token", response.payload.user);
+            navigate('/Home');
         });
         if(isLoading) return "Loading....";
     }
 
     return (
         <Box className='login-out'>
-            {/* <h1>Login Form</h1>
-            <form className='login-form'>
-                <input type="email" placeholder="email" value={email} onChange={(e)=> setEmail(e.target.value)}/>
-                <input type="password" placeholder="password" value={password} onChange={(e)=> setPassword(e.target.value)}/>
-                <button type="submit" onClick={(e)=> handleSubmit(e)}>Submit</button>
-            </form> */}
+            
             <Box className='login-out2'>
                 <Box className='logo-box'><img src={logo} alt='' className="logo-img"/></Box>
                 <Stack className="signin-form">
@@ -64,7 +61,7 @@ function Login(){
                         Sign in
                     </Typography>
                     <Typography
-                        paragraph="true"
+                        paragraph= {true}
                         align="left"
                         sx={{
                         width: "100%",
@@ -76,7 +73,6 @@ function Login(){
                         Stay updated on your professional world
                     </Typography>
 
-                    {/* <form onSubmit={(e) => {handleSubmit(e)}}> */}
                     <TextField
                         label="Email"
                         variant="filled"
@@ -103,18 +99,12 @@ function Login(){
                             },
                           }
                         }}
-                        InputLabel={{
-                            style: { color: '#fff' },
-                          }}
+                        
                           
                         value={email}
                         onChange={(e)=> setEmail(e.target.value)}
                     />
-
-                    
-
                     <PasswordAdornments password = {password} setPassword = {setPassword}/>
-
                     <Typography
                         align="left"
                         sx={{

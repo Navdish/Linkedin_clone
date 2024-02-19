@@ -5,7 +5,7 @@ const Reaction = require('../models/reactions')
 exports.createReactions= async({userId, data})=>{
     const {type, postId} = data;
     if(!(type && postId)) throw new CustomError("details not found", 404);
-    const response = await Reaction.create({userId:userId , postId:postId , type:type});
+    const response = await Reaction.create({userId:userId , postId , type});
     if(!response) throw new CustomError("Reaction not created", 500);
     return response;
 };
@@ -32,7 +32,7 @@ exports.updateReactions=async({userId, data, params})=>{
         const delComment = await Reaction.findByIdAndDelete(reaction._id);
         return delComment;
     }
-    const response= await Reaction.findByIdAndUpdate(reactionId,{type});
+    const response= await Reaction.findByIdAndUpdate(reactionId,{type},{new: true});
     if(!response) throw new CustomError("Reaction not created", 500);
     return response;        
 };

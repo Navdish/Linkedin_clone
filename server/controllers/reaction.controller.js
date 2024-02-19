@@ -22,7 +22,7 @@ exports.fetchReaction = async(req,res)=>{
 
 exports.deleteReaction = async(req,res)=>{
     try{
-        const response = await reactionService.deleteReactions({data : req?.body, userId: req?.res?.id});
+        const response = await reactionService.deleteReactions({params : req?.params, userId: req?.res?.id});
         return res.status(200).json(response);
     }
     catch(error){
