@@ -4,21 +4,36 @@ import axios from 'axios'
 export const createUser = createAsyncThunk(
     'user/createUser',
     async(data)=> {
-            try {
-                const response = await axios.post('http://localhost:8080/auth/signup', data)
-        console.log("data", data);
-        const dataj = await response.data
-        return dataj;
-            } catch (error) {
-                console.log(error);
-                throw error;
-            }
+        try {
+            const response = await axios.post('http://localhost:8080/auth/signup', data)
+            console.log("data", data);
+            const dataj = await response.data
+            return dataj;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+)
+
+export const login = createAsyncThunk(
+    'user/login',
+    async(data)=> {
+        try{
+            const response = await axios.post('http://localhost/auth/login', data)
+            const resData = await response.data
+            return resData
+        }
+        catch(error) {
+            console.log("error",error);
+            throw error;
+        }
     }
 )
 
 const initialState = {
     isLoading : false,
-    users: [],
+    user: [],
     error: null
 }
 
@@ -34,6 +49,18 @@ export const userSlice = createSlice({
             state.isLoading = false;
         })
         builder.addCase(createUser.rejected, (state, action)=> {
+            state.isLoading = false;
+            console.log(action.error);
+            state.error = action.error;
+        })
+        builder.addCase(login.pending, (state, action)=> {
+            state.isLoading = true;
+        })
+        builder.addCase(login.fulfilled, (state, action)=> {
+            state.isLoading = false;
+            state.user = action.payload;
+        })
+        builder.addCase(login.rejected, (state, action)=> {
             state.isLoading = false;
             console.log(action.error);
             state.error = action.error;

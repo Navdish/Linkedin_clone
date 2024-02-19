@@ -5,14 +5,17 @@ const Posts = require('./posts');
 const Comment = mongoose.Schema({
     userId : {
         type: String,
-        ref: Users
+        ref: Users,
+        require: true
     },
     postId : {
         type : String,
-        ref: Posts
+        ref: Posts,
+        require: true
     },
     body: {
         type : String,
+        require: true
     },
     date: {
         type: Date,

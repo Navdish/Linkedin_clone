@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const { postController } = require('../controllers');
-const {Auth} = require("../middleware/index");
 const multer = require('multer');
 
 const upload = multer({
@@ -17,9 +16,9 @@ const upload = multer({
 }).array("user_file");
 
 
-router.post('/',upload, Auth.authenticateUser, postController.addPost)
-router.get('/',Auth.authenticateUser, postController.fetchPost)
-router.put('/', Auth.authenticateUser, postController.updatePost)
-router.delete('/', Auth.authenticateUser, postController.removePost)
+router.post('/',upload, postController.addPost)
+router.get('/', postController.fetchPost)
+router.put('/:postId', postController.updatePost)
+router.delete('/:postId', postController.removePost)
 
 module.exports = router;

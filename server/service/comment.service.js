@@ -11,14 +11,15 @@ exports.fetchComments = async ({query})=>{
     return responses;
 }
 
-exports.updateComments = async function({userId,data}) {
-    const {commentId, body} = data;
+exports.updateComments = async function({userId,data, params}) {
+    const {commentId} = params;
+    const {body} = data;
     if(!(commentId && body)) throw new CustomError("details  not found", 404);
     const comment= await Comment.findById(commentId);
     if(!comment)throw new CustomError("Comment not found", 404);
     if(userId !== comment.userId) throw new CustomError("user not authorized to change comment", 401);
-    if(postId !== comment.postId) throw new CustomError("bad request, user not authorized to change postId of comment", 400);
-    const updateComment= await Comment.findByIdAndUpdate(commentId,{body:body}, {new:true});
+    if(body.postId !== comment.postId) throw new CustomError("bad request, user not authorized to change postId of comment", 400);
+    const updateComment= await Comment.findByIdAndUpdate(commentId,body);
     return updateComment;            
 }
 
@@ -30,9 +31,9 @@ exports.postComments = async ({userId, data}) => {
     return response;    
 }
 
-exports.deleteComments = async ({query, userId}) =>{
-    const commentId= data;
-    if(!(commentId && userId)) throw new CustomError("User credentials not found", 404);
+exports.deleteComments = async ({params, userId}) =>{
+    const {commentId} = params;
+    if(!(commentId && userId)) throw new CustomError("Details not found", 404);
     const comment = await Comment.findById(commentId);
     if(!comment) throw new CustomError("Cannot find Comment", 404);
     if(userId !== comment.userId) throw new CustomError("Cannot delete Comment", 403);

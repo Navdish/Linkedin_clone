@@ -22,7 +22,7 @@ exports.fetchReaction = async(req,res)=>{
 
 exports.deleteReaction = async(req,res)=>{
     try{
-        const response = await reactionService.deletReactions({data : req?.body, userId: req?.res?.id});
+        const response = await reactionService.deleteReactions({data : req?.body, userId: req?.res?.id});
         return res.status(200).json(response);
     }
     catch(error){
@@ -31,7 +31,7 @@ exports.deleteReaction = async(req,res)=>{
 };
 exports.updateReaction = async(req,res)=>{
     try{
-        const response = await reactionService.updateReactions({user_id : req?.res?.id,data : req?.body});
+        const response = await reactionService.updateReactions({user_id : req?.res?.id, params: req?.params});
         return res.status(200).json(response);
     }
     catch(error){

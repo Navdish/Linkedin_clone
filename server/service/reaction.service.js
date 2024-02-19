@@ -18,8 +18,9 @@ exports.getReactions = async({query})=>{
     return response;    
 };
 
-exports.updateReactions=async({userId, data})=>{
-    const {reactionId, type, commentId, postId} = data;
+exports.updateReactions=async({userId, data, params})=>{
+    const { type, commentId, postId} = data;
+    const { reactionId} = params;
     if(!(reactionId && type)) throw new CustomError("details  not found", 404);
     const reaction= await Reaction.findById(reactionId);
     if(!(reaction && reaction.type)) throw new CustomError("reaction not found", 404);
@@ -36,8 +37,8 @@ exports.updateReactions=async({userId, data})=>{
     return response;        
 };
 
-exports.deleteReactions=async({userId, data})=>{
-    const {reactionId}= data;
+exports.deleteReactions=async({userId, params})=>{
+    const {reactionId}= params;
     if(!(reactionId && userId)) throw new CustomError("User credentials not found", 404);
     const reaction = Reaction.findById(reactionId);
     if(!reaction) throw new CustomError("Cannot find reaction", 404);

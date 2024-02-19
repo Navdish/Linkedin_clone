@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
-import { Button, FilledInput } from '@mui/material';
+import { Button, FilledInput, FormControl } from '@mui/material';
 
 export default function PasswordAdornments({password, setPassword}) {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -16,8 +16,8 @@ export default function PasswordAdornments({password, setPassword}) {
 
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', width: '100%', marginTop:"24px"}}>
-            
-           
+            <FormControl sx={{ m: 1, width: '100%', margin:"0px" }} variant="filled">
+            <InputLabel htmlFor="filled-adornment-password">Password</InputLabel>
             <OutlinedInput
                 id="outlined-adornment-password"
                 type={showPassword ? 'text' : 'password'}
@@ -27,6 +27,7 @@ export default function PasswordAdornments({password, setPassword}) {
                       },
                       
                 }}
+                inputProps={{ }}
                 value={password}
 
                 onChange={(e)=> {setPassword(e.target.value); console.log(password);}}
@@ -43,6 +44,7 @@ export default function PasswordAdornments({password, setPassword}) {
                 </InputAdornment>
                 }
             />
+            </FormControl>
     </Box>
   );
 }

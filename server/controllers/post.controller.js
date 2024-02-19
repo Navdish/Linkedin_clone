@@ -25,7 +25,7 @@ exports.fetchPost = async(req, res)=> {
 
 exports.updatePost = async(req, res)=> {
     try {
-        const response = await postService.updatePost({tokenUserId : req?.user?.id, body : req?.body});
+        const response = await postService.updatePost({tokenUserId : req?.user?.id, body : req?.body, params : req?.params});
         res.status(200).json({message : "Post updated successfully"});
     }
     catch (error) {
@@ -35,7 +35,7 @@ exports.updatePost = async(req, res)=> {
 
 exports.removePost = async(req, res)=> {
     try {
-        const response = await postService.deletePost({userId : req?.user?.id,query : req?.query});
+        const response = await postService.deletePost({userId : req?.user?.id,query : req?.params});
         res.status(200).json(response);
     }
     catch (error) {

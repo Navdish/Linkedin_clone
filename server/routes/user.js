@@ -1,7 +1,6 @@
 const router = require('express').Router();
 const { userController } = require('../controllers');
-const {Auth} = require("../middleware/index");
 
-router.put('/', Auth.authenticateUser, userController.modifiedUser)
+router.put('/',  userController.modifiedUser)
 
 module.exports = router;

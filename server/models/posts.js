@@ -4,7 +4,8 @@ const Users = require('./users');
 const Post = mongoose.Schema({
     userId : {
         type : String,
-        ref : Users
+        ref : Users,
+        require: true
     },
     title : String,
     body : String,

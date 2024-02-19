@@ -1,10 +1,9 @@
 const router = require('express').Router();
 const { reactionController } = require('../controllers');
-const {Auth} = require("../middleware/index");
 
-router.get('/', Auth.authenticateUser, reactionController.fetchReaction);
-router.post('/', Auth.authenticateUser, reactionController.postReaction);
-router.put('/', Auth.authenticateUser, reactionController.updateReaction);
-router.delete('/', Auth.authenticateUser, reactionController.deleteReaction);
+router.get('/', reactionController.fetchReaction);
+router.post('/', reactionController.postReaction);
+router.put('/', reactionController.updateReaction);
+router.delete('/', reactionController.deleteReaction);
 
 module.exports = router;

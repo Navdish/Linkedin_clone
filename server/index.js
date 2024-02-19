@@ -1,8 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 require("dotenv").config();
-// const Users = require('./models/users');
-// const mongoose = require('mongoose')
 const multer = require('multer');
 
 const app = express();
@@ -21,8 +19,3 @@ app.listen(process.env.PORT, function () {
     console.log(`server running at ${process.env.PORT}`);
 })
 
-
-// const {name, username, email, address, phone, website, company} = req.body;
-    // const {street, suite, city, zipcode, geo}= address;
-    // const {lat, lng} = geo;
-    // const {companyname, catchPhrase, bs} = company;

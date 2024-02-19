@@ -7,23 +7,26 @@ const Reaction = mongoose.Schema({
     userId: {
         type: String,
         ref: Users,
+        require: true
     },
     postId: {
         type: String,
         ref: Posts,
+        require: true
     },
     commentId: {
         type: String,
         ref: Comments,
+        require: true
     },
     type: { 
         type: String,
-        required: true
+        require: true
     },
     date: {
         type: Date,
         default: Date.now,
-        required: false
+        require: false
     },
 })
 
