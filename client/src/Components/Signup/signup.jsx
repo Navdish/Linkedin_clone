@@ -14,10 +14,10 @@ import {useSelector, useDispatch} from 'react-redux'
 import {useNavigate} from 'react-router-dom';
 import { createUser } from '../../App/Slice/contentSlice';
 import { useEffect } from 'react';
+import Footer from '../Footer/Footer';
 
 
 function Signup(){
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState(""); 
 
@@ -78,8 +78,9 @@ function Signup(){
                     <Box sx={{marginTop:"16px", marginBottom:"24px"}}>Already on Linkedin <Link fontWeight={600} underline='none' color="#8344CC" href="/Login">Sign in</Link></Box>
                 </Box>
                 <Box className="after-signup">Looking to create a page for a business? <Link fontWeight={600} underline='none' color="#8344CC">Get Help</Link></Box>
+                <Footer/>
             </Box>
-
+                
             </Box>
     );
 }
