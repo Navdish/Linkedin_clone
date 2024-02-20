@@ -4,18 +4,17 @@ const {Post, Comment, Reaction} = require('../models');
 exports.addPost = async({userId, files, data})=>{
     let photos = [];
     const {title, body} = data;
-    if(!(title && body && files)) throw new CustomError("details not found", 404);
-    // for(fil of files){
-    //     photos = [...photos, fil.path];
-    // }
-    photos = files.map((x)=> x.path);
+    if(!(title && body )) throw new CustomError("details not found", 404);
+    photos = files?.map((x)=> x.path);
     const response = await Post.create({userId, title, body, photos});
     if(!response) throw new CustomError("Post not created", 500);
-    return response;
+    const newPost = await Post.findById(response._id).populate("userId", ["name", "description"]);
+    if(!newPost) throw new CustomError("internal Server Error", 500);
+    return newPost;
 }
 
 exports.fetchPost = async()=> {
-    const response = await Post.find().populate("userId", "name");
+    const response = await Post.find().populate("userId", ["name", "description"]);
     if(!response) throw new CustomError("Post not created", 500);
     return response;
 }

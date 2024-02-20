@@ -1,11 +1,11 @@
 import * as React from 'react';
 import './signup.css'
 import Box from '@mui/system/Box';
-import logo from"../../Assets/images/Logo.png"
-import google_icon from '../../Assets/images/google-color-icon.svg'
+import logo from"../../Assets/svg/Logo.png"
+import google_icon from '../../Assets/svg/google-color-icon.svg'
 import InputLabel from '@mui/material/InputLabel';
 import { Link } from '@mui/material';
-import PasswordAdornments from '../PasswordInput/PasswordInput'
+import PasswordAdornments from '../../Components/PasswordInput/PasswordInput'
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
@@ -14,7 +14,7 @@ import {useSelector, useDispatch} from 'react-redux'
 import {useNavigate} from 'react-router-dom';
 import { createUser } from '../../App/Slice/contentSlice';
 import { useEffect } from 'react';
-import Footer from '../Footer/Footer';
+import Footer from '../../Components/Footer/Footer';
 
 
 function Signup(){

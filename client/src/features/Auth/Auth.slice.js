@@ -1,35 +1,5 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit"
-import axios from 'axios'
-
-
-export const createUser = createAsyncThunk(
-    'user/createUser',
-    async(data)=> {
-        try {
-            const response = await axios.post('http://localhost:8080/auth/signup', data)
-            console.log("data", data);
-            const dataj = await response.data
-            return dataj;
-        } catch (error) {
-            console.log(error);
-            throw error;
-        }
-    }
-)
-
-export const login = createAsyncThunk(
-    'user/login',
-    async(data)=> {
-        try{
-            const response = await axios.post('http://localhost:8080/auth/login', data)
-            const resData = await response.data
-            return resData
-        }
-        catch(error) {
-            throw error;
-        }
-    }
-)
+import {createSlice} from "@reduxjs/toolkit"
+import { createUser, login } from "./Auth.action";
 
 const initialState = {
     isLoading : false,
@@ -39,8 +9,8 @@ const initialState = {
 
 
 
-export const userSlice = createSlice({
-    name: 'user',
+export const authSlice = createSlice({
+    name: 'auth',
     initialState,
     reducers: {},
     extraReducers: (builder)=> {
@@ -60,7 +30,6 @@ export const userSlice = createSlice({
         })
         builder.addCase(login.fulfilled, (state, action)=> {
             state.isLoading = false;
-            console.log("action.payload",action.payload.user.user);
             state.user = action.payload.user.user;
         })
         builder.addCase(login.rejected, (state, action)=> {
@@ -70,4 +39,4 @@ export const userSlice = createSlice({
     }
 })
 
-export default userSlice.reducer
+export default authSlice.reducer

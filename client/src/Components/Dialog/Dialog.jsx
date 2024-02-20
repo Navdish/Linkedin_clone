@@ -10,22 +10,49 @@ import { useTheme } from '@mui/material/styles';
 import { Box, Input, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import { addPosts } from '../../features/Post/Post.action';
 
 export default function ResponsiveDialog() {
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [file, setFile] = useState();
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const dispatch = useDispatch();
+
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleClose = async() => {
+    try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("body", body);
+      console.log("files",file);
+      for(let y of file)
+      {
+        formData.append("user_file" , y);
+      }
+      // file?.map((f)=> {
+      //   formData.append('user_file', f)
+      // })
+      console.log(formData);
+      dispatch(addPosts(formData));
+      setTitle("");
+      setBody("");  // add snackbar
+      setFile(null);
+    } catch (error) {
+      console.log(error);  // snackbar if not posted
+    }
     setOpen(false);
   };
 
-  const name = useSelector((state)=> state.user.name)
+  const name = useSelector((state)=> state.user.user.name)
 
   return (
     <React.Fragment>
@@ -58,17 +85,19 @@ export default function ResponsiveDialog() {
               <AccountCircleIcon sx={{width:"48px", height:"48px"}}/>
               <Box>{name}</Box>
             </Box>
-            <Box><CloseIcon   onClick={handleClose} /></Box>
+            <Box><CloseIcon   onClick={(e)=> setOpen(false)} /></Box>
           </Box>
           <Box sx={{display:"flex", flexDirection:"column"}}>
-            <TextField id="outlined-basic" label="Title" variant="outlined" multiline minRows={1} sx={{marginTop:"10px"}} />
+            <TextField id="outlined-basic" label="Title" variant="outlined" multiline minRows={1} sx={{marginTop:"10px"}} value={title} onChange={(e)=> setTitle(e.target.value)}/>
             <TextField
               id="outlined-multiline-flexible"
               multiline
               minRows={4}
               placeholder='Description'
               sx={{border:"none"}}
+              value={body} onChange={(e)=> setBody(e.target.value)}
             />
+            <Input type='file'  inputProps={{ multiple: true }} onChange={(e)=> setFile(e.target.files)}/>
           </Box>
         </DialogContent>
         <DialogActions>

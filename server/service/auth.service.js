@@ -25,6 +25,10 @@ exports.login = async function({data}) {
     const token = jwt.sign({id : user._id}, 'Zenmonk', {
         expiresIn: '4h'
     })
-    if(!token) throw new CustomError("Token not generating", 500)
-    return token;
+    if(!token) throw new CustomError("Token not generating", 500);
+    const {_id, ...userTrimmed} = user._doc;
+    // console.log("user", user)
+    console.log("userTrimmed", userTrimmed);
+    //REMOVE PASSWORD AND _id FROM USER 
+    return {token, user};
 }

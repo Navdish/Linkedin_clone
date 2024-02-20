@@ -1,12 +1,12 @@
 import { Button, Divider, FormControl, Input, InputAdornment, InputLabel, Link, Stack, TextField, Typography } from "@mui/material";
-import logo from"../../Assets/images/Logo.png"
+import logo from"../../Assets/svg/Logo.png"
 import './Login.css'
 import Box from '@mui/system/Box';
-import PasswordAdornments from "../PasswordInput/PasswordLogin";
-import google_icon from '../../Assets/images/google-color-icon.svg';
-import apple from '../../Assets/images/apple.svg';
-import link from '../../Assets/images/link.svg';
-import Footer from "../Footer/Footer";
+import PasswordAdornments from "../../Components/PasswordInput/PasswordLogin";
+import google_icon from '../../Assets/svg/google-color-icon.svg';
+import apple from '../../Assets/svg/apple.svg';
+import link from '../../Assets/svg/link.svg';
+import Footer from "../../Components/Footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { login } from '../../App/Slice/contentSlice';
@@ -16,7 +16,7 @@ import axios from 'axios';
 
 
 function Login(){
-    axios.defaults.headers.common['jwt-token'] = localStorage.getItem("token");
+    
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     
@@ -30,7 +30,7 @@ function Login(){
         dispatch(login({email, password})).then((response)=> {
             console.log("response --",response)
             if(!response.payload) console.log(response.error.message,'error')
-            localStorage.setItem("token", response.payload.user);
+            localStorage.setItem("token", response.payload.user.token);
             navigate('/Home');
         });
         if(isLoading) return "Loading....";
