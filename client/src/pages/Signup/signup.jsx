@@ -1,20 +1,20 @@
 import * as React from 'react';
 import './signup.css'
 import Box from '@mui/system/Box';
-import logo from"../../Assets/svg/Logo.png"
-import google_icon from '../../Assets/svg/google-color-icon.svg'
+import logo from"../../assets/svg/Logo.png"
+import google_icon from '../../assets/svg/google-color-icon.svg'
 import InputLabel from '@mui/material/InputLabel';
 import { Link } from '@mui/material';
-import PasswordAdornments from '../../Components/PasswordInput/PasswordInput'
+import PasswordAdornments from '../../components/PasswordInput/PasswordInput'
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import { useState } from 'react';
 import {useSelector, useDispatch} from 'react-redux' 
 import {useNavigate} from 'react-router-dom';
-import { createUser } from '../../App/Slice/contentSlice';
+import { createUser } from '../../features/Auth/Auth.action';
 import { useEffect } from 'react';
-import Footer from '../../Components/Footer/Footer';
+import Footer from '../../components/Footer/Footer';
 
 
 function Signup(){

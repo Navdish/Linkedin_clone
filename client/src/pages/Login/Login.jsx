@@ -1,15 +1,15 @@
 import { Button, Divider, FormControl, Input, InputAdornment, InputLabel, Link, Stack, TextField, Typography } from "@mui/material";
-import logo from"../../Assets/svg/Logo.png"
+import logo from"../../assets/svg/Logo.png"
 import './Login.css'
 import Box from '@mui/system/Box';
-import PasswordAdornments from "../../Components/PasswordInput/PasswordLogin";
-import google_icon from '../../Assets/svg/google-color-icon.svg';
-import apple from '../../Assets/svg/apple.svg';
-import link from '../../Assets/svg/link.svg';
-import Footer from "../../Components/Footer/Footer";
+import PasswordAdornments from "../../components/PasswordInput/PasswordLogin";
+import google_icon from '../../assets/svg/google-color-icon.svg';
+import apple from '../../assets/svg/apple.svg';
+import link from '../../assets/svg/link.svg';
+import Footer from "../../components/Footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { login } from '../../App/Slice/contentSlice';
+import { login } from '../../features/Auth/Auth.action';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
@@ -26,9 +26,7 @@ function Login(){
     const error = useSelector((state)=> state.error);
 
     const handleSubmit = async(e) => {
-        console.log(email, password);
         dispatch(login({email, password})).then((response)=> {
-            console.log("response --",response)
             if(!response.payload) console.log(response.error.message,'error')
             localStorage.setItem("token", response.payload.user.token);
             navigate('/Home');

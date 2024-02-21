@@ -56,7 +56,6 @@ export default function RecipeReviewCard({post}) {
       </CardContent>
       {(post.photos.length !== 0)  && <CardMedia
         component="img"
-        height="194"
         image={`http://localhost:8080/${post.photos[0]}`}
         alt="post image"
       />}

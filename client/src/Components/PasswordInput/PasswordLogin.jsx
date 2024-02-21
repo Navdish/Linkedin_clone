@@ -30,7 +30,7 @@ export default function PasswordAdornments({password, setPassword}) {
                 inputProps={{ }}
                 value={password}
 
-                onChange={(e)=> {setPassword(e.target.value); console.log(password);}}
+                onChange={(e)=> setPassword(e.target.value)}
                 endAdornment={
                 <InputAdornment position="end">
                     <Box
