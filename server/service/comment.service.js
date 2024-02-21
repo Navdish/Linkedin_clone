@@ -5,8 +5,9 @@ exports.fetchComments = async ({query})=>{
     console.log(query)
     const {postId, date} = query;
     if(!(postId && date)) throw new CustomError("details not found", 404);
-    // userId is needed for more info to the frontend, but is a risk for User data
-    const responses = await Comment.find({postId, Date: { $gte: (new Date(date)) }}).sort({Date :-1}).limit(5);
+    // userId is needed for more info to the frontend, but is a risk for User data   , Date: { $gte: (new Date(date)) }
+    const responses = await Comment.find({postId}).sort({Date :-1}).limit(5);
+    console.log("responses ",responses);
     if(!responses) throw new CustomError("Comments not found", 500);    
     return responses;
 }

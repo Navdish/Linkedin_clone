@@ -38,9 +38,6 @@ export default function ResponsiveDialog() {
       {
         formData.append("user_file" , y);
       }
-      // file?.map((f)=> {
-      //   formData.append('user_file', f)
-      // })
       console.log(formData);
       dispatch(addPosts(formData));
       setTitle("");

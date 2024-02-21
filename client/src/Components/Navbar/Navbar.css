@@ -1,0 +1,19 @@
+.logo-label {
+    width:80px;
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-text {
+    font-style: normal;
+    font-weight: 400 !important;
+    font-size: 12px !important;
+    line-height: 18px !important;
+    color:rgba(0,0,0,0.9)
+}
+
+.nav-logos {
+    width:24px;
+}
