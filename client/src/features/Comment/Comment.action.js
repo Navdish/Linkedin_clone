@@ -7,10 +7,8 @@ export const getComments = createAsyncThunk(
     async(data)=> {
         try {     
             console.log("action get comments", data);
-            console.log((new Date()).toISOString());
             const response = await axios.get(`http://localhost:8080/comments`, {params : {
-                postId: data,
-                date: (new Date()).toISOString()
+                data: data
             }})
             const resData = await response.data
             console.log(resData);

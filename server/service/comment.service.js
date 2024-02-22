@@ -2,8 +2,8 @@ const CustomError = require('../lib/error');
 const {Comment, Reaction} = require('../models');
 
 exports.fetchComments = async ({query})=>{
-    console.log(query)
-    const {postId, date} = query;
+    console.log("query", query)
+    const {postId, date} = query.data;
     if(!(postId && date)) throw new CustomError("details not found", 404);
     // userId is needed for more info to the frontend, but is a risk for User data   , Date: { $gte: (new Date(date)) }
     const responses = await Comment.find({postId}).sort({Date :-1}).limit(5);

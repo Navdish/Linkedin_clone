@@ -7,3 +7,18 @@
     display: flex;
     cursor:pointer
 }
+
+.like-icon {
+    position:relative;
+}
+
+.adjacent {
+    display: none ;
+    top: -50px;
+    left: -15px;
+}
+
+.like-icon:hover > .adjacent {
+    position: absolute ;
+    display: block;
+}

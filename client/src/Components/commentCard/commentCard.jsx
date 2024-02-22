@@ -8,19 +8,28 @@ import { getComments, addComments } from '../../features/Comment/Comment.action'
 import CommentDisplay from "../CommentDisplay/CommentDisplay";
 
 export default function CommentCard({post}) {
+    const [date, setDate] = useState((new Date()).toISOString());
     const [comment, setComment] = useState("");
     const dispatch = useDispatch();
     useEffect(()=> {
         try {
             console.log("Commentcard entry")
-            dispatch(getComments(post._id))
+            if(date === undefined) {
+                setDate(new Date());
+            }
+            console.log("date", date);
+            const data = {
+                postId : post._id,
+                date : date
+            }
+            dispatch(getComments(data))
         } catch (error) {
         console.log(error);
         throw error;
         }
     }, [])
 
-    const comments = useSelector((state)=> state.comment.comments);
+    const comments = useSelector((state)=> state.comment.comments[post._id]);
     const handleSubmit = (e) => {
         const data = {
             postId : post._id,
@@ -64,8 +73,9 @@ export default function CommentCard({post}) {
                 <Button variant="contained" sx={{borderRadius:"35px", marginLeft:"69px"}} onClick={(e)=> handleSubmit(e)}>Post</Button>
             </Collapse> 
             <Collapse in={(comments)}>
-                {comments.map((com)=> {
-                    <CommentDisplay com={com}/>
+                {console.log("comments - ", comments)}
+                {comments?.map((com)=> { 
+                    return <CommentDisplay com={com}/>
                 })}
             </Collapse> 
         </>
