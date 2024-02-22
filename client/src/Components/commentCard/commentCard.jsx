@@ -13,7 +13,7 @@ export default function CommentCard({post}) {
     useEffect(()=> {
         try {
             console.log("Commentcard entry")
-        dispatch(getComments(post._id))
+            dispatch(getComments(post._id))
         } catch (error) {
         console.log(error);
         throw error;

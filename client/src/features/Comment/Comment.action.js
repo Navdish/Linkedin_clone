@@ -5,7 +5,7 @@ import { postComments, fetchComments } from "./Comment.type"
 export const getComments = createAsyncThunk(
     fetchComments,
     async(data)=> {
-        try {
+        try {     
             console.log("action get comments", data);
             console.log((new Date()).toISOString());
             const response = await axios.get(`http://localhost:8080/comments`, {params : {

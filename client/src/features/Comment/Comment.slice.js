@@ -17,7 +17,7 @@ export const commentSlice = createSlice({
         })
         builder.addCase(getComments.fulfilled, (state, action)=> {
             state.isLoading = false;
-            state.comments = action.payload;
+            state.comments = [...state.comments, action.payload];
         })
         builder.addCase(getComments.rejected, (state, action)=> {
             state.isLoading = false;
