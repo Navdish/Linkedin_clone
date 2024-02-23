@@ -5,9 +5,32 @@ const Reaction = require('../models/reactions')
 exports.createReactions= async({userId, data})=>{
     const {type, postId} = data;
     if(!(type && postId)) throw new CustomError("details not found", 404);
-    const response = await Reaction.create({userId:userId , postId , type});
-    if(!response) throw new CustomError("Reaction not created", 500);
-    return response;
+    const reaction = await Reaction.findOne({postId, userId});
+    if(reaction){
+        if(reaction.type === type) {
+            console.log("inside deletion, ");
+            const deletedResponse = await Reaction.findByIdAndDelete(reaction._id);
+            console.log("res ==============", deletedResponse);
+            return deletedResponse;
+        }
+        const response= await Reaction.findByIdAndUpdate(reaction._id,{type},{new: true});
+        console.log(response);
+        if(!response) throw new CustomError("Reaction not created", 500);
+        return response; 
+    }
+    const response2 = await Reaction.create({userId:userId , postId , type});
+    if(!response2) throw new CustomError("Reaction not created", 500);
+    return response2;
+};
+
+exports.userReactions = async({userId, query})=> {
+    const {postId} = query;
+    console.log(postId, userId, query);
+    if(!postId) throw new CustomError("postId not found", 404);
+    const response = await Reaction.findOne({postId, userId});
+    if(!response) throw new CustomError("Reaction doesn't exist for this post", 404);
+    console.log("response",response);
+    return response;  
 };
 
 exports.getReactions = async({query})=>{

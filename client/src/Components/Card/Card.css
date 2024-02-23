@@ -13,6 +13,7 @@
 }
 
 .adjacent {
+    z-index: 2;
     display: none ;
     top: -50px;
     left: -15px;

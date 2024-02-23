@@ -19,23 +19,17 @@ import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import './Card.css'
 import { useState } from 'react';
 import CommentCard from '../commentCard/commentCard';
-import { ReactionBarSelector } from '@charkour/react-reactions';
+import { ReactionBarSelector , FacebookCounter} from '@charkour/react-reactions';
+// import { ReactionCounter } from '@charkour/react-reactions';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { addReactions, getReactions, getUserReactions } from '../../features/Reaction/Reaction.action';
 
 
 
 export default function RecipeReviewCard({post}) {
   
-  const [expanded, setExpanded] = useState(false);
-  // {[{label:"Like", node:<node>👍</node>, key:"Like"},
-  // {label:"Celebrate", node:<node>👏</node>, key:"Celebrate"},
-  // {label:"Support", node:<node>🫰</node>, key:"Support"},
-  // {label:"love", node:<node>❤️</node>, key:"love"},
-  // {label:"Insightful", node:<node>💡</node>, key:"Insightful"},
-  // {label:"Funny", node:<node>😂</node>, key:"Funny"}]}
-
-  const [reactionContent, setReactionContent] = useState("Like")
-  const [emoji, setEmoji] = useState(<ThumbUpOffAltIcon sx={{height:"24px", width:"24px", marginRight:"4px", color:"#5E5E5E"}} />) 
   const emojis = {
     Like : '👍',
     Celebrate : '👏',
@@ -44,10 +38,45 @@ export default function RecipeReviewCard({post}) {
     Insightful : '💡',
     Funny : '😂',
   }
+  const defaultIcon = <ThumbUpOffAltIcon sx={{height:"24px", width:"24px", marginRight:"4px", color:"#5E5E5E"}} />;
+  const [expanded, setExpanded] = useState(false);
+  const dispatch = useDispatch();
+  const [emoji, setEmoji] = useState( defaultIcon); 
+  const [reactionContent, setReactionContent] = useState("Like")
+  useEffect(()=> {
+    try {
+      dispatch(getUserReactions(post._id)).then((response)=> {
+        console.log("reaction content ", reactionContent);
+        if(response.payload) {
+          setEmoji(emojis[response.payload.type] || defaultIcon);
+          setReactionContent((response.payload.type) || "Like");
+        }           
+      })
+    } catch (error) {
+      console.log(error);
+    }
+    
+  }, [])
+  
+  const userReaction = useSelector((state)=> state.reaction.userReaction);
+  
+  const reactions = useSelector((state)=> state.reaction.reactions);
+
+
+  
+  console.log("reactions fetched : ", reactions)
+  // if(userReaction) {
+  //   setReactionContent(userReaction);
+  //   setEmoji(emojis[userReaction]);
+  // }
   
   const handleExpandClick = () => {
     setExpanded(true);
   };
+
+  const fetchReactions = async(e) => {
+    dispatch(getReactions(post._id))
+  }
   return (
     <Card sx={{ maxWidth: "100%" , marginTop:"10px", marginBottom:"10px", boxShadow:"none"}}>
       <CardHeader
@@ -75,6 +104,9 @@ export default function RecipeReviewCard({post}) {
         alt="post image"
       />}
       <Divider />
+      <CardContent>
+        <FacebookCounter onClick={(e)=> fetchReactions(e)}/>
+      </CardContent>
       <CardActions sx={{display:"flex", paddingLeft:"16px", paddingTop:"4px", paddingRight:"16px", paddingBottom:"4px", justifyContent:"space-between", position:"relative"}}>
         <Box className="action-box like-icon" >
           {emoji}
@@ -91,7 +123,13 @@ export default function RecipeReviewCard({post}) {
                                                                         console.log(key);
                                                                         setReactionContent(key);
                                                                         setEmoji(emojis[key]);
-                                                                        console.log(emojis[key]);
+                                                                        //dispatch action to set comment  {type, postID}
+                                                                        const obj = {
+                                                                          type: key,
+                                                                          postId: post._id
+                                                                        }
+                                                                        dispatch(addReactions(obj));
+                                                                        console.log(key);
                                                                       }}/></Box>
         </Box>
 

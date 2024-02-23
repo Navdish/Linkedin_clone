@@ -11,7 +11,7 @@ export const getComments = createAsyncThunk(
                 data: data
             }})
             const resData = await response.data
-            console.log(resData);
+            console.log("comments data ", resData);
             return resData;
         } catch (error) {
             throw error;
