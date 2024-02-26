@@ -30,6 +30,7 @@ import { addReactions, getReactions, getUserReactions } from '../../features/Rea
 
 export default function RecipeReviewCard({post}) {
   
+  const defaultIcon = <ThumbUpOffAltIcon sx={{height:"24px", width:"24px", marginRight:"4px", color:"#5E5E5E"}} />;
   const emojis = {
     Like : '👍',
     Celebrate : '👏',
@@ -37,8 +38,8 @@ export default function RecipeReviewCard({post}) {
     love : '❤️',
     Insightful : '💡',
     Funny : '😂',
+    defaultIcon 
   }
-  const defaultIcon = <ThumbUpOffAltIcon sx={{height:"24px", width:"24px", marginRight:"4px", color:"#5E5E5E"}} />;
   const [expanded, setExpanded] = useState(false);
   const dispatch = useDispatch();
   const [emoji, setEmoji] = useState( defaultIcon); 
@@ -48,7 +49,7 @@ export default function RecipeReviewCard({post}) {
       console.log("Inside use effect ");
       dispatch(getUserReactions(post._id)).then((response)=> {
         if(response.payload) {
-          setEmoji(response.payload ? emojis[response.payload.type] : defaultIcon);
+          // setEmoji(response.payload ? emojis[response.payload.type] : defaultIcon);
           setReactionContent(response.payload? response.payload.type : "Like");
         }           
       })
@@ -59,18 +60,7 @@ export default function RecipeReviewCard({post}) {
   }, [])
   
   const userReaction = useSelector((state)=> state.reaction.userReaction[post._id]);
-  // if(userReaction)
-  // {
-  //   setReactionContent(userReaction.type);
-  //   setEmoji(emojis[userReaction.type]);
-  // }
-  // else {
-  //   setReactionContent("Like");
-  //   setEmoji(defaultIcon);
-  // }
-  // console.log("reaction for the post ======= ",userReaction);
-  // !(userReaction) && setReactionContent("Like");
-  // !(userReaction) && setEmoji(defaultIcon);
+
   const reactions = useSelector((state)=> state.reaction.reactions);
   // if(userReaction) {
   //   setReactionContent(userReaction);
@@ -127,16 +117,19 @@ export default function RecipeReviewCard({post}) {
                                                                       {label:"Insightful", node:<node>💡</node>, key:"Insightful"},
                                                                       {label:"Funny", node:<node>😂</node>, key:"Funny"}]}  
                                                                       onSelect = {(key) => {
-                                                                        console.log(key);
-                                                                        setReactionContent(key);
-                                                                        setEmoji(emojis[key]);
-                                                                        //dispatch action to set reaction  {type, postID}
+                                                                        if(key===reactionContent){
+                                                                          setEmoji(emojis.defaultIcon);
+                                                                          setReactionContent("Like");
+                                                                        }
+                                                                        else{
+                                                                          setEmoji(emojis[key]);
+                                                                          setReactionContent(key);
+                                                                        }
                                                                         const obj = {
                                                                           type: key,
                                                                           postId: post._id
                                                                         }
                                                                         dispatch(addReactions(obj));
-                                                                        console.log(key);
                                                                       }}/></Box>
         </Box>
 

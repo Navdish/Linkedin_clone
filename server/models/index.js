@@ -2,5 +2,6 @@ module.exports = {
     User: require('./users'),
     Post: require('./posts'),
     Comment: require('./comments'),
-    Reaction: require('./reactions')
+    Reaction: require('./reactions'),
+    Connection: require('./connection')
 }

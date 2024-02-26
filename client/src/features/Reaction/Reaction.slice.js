@@ -43,45 +43,18 @@ export const reactionSlice = createSlice({
         builder.addCase(addReactions.fulfilled, (state, action)=> {
             state.isLoading = false;
 
-            // console.log("currnet state of the reaction to be deleted", current(state.userReaction[action.payload?.postId]))
-            // console.log("new added reaction ", action.payload.type, " ===== ", current(state.userReaction[action.payload?.postId].type))
-
             if(state.userReaction[action.payload?.postId]) {
                 if((current(state.userReaction[action.payload?.postId])).type === action.payload.type)
                 {
-                    // const reactions =  state.userReaction;
-                    // Object.entries(reactions).forEach((key) => {
-                    //     console.log("reactions",reactions)
-                    //     // map.set(key, reactions[key]);
-                    // });
                     const reactions = current(state.userReaction);
                     var result = Object.keys(reactions).map((key)=> [key, reactions[key]]);
-                    console.log(".........result........", result);
                     result = result.filter((r)=> {
-                        console.log("evry single ", r[0], r[0] === action.payload.postId);
                         return r[0] !== action.payload.postId;
                     });
                     const final = Object.fromEntries(result);
-                    console.log("final object ", final);
                     state.userReaction = final;
-                    console.log(".........result........ last ......", result);
-                    console.log("delete the reaction ", action.payload)
-                    // console.log("Id to be deleted ", current(state.userReaction[action.payload?.postId]))
-                    // delete current(state.userReaction[action.payload?.postId]);
                 }
-                
-                // state.userReaction[action.payload?.postId] = null;
             }
-            // const reactions =  state.userReaction;
-            // const map = new Map();
-            // console.log(Object.entries(reactions))
-            // Object.entries(reactions).forEach((key) => {
-            //     console.log(reactions)
-            //     // map.set(key, reactions[key]);
-            // });
-            // const map = new Map(Object.entries(reactions));
-            // console.log(map.get(action.payload?.postId))
-            // console.log(Object.keys(reactions.hasOwnProperty('property1')));
             else {
                 state.userReaction[action.payload?.postId] = action.payload;
                 console.log("current state ", current(state.userReaction))

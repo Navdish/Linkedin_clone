@@ -1,0 +1,8 @@
+.network-page {
+    height: fit-content !important;
+    width: 100vw !important;
+    min-height: 100vh !important;
+    border: 0px !important;
+    border-radius: 10px !important;
+    background-color: #F4F2EE!important;
+}

@@ -1,0 +1,100 @@
+const CustomError = require('../lib/error');
+const {Connection, User} = require('../models');
+
+exports.fetchUsers = async ({userId})=>{
+    console.log(userId, "userId");
+    const pending = await Connection.find({ $or: [ { senderId: userId }, { recieverId: userId } ]}); 
+    let result = [];
+    // ignoring certain cases, if senderId and recieverId are same (POSTMAN), or the case of dupliactes (POSTMAN)
+    pending?.map((con)=> {
+        if(con.senderId == userId) result.push(con.recieverId);
+        else result.push(con.senderId);
+    })
+    const responses = await User.find({ _id : { $nin: result } });
+    if(!responses) throw new CustomError("Comments not found", 500);    
+    return responses;
+}
+
+exports.fetchRequests = async ({userId}) => {
+    const response = await Connection.find({recieverId: userId, status: 'PENDING'});
+    if(!response) throw new CustomError("No requests found", 404);
+    return response;
+}
+
+exports.fetchConnections = async ({userId}) => {
+    const response = await Connection.find({ $or: [ { senderId: userId }, { recieverId: userId } ] , status: 'ACCEPTED'});
+    if(!response) throw new CustomError("No connections found", 404);
+    return response;
+}
+
+exports.postConnection = async ({userId, payload}) => {
+    // Ignoring certain cases, Connection doesn't exist previously and user is not sending the status in payload, and sender and reciever are not same
+    const {recieverId, status} = payload;
+    console.log(recieverId, userId);
+    if(status) throw new CustomError("Bad request", 400);
+    const user = await User.find({_id : recieverId});
+    if(!user) throw new CustomError("Recieving User doesn't exist anymore", 404);
+    if(recieverId === userId) throw new CustomError("Bad request", 400);
+    const connection = await Connection.findOne({$and: [ {$or: [ { senderId: userId }, { recieverId: userId }], $or: [ { senderId: userId }, { recieverId: userId }]}]});
+    console.log(connection);
+    if(!connection){
+        const response = await Connection.create({senderId: userId, recieverId});
+        if(!response) throw new CustomError("Connection not created", 500);
+        return response;
+    } 
+    console.log("withdraw krle");
+    if(connection.status === 'WITHDRAW'){
+        console.log("current date", (new Date()).getTime());
+        console.log("updated at date", connection.updatedAt.getTime());
+        if((new Date()).getTime() - connection.updatedAt.getTime() > 1855058823) //greater than new date by 3 weeks
+        {
+            const response = await Connection.findByIdAndUpdate(connection._id, {status: 'PENDING'}, {new: true})
+            return response;
+        }
+        throw new CustomError("Can't send the request before 3 weeks from withdrawing ", 409); 
+    } 
+    throw new CustomError("Connection/request already exists ", 409);
+}
+
+exports.updateConnection = async({userId, query}) => {
+    const {connectionId, status} = query;
+    const connection = await Connection.findById(connectionId);
+    if(!connection) throw new CustomError("Connection not found ", 404);
+    if(status === 'WITHDRAW' && connection.senderId === userId){
+        const response = await Connection.findByIdAndUpdate(connectionId, status, {new : true});
+        if(!response) throw new CustomError("Internal Server error", 500);
+        return response;
+    }
+    if(connection.recieverId !== userId) throw new CustomError("Not authorized ", 403);
+    // update only if the sender 
+    const response = await Connection.findByIdAndUpdate(connectionId, status, {new : true});
+    if(!response) throw new CustomError("Internal Server error", 500);
+    return response;
+}   
+
+// to fetch the status of the request upon searching the user...
+// if status is PENDING or REJECTED show the user 'PENDING'
+
+
+// to withdraw the request... , upon withdrawal request not transmitted till 3 weeks
+exports.deleteConnection = async ({connectionId}) => {
+    const connection = await Connection.findById(connectionId);
+    if(!connection) throw new CustomError("Connection doesn't exist", 404);
+    if(connection.status !== 'ACCEPTED') throw new CustomError("Requests can't be deleted", 400);
+    const response = await Connection.deleteOne({_id : connectionId});
+    if(!response) throw new CustomError("Not able to delete", 500);
+    return response;
+}
+
+// code-15 65dc689676b1e9ff6c07def8 
+// code-16 65d45b4217968a775dd4b373
+// code-17 65dc6a8f866bf62abb805a23
+// code-18 65dc6ac218d457961bd4af43 // post checked
+
+// connection id 18->15 65dc6af63b4346588d2b33e0    18- 16
+
+// connection 16->15, 18->15
+// for query of 15
+// user --- 17
+// requests --- 16
+// connection --- 18

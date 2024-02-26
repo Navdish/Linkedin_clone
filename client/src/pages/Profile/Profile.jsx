@@ -9,13 +9,13 @@ import ProfileActivity from '../../components/ProfileActivity/ProfileActivity'
 import Experience from '../../components/Experience/Experience'
 const Profile = () => {
 
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
 
     // useEffect(() => {
     //     dispatch(fetchUser())
     // }, [dispatch])
 
-    const user = useSelector((state) => state.user)
+    // const user = useSelector((state) => state.user)
 
   return (
     <Box className='profile-page'>
