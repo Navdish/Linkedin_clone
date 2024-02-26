@@ -45,11 +45,11 @@ export default function RecipeReviewCard({post}) {
   const [reactionContent, setReactionContent] = useState("Like")
   useEffect(()=> {
     try {
+      console.log("Inside use effect ");
       dispatch(getUserReactions(post._id)).then((response)=> {
-        console.log("reaction content ", reactionContent);
         if(response.payload) {
-          setEmoji(emojis[response.payload.type] || defaultIcon);
-          setReactionContent((response.payload.type) || "Like");
+          setEmoji(response.payload ? emojis[response.payload.type] : defaultIcon);
+          setReactionContent(response.payload? response.payload.type : "Like");
         }           
       })
     } catch (error) {
@@ -58,13 +58,20 @@ export default function RecipeReviewCard({post}) {
     
   }, [])
   
-  const userReaction = useSelector((state)=> state.reaction.userReaction);
-  
+  const userReaction = useSelector((state)=> state.reaction.userReaction[post._id]);
+  // if(userReaction)
+  // {
+  //   setReactionContent(userReaction.type);
+  //   setEmoji(emojis[userReaction.type]);
+  // }
+  // else {
+  //   setReactionContent("Like");
+  //   setEmoji(defaultIcon);
+  // }
+  // console.log("reaction for the post ======= ",userReaction);
+  // !(userReaction) && setReactionContent("Like");
+  // !(userReaction) && setEmoji(defaultIcon);
   const reactions = useSelector((state)=> state.reaction.reactions);
-
-
-  
-  console.log("reactions fetched : ", reactions)
   // if(userReaction) {
   //   setReactionContent(userReaction);
   //   setEmoji(emojis[userReaction]);
@@ -123,7 +130,7 @@ export default function RecipeReviewCard({post}) {
                                                                         console.log(key);
                                                                         setReactionContent(key);
                                                                         setEmoji(emojis[key]);
-                                                                        //dispatch action to set comment  {type, postID}
+                                                                        //dispatch action to set reaction  {type, postID}
                                                                         const obj = {
                                                                           type: key,
                                                                           postId: post._id

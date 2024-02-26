@@ -6,11 +6,9 @@ export const getUserReactions = createAsyncThunk(
     userReaction,
     async(data)=> {
         try {
-            console.log(" get user reactions - ")
             const response = await axios.get('http://localhost:8080/reactions/user', {params: {
                 postId : data
             }})
-            console.log(response);
             const dataj = await response.data
             return dataj;
         } catch (error) {
