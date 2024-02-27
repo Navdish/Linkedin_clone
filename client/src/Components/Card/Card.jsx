@@ -1,29 +1,26 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import * as React from 'react';
 
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Box,Divider } from '@mui/material';
+import { FacebookCounter, ReactionBarSelector } from '@charkour/react-reactions';
 import InsertCommentOutlinedIcon from '@mui/icons-material/InsertCommentOutlined';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined';
 import SendIcon from '@mui/icons-material/Send';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
-import './Card.css'
+import { Box, Divider } from '@mui/material';
 import { useState } from 'react';
-import CommentCard from '../commentCard/commentCard';
-import { ReactionBarSelector , FacebookCounter} from '@charkour/react-reactions';
-// import { ReactionCounter } from '@charkour/react-reactions';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import { useDispatch, useSelector } from 'react-redux';
+import CommentCard from '../CommentCard/CommentCard.jsx';
+import './Card.css';
 import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { addReactions, getReactions, getUserReactions } from '../../features/Reaction/Reaction.action';
 
 
@@ -49,7 +46,6 @@ export default function RecipeReviewCard({post}) {
       console.log("Inside use effect ");
       dispatch(getUserReactions(post._id)).then((response)=> {
         if(response.payload) {
-          // setEmoji(response.payload ? emojis[response.payload.type] : defaultIcon);
           setReactionContent(response.payload? response.payload.type : "Like");
         }           
       })

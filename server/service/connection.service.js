@@ -2,14 +2,11 @@ const CustomError = require('../lib/error');
 const {Connection, User} = require('../models');
 
 exports.fetchUsers = async ({userId})=>{
-    console.log(userId, "userId");
     const pending = await Connection.find({ $or: [ { senderId: userId }, { recieverId: userId } ]}); 
-    let result = [];
     // ignoring certain cases, if senderId and recieverId are same (POSTMAN), or the case of dupliactes (POSTMAN)
-    pending?.map((con)=> {
-        if(con.senderId == userId) result.push(con.recieverId);
-        else result.push(con.senderId);
-    })
+   
+
+    const result = pending.map(connect => connect.senderId == userId ? connect.recieverId : connect.senderId)
     const responses = await User.find({ _id : { $nin: result } });
     if(!responses) throw new CustomError("Comments not found", 500);    
     return responses;
@@ -30,37 +27,30 @@ exports.fetchConnections = async ({userId}) => {
 exports.postConnection = async ({userId, payload}) => {
     // Ignoring certain cases, Connection doesn't exist previously and user is not sending the status in payload, and sender and reciever are not same
     const {recieverId, status} = payload;
-    console.log(recieverId, userId);
     if(status) throw new CustomError("Bad request", 400);
     const user = await User.find({_id : recieverId});
     if(!user) throw new CustomError("Recieving User doesn't exist anymore", 404);
     if(recieverId === userId) throw new CustomError("Bad request", 400);
-    const connection = await Connection.findOne({$and: [ {$or: [ { senderId: userId }, { recieverId: userId }], $or: [ { senderId: userId }, { recieverId: userId }]}]});
-    console.log(connection);
+    const connection = await Connection.findOne({ $or: [ { senderId: recieverId, userId }, { recieverId: userId, recieverId }]});
     if(!connection){
         const response = await Connection.create({senderId: userId, recieverId});
         if(!response) throw new CustomError("Connection not created", 500);
         return response;
     } 
-    console.log("withdraw krle");
-    if(connection.status === 'WITHDRAW'){
-        console.log("current date", (new Date()).getTime());
-        console.log("updated at date", connection.updatedAt.getTime());
-        if((new Date()).getTime() - connection.updatedAt.getTime() > 1855058823) //greater than new date by 3 weeks
-        {
-            const response = await Connection.findByIdAndUpdate(connection._id, {status: 'PENDING'}, {new: true})
-            return response;
-        }
-        throw new CustomError("Can't send the request before 3 weeks from withdrawing ", 409); 
-    } 
-    throw new CustomError("Connection/request already exists ", 409);
+    if(connection.status !== 'WITHDRAW') throw new CustomError("Connection/request already exists ", 409);
+    if((new Date()).getTime() - connection.updatedAt.getTime() <= 1855058823) throw new CustomError("Can't send the request before 3 weeks from withdrawing ", 409); 
+    const response = await Connection.findByIdAndUpdate(connection._id, {status: 'PENDING'}, {new: true})
+    return response;
 }
 
 exports.updateConnection = async({userId, query}) => {
     const {connectionId, status} = query;
     const connection = await Connection.findById(connectionId);
     if(!connection) throw new CustomError("Connection not found ", 404);
-    if(status === 'WITHDRAW' && connection.senderId === userId){
+    if(connection.senderId !== userId && connection.recieverId !== userId) throw new CustomError("Bad request", 400);
+    if(status === 'WITHDRAW' ){
+        if(connection.senderId !== userId) throw new CustomError("Reciever not authorized to withdraw ", 400);
+        if(connection.status !== 'PENDING') throw new CustomError("This status can't be changed", 400);
         const response = await Connection.findByIdAndUpdate(connectionId, status, {new : true});
         if(!response) throw new CustomError("Internal Server error", 500);
         return response;
@@ -77,9 +67,12 @@ exports.updateConnection = async({userId, query}) => {
 
 
 // to withdraw the request... , upon withdrawal request not transmitted till 3 weeks
-exports.deleteConnection = async ({connectionId}) => {
+exports.deleteConnection = async ({userId, payload}) => {
+    const {connectionId} = payload;
+    console.log(connectionId);
     const connection = await Connection.findById(connectionId);
     if(!connection) throw new CustomError("Connection doesn't exist", 404);
+    if(connection.senderId !== userId && connection.recieverId !== userId) throw new CustomError("Bad request", 400);
     if(connection.status !== 'ACCEPTED') throw new CustomError("Requests can't be deleted", 400);
     const response = await Connection.deleteOne({_id : connectionId});
     if(!response) throw new CustomError("Not able to delete", 500);
@@ -98,3 +91,8 @@ exports.deleteConnection = async ({connectionId}) => {
 // user --- 17
 // requests --- 16
 // connection --- 18
+
+// response after deletion {
+//     "acknowledged": true,
+//     "deletedCount": 1
+// }

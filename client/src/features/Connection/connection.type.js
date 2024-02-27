@@ -1,0 +1,1 @@
+export const typefetchRequest = 'connection/fetchRequest'

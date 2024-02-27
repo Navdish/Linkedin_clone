@@ -20,7 +20,7 @@ const Network = () => {
       gap={2.8}
       marginTop={'20px'}
       > 
-        <Box sx={{width:"804px", boxSizing:"border-box", border:"1px solid grey", borderRadius:"5px", backgroundColor:"white"}}>
+        <Box sx={{width:"804px", boxSizing:"border-box", outline:"1px solid #e8e8e8", borderRadius:"5px", backgroundColor:"white"}}>
             <Invitations />
         </Box>
       </Stack>

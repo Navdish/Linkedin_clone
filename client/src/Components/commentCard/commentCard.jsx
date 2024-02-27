@@ -29,7 +29,7 @@ export default function CommentCard({post}) {
         }
     }, [])
 
-    const comments = useSelector((state)=> state.comment.comments[post._id]);
+    const comments = useSelector((state)=> state.comment?.comments[post._id]);
     const handleSubmit = (e) => {
         const data = {
             postId : post._id,

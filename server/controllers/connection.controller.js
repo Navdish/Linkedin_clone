@@ -17,7 +17,7 @@ exports.fetchUsers = async(req, res)=> {
 exports.fetchRequests = async(req, res)=> {
     try {
         const response = await connectionService.fetchRequests({userId : req?.user?.id});
-        if(!response) throw new CustomError("No invitation found", 404)
+        if(!response) throw new CustomError("No invitation found", 204)
         res.status(200).json(response);
     } catch (error) {
         res.status(error?.code).json({message : error?.message});
@@ -27,7 +27,7 @@ exports.fetchRequests = async(req, res)=> {
 exports.fetchConnections = async(req, res)=> {
     try {
         const response = await connectionService.fetchConnections({userId : req?.user?.id});
-        if(!response) throw new CustomError("No connections found", 404)
+        if(!response) throw new CustomError("No connections found", 204)
         res.status(200).json(response);
     } catch (error) {
         res.status(error?.code).json({message : error?.message});
