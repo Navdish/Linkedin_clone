@@ -13,7 +13,8 @@ exports.fetchUsers = async ({userId})=>{
 }
 
 exports.fetchRequests = async ({userId}) => {
-    const response = await Connection.find({recieverId: userId, status: 'PENDING'});
+    const response = await Connection.find({recieverId: userId, status: 'PENDING'}).populate("senderId", ["name", "description"]);
+    console.log(response, userId);
     if(!response) throw new CustomError("No requests found", 404);
     return response;
 }
@@ -57,7 +58,7 @@ exports.updateConnection = async({userId, query}) => {
     }
     if(connection.recieverId !== userId) throw new CustomError("Not authorized ", 403);
     // update only if the sender 
-    const response = await Connection.findByIdAndUpdate(connectionId, status, {new : true});
+    const response = await Connection.findByIdAndUpdate(connectionId, {status}, {new : true});
     if(!response) throw new CustomError("Internal Server error", 500);
     return response;
 }   
@@ -79,13 +80,13 @@ exports.deleteConnection = async ({userId, payload}) => {
     return response;
 }
 
-// code-15 65dc689676b1e9ff6c07def8 
-// code-16 65d45b4217968a775dd4b373
+// code-15  65d45b4217968a775dd4b373
+// code-16 65dc689676b1e9ff6c07def8
 // code-17 65dc6a8f866bf62abb805a23
 // code-18 65dc6ac218d457961bd4af43 // post checked
 
 // connection id 18->15 65dc6af63b4346588d2b33e0    18- 16
-
+// 16 - 15
 // connection 16->15, 18->15
 // for query of 15
 // user --- 17

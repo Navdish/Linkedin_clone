@@ -46,6 +46,7 @@ exports.postConnection = async(req, res)=> {
 
 exports.updateConnection = async(req, res)=> {
     try {
+        // console.log("params", req)
         const response = await connectionService.updateConnection({userId : req?.user?.id, query : req?.query});
         if(!response) throw new CustomError("Internal serever error", 500)
         res.status(200).json(response);
