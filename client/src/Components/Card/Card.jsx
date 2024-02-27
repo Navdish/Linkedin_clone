@@ -47,6 +47,7 @@ export default function RecipeReviewCard({post}) {
       dispatch(getUserReactions(post._id)).then((response)=> {
         if(response.payload) {
           setReactionContent(response.payload? response.payload.type : "Like");
+          setEmoji(response.payload? emojis[response.payload.type] : emojis[defaultIcon])
         }           
       })
     } catch (error) {
@@ -55,7 +56,7 @@ export default function RecipeReviewCard({post}) {
     
   }, [])
   
-  const userReaction = useSelector((state)=> state.reaction.userReaction[post._id]);
+  // const userReaction = useSelector((state)=> state.reaction.userReaction[post._id]);
 
   const reactions = useSelector((state)=> state.reaction.reactions);
   // if(userReaction) {
@@ -113,11 +114,12 @@ export default function RecipeReviewCard({post}) {
                                                                       {label:"Insightful", node:<node>💡</node>, key:"Insightful"},
                                                                       {label:"Funny", node:<node>😂</node>, key:"Funny"}]}  
                                                                       onSelect = {(key) => {
-                                                                        if(key===reactionContent){
+                                                                        if(key===reactionContent && emoji === emojis[reactionContent]){
                                                                           setEmoji(emojis.defaultIcon);
                                                                           setReactionContent("Like");
                                                                         }
                                                                         else{
+                                                                          console.log("key",key)
                                                                           setEmoji(emojis[key]);
                                                                           setReactionContent(key);
                                                                         }
