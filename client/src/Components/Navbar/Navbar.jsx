@@ -16,6 +16,8 @@ import messagingsvg from '../../assets/svg/messaging.svg'
 import notificationsvg from '../../assets/svg/notification.svg'
 import { Avatar } from '@mui/material';
 import './Navbar.css'
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -62,8 +64,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function SearchAppBar() {
+  const location = useLocation()
+  const navigate = useNavigate();
+  if(location.pathname === "/SignUp" || location.pathname === "/Login") {
+    return null
+  }
+
   return (
-    <Box sx={{ flexGrow: 1 ,display:"flex",  alignItems:"center", justifyContent:"center", width:"100%", position:"sticky", top:"0", zIndex:"1"}}>
+    <Box sx={{ display:"flex",  alignItems:"center", justifyContent:"center", width:"100%", position:"sticky", top:"0", zIndex:"1", boxSizing:"border-box"}}>
       <AppBar position="static" sx={{backgroundColor:"white" , border:"none",margin:"auto", boxShadow:"none"}}>
         <Toolbar sx={{justifyContent:"center", alignItems:"center", gap:'40px'}}>
           <Box sx={{display: "flex", alignItems:"center"}}>
@@ -74,7 +82,9 @@ export default function SearchAppBar() {
                 aria-label="open drawer"
                 sx={{ mr: 2 , margin:'0px', padding:"0px"}}
             >
+              <Link to={'/Home'}>
                 <img src={InLogo} alt=''/>
+              </Link>
             </IconButton>
             
             <Search sx={{backgroundColor:"#EDF3F8", height:"34px" }}>
@@ -89,11 +99,11 @@ export default function SearchAppBar() {
             </Search>
           </Box>
           <Box sx={{display: "flex"}}>
-            <Box className="logo-label"><img className='nav-logos' src={homesvg} alt=''/><Typography className='logo-text'>Home</Typography></Box>
-            <Box className="logo-label"><img className='nav-logos' src={networksvg} alt=''/><Typography className='logo-text'>My Network</Typography></Box>
-            <Box className="logo-label"><img className='nav-logos' src={jobssvg} alt=''/><Typography className='logo-text'>Jobs</Typography></Box>
-            <Box className="logo-label"><img className='nav-logos' src={messagingsvg} alt=''/><Typography className='logo-text'>Messaging</Typography></Box>
-            <Box className="logo-label"><img className='nav-logos' src={notificationsvg} alt=''/><Typography className='logo-text'>Notification</Typography></Box>
+            <Box className="logo-label"><Link to={'/Home'}><img className='nav-logos' src={homesvg} alt=''/><Typography className='logo-text'>Home</Typography></Link></Box>
+            <Box className="logo-label"><Link to={'/Network'}><img className='nav-logos' src={networksvg} alt=''/><Typography className='logo-text'>My Network</Typography></Link></Box>
+            <Box className="logo-label"><Link to={'/Home'}><img className='nav-logos' src={jobssvg} alt=''/><Typography className='logo-text'>Jobs</Typography></Link></Box>
+            <Box className="logo-label"><Link to={'/Home'}><img className='nav-logos' src={messagingsvg} alt=''/><Typography className='logo-text'>Messaging</Typography></Link></Box>
+            <Box className="logo-label"><Link to={'/Home'}><img className='nav-logos' src={notificationsvg} alt=''/><Typography className='logo-text'>Notification</Typography></Link></Box>
             <Box className="logo-label"><Avatar/></Box>
           </Box>
         </Toolbar>

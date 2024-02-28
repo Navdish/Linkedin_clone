@@ -3,15 +3,38 @@ import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
+import { Typography } from '@mui/material';
+import validator from 'validator';
+import { useState } from 'react';
 
-export default function PasswordAdornments({password, setPassword}) {
-  const [showPassword, setShowPassword] = React.useState(false);
-
+export default function PasswordAdornments({password, setPassword, checkPass, setCheckPass}) {
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+  const validate = (value) => {
+    if (
+        validator.isStrongPassword(value, {
+            minLength: 6,
+            minLowercase: 1,
+            minUppercase: 1,
+            minNumbers: 1,
+            minSymbols: 1,
+        })
+    ) {
+        console.log("weak");
+        setErrorMessage("");
+        setCheckPass(true)
+    } else {
+        setErrorMessage("Is Not a valid Password");
+        setCheckPass(false)
+    }
+  };
+
 
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', width: '100%'}}>
@@ -28,7 +51,7 @@ export default function PasswordAdornments({password, setPassword}) {
                 }}
                 value={password}
 
-                onChange={(e)=> {setPassword(e.target.value); console.log(password);}}
+                onChange={(e)=> {setPassword(e.target.value); validate(e.target.value)}}
                 endAdornment={
                 <InputAdornment position="end">
                     <Box
@@ -42,6 +65,18 @@ export default function PasswordAdornments({password, setPassword}) {
                 </InputAdornment>
                 }
             />
+            <Typography paragraph='true'>
+              {checkPass === "" ? null : (
+                <span
+                  style={{
+                    fontWeight: "normal",
+                    color: "red",
+                  }}
+                >
+                  {errorMessage}
+                </span>
+              )}
+            </Typography>
     </Box>
   );
 }

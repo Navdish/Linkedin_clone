@@ -1,5 +1,6 @@
 .outside{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     background-color: #F3F2F0;
     min-height: 100vh;

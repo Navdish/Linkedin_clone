@@ -5,12 +5,12 @@ import { Box } from "@mui/material";
 
 const Footer = () => {
   return (
-    <Box className="footBox" sx={{verticalAlign:"Baseline"}}>
+    <Box className="footBox" sx={{ display:"flex", flexDirection:"row", alignItems:"center", backgroundColor:"white"}}>
 
        <ul className="footer-content" type="none">
         <li>
           <span className="footer-year">
-          <img src={Logo} alt='icon' width={'56px'}></img>
+          <img src={Logo} alt='icon'  ></img>
            © 2024 </span>
         </li>
         

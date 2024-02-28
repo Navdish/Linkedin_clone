@@ -2,7 +2,7 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { typeUpdateRequest, typefetchRequest, typefetchUser } from "./connection.type";
+import { typeUpdateRequest, typefetchRequest, typefetchSuggestion, typefetchUser, typepostRequest } from "./connection.type";
 
 export const fetchRequests = createAsyncThunk(
     typefetchRequest,
@@ -20,6 +20,15 @@ export const fetchUser = createAsyncThunk(
         const response = await axios.get('http://localhost:8080/connection/user');
         const data = response.data;
         return data;
+    }
+)
+
+export const postRequest = createAsyncThunk(
+    typepostRequest,
+    async(data)=> {
+        const response = await axios.post('http://localhost:8080/connection', data);
+        const resData = response.data;
+        return resData;
     }
 )
 

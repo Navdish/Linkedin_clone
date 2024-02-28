@@ -6,21 +6,33 @@ import { useDispatch } from 'react-redux';
 
 const InvitationCard = ({request}) => {
     const dispatch = useDispatch();
-    const handleIgnore = async() => {
+    const handleIgnore = async(e) => {
+        e.target.disabled("true")
         const data = {
             connectionId : request._id,
             status : 'REJECTED'
         }
         console.log(data);
-        await dispatch(UpdateRequest(data));
+        try {
+            await dispatch(UpdateRequest(data));
+        } catch (error) {
+            e.target.disabled("false");
+        }
+        
     }
-    const handleAccept = async() => {
+    const handleAccept = async(e) => {
+        e.target.disabled("true")
         const data = {
             connectionId : request._id,
             status : 'ACCEPTED'
         }
         console.log(data);
-        await dispatch(UpdateRequest(data));
+        try {
+            await dispatch(UpdateRequest(data));
+        } catch (error) {
+            e.target.disabled("false")
+        }
+        
     }
     return (       
         <Box sx={{display:"flex", justifyContent:"space-between",alignItems:'center', padding:"8px", outline:"1px solid #e8e8e8"}}>

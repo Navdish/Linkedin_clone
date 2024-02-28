@@ -7,7 +7,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getPosts } from '../../features/Post/Post.action';
 import RecipeReviewCard from '../../components/Card/Card';
 import axios from 'axios'
-import SearchAppBar from '../../components/Navbar/Navbar';
 
 function Home() {
 
@@ -32,7 +31,6 @@ function Home() {
     
     return (
         <Box sx={{width: "100%"}}>
-            <SearchAppBar />
             <Box sx={{backgroundColor: "#F4F2EE", minHeight: "100vh", display: "flex",
                        flexDirection:"column",
                        alignItems:"center",

@@ -7,7 +7,7 @@ exports.fetchUsers = async ({userId})=>{
    
 
     const result = pending.map(connect => connect.senderId == userId ? connect.recieverId : connect.senderId)
-    const responses = await User.find({ _id : { $nin: result } });
+    const responses = await User.find({ _id : { $nin: [...result, userId] } });
     if(!responses) throw new CustomError("Comments not found", 500);    
     return responses;
 }
@@ -28,6 +28,7 @@ exports.fetchConnections = async ({userId}) => {
 exports.postConnection = async ({userId, payload}) => {
     // Ignoring certain cases, Connection doesn't exist previously and user is not sending the status in payload, and sender and reciever are not same
     const {recieverId, status} = payload;
+    console.log(recieverId, userId);
     if(status) throw new CustomError("Bad request", 400);
     const user = await User.find({_id : recieverId});
     if(!user) throw new CustomError("Recieving User doesn't exist anymore", 404);
@@ -36,6 +37,7 @@ exports.postConnection = async ({userId, payload}) => {
     if(!connection){
         const response = await Connection.create({senderId: userId, recieverId});
         if(!response) throw new CustomError("Connection not created", 500);
+        console.log(response);
         return response;
     } 
     if(connection.status !== 'WITHDRAW') throw new CustomError("Connection/request already exists ", 409);

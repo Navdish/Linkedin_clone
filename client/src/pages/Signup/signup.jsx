@@ -4,7 +4,7 @@ import Box from '@mui/system/Box';
 import logo from"../../assets/svg/Logo.png"
 import google_icon from '../../assets/svg/google-color-icon.svg'
 import InputLabel from '@mui/material/InputLabel';
-import { Link } from '@mui/material';
+import { Link, Typography } from '@mui/material';
 import PasswordAdornments from '../../components/PasswordInput/PasswordInput'
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Button from '@mui/material/Button';
@@ -16,7 +16,6 @@ import { createUser } from '../../features/Auth/Auth.action';
 import { useEffect } from 'react';
 import Footer from '../../components/Footer/Footer';
 
-
 function Signup(){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState(""); 
@@ -25,29 +24,44 @@ function Signup(){
     const navigate = useNavigate();
     const isLoading = useSelector((state)=> state.isLoading);
     const error = useSelector((state)=> state.error);
-        
+
+    const [emailErrorMsg, setEmailErrorMsg] = useState("");
+    const [check, setCheck] = useState(false);
+    const [checkPass, setCheckPass] = useState(false);
+
+
+    const handleEmail = (e) => {
+        setEmail(e.target.value)
+        let emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
+        if (!emailRegex.test(e.target.value)) {
+            setEmailErrorMsg("Please enter a valid email address.");
+            setCheck(false)
+        } else {
+            setEmailErrorMsg("");
+            setCheck(true)
+        };
+    };
     
-    async function handleSubmit(e) {
-        dispatch(createUser({email, password})).then((response)=> {
-            console.log(response)
-            if(!response.payload) console.log(response.error.message,'uhi')
-        });
-        if(isLoading) return "Loading....";
-    }
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+        console.log(check, checkPass);
+        if(!check || !checkPass){
+            alert('Enter Valid Credentials')
+        }
+        else{
+            console.log(check , checkPass);
+            await dispatch(createUser({email, password})).then((response)=> {
+                console.log(response)
+                if(response.payload) navigate("/Login");
+            });
+            if(isLoading) return "Loading....";
+        }
+    };   
     
-    useEffect(()=> {
-        console.log("useeffect");
-        (error)? alert(error.message) : console.log("sds");
-    }, [])
+    
+    
     return (
         <Box className='outside'>
-            {/* <h1>Signup Form</h1>
-            <form className='signup-form'>
-                <input type="text" placeholder='name' value={name} onChange={(e)=> setName(e.target.value)}/>
-                <input type="email" placeholder="email" value={email} onChange={(e)=> setEmail(e.target.value)}/>
-                <input type="password" placeholder="password" value={password} onChange={(e)=> setPassword(e.target.value)}/>
-                <button type="submit" onClick={(e)=> handleSubmit(e)}>Submit</button>
-            </form> */}
             
             <Box className='outside2'>
                 <Box className='logo-Box'><img src={logo} alt='' className='logo-img'/></Box>
@@ -63,11 +77,12 @@ function Signup(){
                                     border: "none",
                                 },
                             }}
-                            value={email} onChange={(e)=> setEmail(e.target.value)}
+                            value={email} onChange={(e)=> handleEmail(e)}
                         />
                     </Box>
+                    <Typography style={{ color: "red" }}>{emailErrorMsg}</Typography>
                     <Box sx={{width: "100%"}}>
-                        <PasswordAdornments password = {password} setPassword = {setPassword}/>
+                        <PasswordAdornments password = {password} setPassword = {setPassword} checkPass={checkPass} setCheckPass={setCheckPass}/>
                     </Box>
                     <Box sx={{fontSize:"12px", fontWeight:"400", fontStyle:"normal", color:"rgba(0,0,0,0.6)", lineHeight:"16px", marginTop:"16px", marginBottom:"16px", textAlign:"center"}}>
                         By clicking Agree & Join, you agree to the LinkedIn <Link fontWeight={600} underline='none' color="#8344CC">User Agreement</Link>, <Link fontWeight={600} underline='none' color="#8344CC">Privacy policy</Link>, and <Link fontWeight={600} underline='none' color="#8344CC">Cookie Policy</Link>
@@ -78,9 +93,9 @@ function Signup(){
                     <Box sx={{marginTop:"16px", marginBottom:"24px"}}>Already on Linkedin <Link fontWeight={600} underline='none' color="#8344CC" href="/Login">Sign in</Link></Box>
                 </Box>
                 <Box className="after-signup">Looking to create a page for a business? <Link fontWeight={600} underline='none' color="#8344CC">Get Help</Link></Box>
-                <Footer/>
-            </Box>
                 
+            </Box>
+            <Footer/>
             </Box>
     );
 }

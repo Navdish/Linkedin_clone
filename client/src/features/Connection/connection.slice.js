@@ -1,5 +1,5 @@
 import { createSlice, current} from "@reduxjs/toolkit"
-import { UpdateRequest, fetchRequests, fetchUser } from "./connection.action"
+import { UpdateRequest, fetchRequests, fetchUser, postRequest } from "./connection.action"
 
 const initialState = {
     isLoadingRequests : false,
@@ -50,6 +50,13 @@ export const connectionSlice = createSlice({
         builder.addCase(UpdateRequest.rejected, (state, action)=> {
             state.adderror = action.error;
             // show snackbar or alert that the request (button click event) was not sent
+        })
+        builder.addCase(postRequest.fulfilled, (state, action)=> {
+            console.log(action.payload);
+            state.suggestions = state.suggestions.filter(user => user._id !== action.payload.recieverId);
+        })
+        builder.addCase(postRequest.rejected, (state, action)=> {
+            state.suggestionError = action.error;
         })
     }
 })
