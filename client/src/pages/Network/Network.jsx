@@ -1,10 +1,8 @@
-import { Button, Box, Divider, Stack, Typography } from '@mui/material'
-import React, { useEffect } from 'react'
-import SearchAppBar from '../../components/Navbar/Navbar';
+import { Box,  Stack} from '@mui/material'
+import React from 'react'
 import './Network.css';
 import Invitations from '../../components/Invitations/Invitations'
 import axios from 'axios';
-import UserCard from '../../components/UserCard/UserCard';
 import Suggestions from '../../components/Suggestions/Suggestions';
 
 

@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 const InvitationCard = ({request}) => {
     const dispatch = useDispatch();
     const handleIgnore = async(e) => {
-        e.target.disabled("true")
+        // e.target.disabled("true")
         const data = {
             connectionId : request._id,
             status : 'REJECTED'
@@ -16,12 +16,12 @@ const InvitationCard = ({request}) => {
         try {
             await dispatch(UpdateRequest(data));
         } catch (error) {
-            e.target.disabled("false");
+            // e.target.disabled("false");
         }
         
     }
     const handleAccept = async(e) => {
-        e.target.disabled("true")
+        // e.target.disabled("true")
         const data = {
             connectionId : request._id,
             status : 'ACCEPTED'
@@ -30,7 +30,7 @@ const InvitationCard = ({request}) => {
         try {
             await dispatch(UpdateRequest(data));
         } catch (error) {
-            e.target.disabled("false")
+            // e.target.disabled("false")
         }
         
     }

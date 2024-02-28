@@ -65,7 +65,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function SearchAppBar() {
   const location = useLocation()
-  const navigate = useNavigate();
   if(location.pathname === "/SignUp" || location.pathname === "/Login") {
     return null
   }
@@ -99,11 +98,11 @@ export default function SearchAppBar() {
             </Search>
           </Box>
           <Box sx={{display: "flex"}}>
-            <Box className="logo-label"><Link to={'/Home'}><img className='nav-logos' src={homesvg} alt=''/><Typography className='logo-text'>Home</Typography></Link></Box>
-            <Box className="logo-label"><Link to={'/Network'}><img className='nav-logos' src={networksvg} alt=''/><Typography className='logo-text'>My Network</Typography></Link></Box>
-            <Box className="logo-label"><Link to={'/Home'}><img className='nav-logos' src={jobssvg} alt=''/><Typography className='logo-text'>Jobs</Typography></Link></Box>
-            <Box className="logo-label"><Link to={'/Home'}><img className='nav-logos' src={messagingsvg} alt=''/><Typography className='logo-text'>Messaging</Typography></Link></Box>
-            <Box className="logo-label"><Link to={'/Home'}><img className='nav-logos' src={notificationsvg} alt=''/><Typography className='logo-text'>Notification</Typography></Link></Box>
+            <Link to={'/Home'} style={{ textDecoration: 'none' }}><Box className="logo-label"><img className='nav-logos' src={homesvg} alt=''/><Typography className='logo-text'>Home</Typography></Box></Link>
+            <Link to={'/Network'} style={{ textDecoration: 'none' }}><Box className="logo-label"><img className='nav-logos' src={networksvg} alt=''/><Typography className='logo-text'>My Network</Typography></Box></Link>
+            <Link to={'/Home'} style={{ textDecoration: 'none' }}><Box className="logo-label"><img className='nav-logos' src={jobssvg} alt=''/><Typography className='logo-text'>Jobs</Typography></Box></Link>
+            <Link to={'/Messaging'} style={{ textDecoration: 'none' }}><Box className="logo-label"><img className='nav-logos' src={messagingsvg} alt=''/><Typography className='logo-text'>Messaging</Typography></Box></Link>
+            <Link to={'/Home'} style={{ textDecoration: 'none' }}><Box className="logo-label"><img className='nav-logos' src={notificationsvg} alt=''/><Typography className='logo-text'>Notification</Typography></Box></Link>
             <Box className="logo-label"><Avatar/></Box>
           </Box>
         </Toolbar>

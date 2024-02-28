@@ -8,7 +8,7 @@ exports.fetchUsers = async ({userId})=>{
 
     const result = pending.map(connect => connect.senderId == userId ? connect.recieverId : connect.senderId)
     const responses = await User.find({ _id : { $nin: [...result, userId] } });
-    if(!responses) throw new CustomError("Comments not found", 500);    
+    if(!responses) throw new CustomError("Suggestions not found", 500);    
     return responses;
 }
 

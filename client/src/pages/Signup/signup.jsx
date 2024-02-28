@@ -13,7 +13,6 @@ import { useState } from 'react';
 import {useSelector, useDispatch} from 'react-redux' 
 import {useNavigate} from 'react-router-dom';
 import { createUser } from '../../features/Auth/Auth.action';
-import { useEffect } from 'react';
 import Footer from '../../components/Footer/Footer';
 
 function Signup(){
@@ -61,7 +60,7 @@ function Signup(){
     
     
     return (
-        <Box className='outside'>
+        <Box className='outside' >
             
             <Box className='outside2'>
                 <Box className='logo-Box'><img src={logo} alt='' className='logo-img'/></Box>
