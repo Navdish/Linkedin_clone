@@ -19,9 +19,6 @@ const Profile = () => {
 
   return (
     <Box className='profile-page'>
-      <Box className='home-nav'>
-        <SearchAppBar />
-      </Box>
 
       <Stack 
       justifyContent={'center'} 

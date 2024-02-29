@@ -13,7 +13,6 @@ export default function CommentCard({post}) {
     const dispatch = useDispatch();
     useEffect(()=> {
         try {
-            console.log("Commentcard entry")
             if(date === undefined) {
                 setDate(new Date());
             }

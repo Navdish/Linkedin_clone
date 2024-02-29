@@ -15,6 +15,7 @@ exports.addPost = async({userId, files, data})=>{
 
 exports.fetchPost = async()=> {
     const response = await Post.find().populate("userId", ["name", "description"]);
+    // using aggregation to fetch no. of likes and comments on a post
     if(!response) throw new CustomError("Post not created", 500);
     return response;
 }

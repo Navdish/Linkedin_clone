@@ -17,3 +17,11 @@
 .nav-logos {
     width:24px;
 }
+
+.nav-logos:hover {
+    fill:black;
+}
+
+.nav-logos:active {
+    fill:black
+}

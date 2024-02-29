@@ -6,12 +6,10 @@ export const getComments = createAsyncThunk(
     fetchComments,
     async(data)=> {
         try {     
-            console.log("action get comments", data);
             const response = await axios.get(`http://localhost:8080/comments`, {params : {
                 data: data
             }})
             const resData = await response.data
-            console.log("comments data ", resData);
             return resData;
         } catch (error) {
             throw error;

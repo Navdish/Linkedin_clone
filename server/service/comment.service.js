@@ -5,9 +5,8 @@ exports.fetchComments = async ({query})=>{
     console.log("query", query)
     const {postId, date} = query.data;
     if(!(postId && date)) throw new CustomError("details not found", 404);
-    // userId is needed for more info to the frontend, but is a risk for User data   , Date: { $gte: (new Date(date)) }
-    const responses = await Comment.find({postId}).sort({Date :-1}).limit(5);
-    console.log("responses ",responses);
+    // Date: { $gte: (new Date(date)) }
+    const responses = await Comment.find({postId}).sort({Date :1}).limit(3).populate("userId", ["name", "description"]);
     if(!responses) throw new CustomError("Comments not found", 500);    
     return responses;
 }
@@ -29,7 +28,7 @@ exports.postComments = async ({userId, data}) => {
     if(!(body && postId)) throw new CustomError("User credentials not found", 404);
     const response = await Comment.create({userId , postId, body});
     if(!response) throw new CustomError("comment not created", 500);
-    return response;    
+    return response.populate("userId", ["name", "description"]);    
 }
 
 exports.deleteComments = async ({params, userId}) =>{

@@ -35,7 +35,7 @@ export const reactionSlice = createSlice({
         })
         builder.addCase(getReactions.rejected, (state, action)=> {
             state.isLoading = false;
-            state.reactions = action.error;
+            state.error = action.error;
         })
         builder.addCase(addReactions.pending, (state, action)=> {
             state.isLoading = true;

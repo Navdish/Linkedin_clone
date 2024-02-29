@@ -6,6 +6,7 @@ import Profile from '../pages/Profile/Profile';
 import Network from '../pages/Network/Network';
 import SearchAppBar from '../components/Navbar/Navbar';
 import Messaging from '../pages/Messaging/Messaging';
+import Invitation from '../pages/Invitation/Invitation';
 
 function AllRoutes() {
   return(
@@ -20,6 +21,7 @@ function AllRoutes() {
           <Route path='/Profile' element={<Profile />}></Route>
           <Route path='/Network' element={<Network />}></Route>
           <Route path='/Messaging' element={<Messaging />}></Route>
+          <Route path='/Invitation' element={<Invitation />}></Route>
         </Routes>
       </BrowserRouter>
     </>

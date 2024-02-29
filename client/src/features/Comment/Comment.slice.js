@@ -1,4 +1,4 @@
-import { createSlice} from "@reduxjs/toolkit"
+import { createSlice, current} from "@reduxjs/toolkit"
 import { addComments, getComments } from "./Comment.action"
 
 const initialState = {
@@ -29,9 +29,13 @@ export const commentSlice = createSlice({
         })
         builder.addCase(addComments.fulfilled, (state, action)=> {
             state.isLoading = false;
-            console.log(action.payload.postId);
-            if(Object.keys(state.comments).length === 0) state.comments[action.payload.postId] = [action.payload]
-            else state.comments[action.payload.postId] = [...state.comments[action.payload.postId], action.payload]
+            console.log("reducer comment ", action.payload.postId, Object.entries(state.comments));
+            if(Object.entries(state.comments).length === 0) state.comments[action.payload.postId] = [action.payload]
+            else {
+                const comments = current(state.comments[action.payload.postId])
+                console.log("comments reducer ",comments)
+                state.comments[action.payload.postId] = [...comments, action.payload]
+            }
         })
         builder.addCase(addComments.rejected, (state, action)=> {
             state.isLoading = false;

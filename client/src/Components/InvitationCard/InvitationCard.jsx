@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 const InvitationCard = ({request}) => {
     const dispatch = useDispatch();
     const handleIgnore = async(e) => {
-        // e.target.disabled("true")
+        e.target.disabled = true;
         const data = {
             connectionId : request._id,
             status : 'REJECTED'
@@ -16,12 +16,12 @@ const InvitationCard = ({request}) => {
         try {
             await dispatch(UpdateRequest(data));
         } catch (error) {
-            // e.target.disabled("false");
+            e.target.disabled = false;
         }
         
     }
     const handleAccept = async(e) => {
-        // e.target.disabled("true")
+        e.target.disabled = true;
         const data = {
             connectionId : request._id,
             status : 'ACCEPTED'
@@ -30,7 +30,7 @@ const InvitationCard = ({request}) => {
         try {
             await dispatch(UpdateRequest(data));
         } catch (error) {
-            // e.target.disabled("false")
+            e.target.disabled = false;
         }
         
     }
@@ -48,8 +48,8 @@ const InvitationCard = ({request}) => {
                 </Box>
             </Box>
             <Box>
-                <Button variant="text"  sx={{borderRadius:"25px", color:"black", textTransform:"unset"}} onClick={(e)=> handleIgnore(e)} >Ignore</Button>
-                <Button variant="outlined" sx={{borderRadius:"25px" , textTransform:"unset"}} onClick={(e)=> handleAccept(e)}>Accept</Button>
+                <Button variant="text"  sx={{borderRadius:"25px", color:"black", textTransform:"unset"}} onClick={(e)=> handleIgnore(e)} disabled={false}>Ignore</Button>
+                <Button variant="outlined" sx={{borderRadius:"25px" , textTransform:"unset"}} onClick={(e)=> handleAccept(e)} disabled={false}>Accept</Button>
             </Box>
         </Box>
     )

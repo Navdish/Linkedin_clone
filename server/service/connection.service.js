@@ -13,8 +13,6 @@ exports.fetchUsers = async ({userId})=>{
 }
 
 exports.fetchRequests = async ({userId}) => {
-
-    console.log( userId);
     const response = await Connection.find({recieverId: userId, status: 'PENDING'}).populate("senderId", ["name", "description"]);
     if(!response) throw new CustomError("No requests found", 404);
     return response;
@@ -66,8 +64,6 @@ exports.updateConnection = async({userId, query}) => {
     return response;
 }   
 
-// to fetch the status of the request upon searching the user...
-// if status is PENDING or REJECTED show the user 'PENDING'
 
 
 // to withdraw the request... , upon withdrawal request not transmitted till 3 weeks

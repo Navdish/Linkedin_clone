@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 
-import { FacebookCounter, ReactionBarSelector } from '@charkour/react-reactions';
+import {  ReactionBarSelector } from '@charkour/react-reactions';
 import InsertCommentOutlinedIcon from '@mui/icons-material/InsertCommentOutlined';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined';
@@ -17,11 +17,12 @@ import SendIcon from '@mui/icons-material/Send';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import { Box, Divider } from '@mui/material';
 import { useState } from 'react';
-import CommentCard from '../commentCard/commentCard.jsx';
+import CommentCard from '../CommentCard/CommentCard.jsx';
 import './Card.css';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addReactions, getReactions, getUserReactions } from '../../features/Reaction/Reaction.action';
+import CommentsDialog from '../commentsDialog/CommentsDialog.jsx';
 
 
 
@@ -46,7 +47,6 @@ export default function RecipeReviewCard({post}) {
   const [reactionContent, setReactionContent] = useState("Like")
   useEffect(()=> {
     try {
-      console.log("Inside use effect ");
       dispatch(getUserReactions(post._id)).then((response)=> {
         if(response.payload) {
           setReactionContent(response.payload? response.payload.type : "Like");
@@ -61,7 +61,7 @@ export default function RecipeReviewCard({post}) {
   
   // const userReaction = useSelector((state)=> state.reaction.userReaction[post._id]);
 
-  const reactions = useSelector((state)=> state.reaction.reactions);
+  
   // if(userReaction) {
   //   setReactionContent(userReaction);
   //   setEmoji(emojis[userReaction]);
@@ -86,9 +86,7 @@ export default function RecipeReviewCard({post}) {
     <Card sx={{ maxWidth: "100%" , marginTop:"10px", marginBottom:"10px", boxShadow:"none", border:"1px solid #e8e8e8"}}>
       <CardHeader
         avatar={
-          <Avatar >
-            
-          </Avatar>
+          <Avatar />
         }
         action={
           <IconButton aria-label="settings">
@@ -108,13 +106,12 @@ export default function RecipeReviewCard({post}) {
         image={`http://localhost:8080/${post.photos[0]}`}
         alt="post image"
       />}
-      <Divider />
-      <CardContent sx={{p:"0px", pt:"5px"}}>
-        <Box sx={{height:"34px", display:"flex", justifyContent:"space-between", pl:"25px", pr:"25px", alognItems:"center"}} onClick={(e)=>fetchReactions(e)}>
-          <Box>{reactionCount} Likes</Box> <Box>{commentCount} comments</Box>
+      <CardContent sx={{p:"0px"}}>
+        <Box sx={{height:"34px", display:"flex", justifyContent:"space-between", pl:"25px", pr:"25px", alignItems:"center"}} >
+          <Box onClick={(e)=>fetchReactions(e)} sx={{cursor:"pointer"}}><CommentsDialog postId={post._id} reactionCount={reactionCount}/></Box> <Box>{commentCount} comments</Box>
         </Box>
       </CardContent>
-      <Divider/>
+      <Divider sx={{ml:"15px", mr:"15px"}}/>
       <CardActions sx={{display:"flex", paddingLeft:"16px", paddingTop:"4px", paddingRight:"16px", paddingBottom:"4px", justifyContent:"space-between", position:"relative"}}>
         <Box className="action-box like-icon" >
           <Box sx={{display:"flex"}} onClick={(e)=> handleClick(e)}>
@@ -135,7 +132,6 @@ export default function RecipeReviewCard({post}) {
                                                                           setReactionContent("Like");
                                                                         }
                                                                         else{
-                                                                          console.log("key",key)
                                                                           setEmoji(emojis[key]);
                                                                           setReactionContent(key);
                                                                         }
@@ -160,10 +156,6 @@ export default function RecipeReviewCard({post}) {
         <Box className="action-box"><RepeatOutlinedIcon sx={{height:"24px", width:"24px", marginRight:"4px" , color:"#5E5E5E"}}/><Typography  sx={{color:"#5E5E5E" , fontSize:"14px", fontWeight:"600", lineHeight:"28px", fontStyle:"normal"}}>Repost</Typography></Box>
         <Box className="action-box"><SendIcon sx={{height:"24px", width:"24px", marginRight:"4px" , color:"#5E5E5E"}}/><Typography  sx={{color:"#5E5E5E" , fontSize:"14px", fontWeight:"600", lineHeight:"28px", fontStyle:"normal"}}>Send</Typography></Box>
       </CardActions>
-
-
-
-
 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CommentCard post={post}/>

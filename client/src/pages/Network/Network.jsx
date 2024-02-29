@@ -4,6 +4,7 @@ import './Network.css';
 import Invitations from '../../components/Invitations/Invitations'
 import axios from 'axios';
 import Suggestions from '../../components/Suggestions/Suggestions';
+import NetworkPageList from '../../components/NetworkSidebar/NetworkSidebar';
 
 
 const Network = () => {
@@ -11,8 +12,8 @@ const Network = () => {
 
   return (
     
-    <Box className='network-page'>
-
+    <Box sx={{display:"flex", justifyContent:"center", gap:"22px"}} className='network-page'>
+      <Box sx={{backgroundColor:"white", width:"300px", height:"400px"}}><NetworkPageList/></Box>
       <Stack 
       alignItems={'center'}
       flexDirection={'column'}
