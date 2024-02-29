@@ -7,6 +7,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getPosts } from '../../features/Post/Post.action';
 import RecipeReviewCard from '../../components/Card/Card';
 import axios from 'axios'
+import InsertPhotoOutlinedIcon from '@mui/icons-material/InsertPhotoOutlined';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import ArticleIcon from '@mui/icons-material/Article';
 
 function Home() {
 
@@ -38,10 +41,24 @@ function Home() {
                        boxSizing:"border-box",
                        }}>
                 <Box sx={{width:"555px"}}>
-                    <Box sx={{width:"100%", height:"116px", backgroundColor:"white", borderRadius:"0.4rem"}}>
+                    <Box sx={{width:"100%", height:"116px", backgroundColor:"white", borderRadius:"0.4rem", border:"1px solid #e8e8e8"}}>
                         <Box sx={{height:"56px", display:"flex", marginLeft:"16px", marginRight:"16px", paddingTop:"8px"}}>
                             <Box ><Avatar sx={{width:"48px", height:"48px", marginRight:"5px"}}/></Box>
                             <ResponsiveDialog sx={{marginTop:"4px" ,marginBottom:"4px", border:"1px solid black"}}/>
+                        </Box>
+                        <Box sx={{height:"48px", display:"flex", justifyContent:"space-around", ml:"16px", mr:"16px"}}>
+                            <Box sx={{display:"flex", alignItems:"center"}}>
+                                <InsertPhotoOutlinedIcon sx={{mr:"8px", fill:"blue"}}/>
+                                <span>Media</span>
+                            </Box>
+                            <Box sx={{display:"flex", alignItems:"center"}}>
+                                <CalendarMonthIcon sx={{mr:"8px",  fill:"orange"}}/>
+                                <span>Event</span>
+                            </Box>
+                            <Box sx={{display:"flex", alignItems:"center"}}>
+                                <ArticleIcon sx={{mr:"8px" , fill:"orange"}}/>
+                                <span>Write a article</span>
+                            </Box>
                         </Box>
                     </Box>
                     <Box>

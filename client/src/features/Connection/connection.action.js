@@ -8,7 +8,6 @@ import { UpdateRequests, fetchRequest, fetchUsers, postRequests } from "../../se
 export const fetchRequests = createAsyncThunk(
     typefetchRequest,
     async()=> {
-
         const response = await fetchRequest();
         const data = response.data;
         return data;

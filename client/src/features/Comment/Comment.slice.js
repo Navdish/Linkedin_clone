@@ -17,7 +17,7 @@ export const commentSlice = createSlice({
         })
         builder.addCase(getComments.fulfilled, (state, action)=> {
             state.isLoading = false;
-            state.comments[action.payload[0].postId] = action.payload;
+            state.comments[action.payload[0]?.postId] = action.payload;
         })
         builder.addCase(getComments.rejected, (state, action)=> {
             state.isLoading = false;
@@ -29,7 +29,9 @@ export const commentSlice = createSlice({
         })
         builder.addCase(addComments.fulfilled, (state, action)=> {
             state.isLoading = false;
-            state.comments[action.payload.postId] = [...state.comments[action.payload.postId], action.payload]
+            console.log(action.payload.postId);
+            if(Object.keys(state.comments).length === 0) state.comments[action.payload.postId] = [action.payload]
+            else state.comments[action.payload.postId] = [...state.comments[action.payload.postId], action.payload]
         })
         builder.addCase(addComments.rejected, (state, action)=> {
             state.isLoading = false;

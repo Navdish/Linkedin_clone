@@ -17,7 +17,7 @@ import SendIcon from '@mui/icons-material/Send';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import { Box, Divider } from '@mui/material';
 import { useState } from 'react';
-import CommentCard from '../CommentCard/CommentCard.jsx';
+import CommentCard from '../commentCard/commentCard.jsx';
 import './Card.css';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -40,6 +40,9 @@ export default function RecipeReviewCard({post}) {
   const [expanded, setExpanded] = useState(false);
   const dispatch = useDispatch();
   const [emoji, setEmoji] = useState( defaultIcon); 
+  const [reactionCount, setReactionCount] = useState("1");
+  const [commentCount, setCommentCount] = useState('1');
+  const [status, setStatus] = useState(false);
   const [reactionContent, setReactionContent] = useState("Like")
   useEffect(()=> {
     try {
@@ -71,8 +74,16 @@ export default function RecipeReviewCard({post}) {
   const fetchReactions = async(e) => {
     dispatch(getReactions(post._id))
   }
+
+  const handleClick = () => {
+      setReactionContent("Like");
+      status ? setEmoji(defaultIcon) : setEmoji(emojis["Like"]);
+      setStatus(!status); 
+      
+  }
+
   return (
-    <Card sx={{ maxWidth: "100%" , marginTop:"10px", marginBottom:"10px", boxShadow:"none"}}>
+    <Card sx={{ maxWidth: "100%" , marginTop:"10px", marginBottom:"10px", boxShadow:"none", border:"1px solid #e8e8e8"}}>
       <CardHeader
         avatar={
           <Avatar >
@@ -98,15 +109,20 @@ export default function RecipeReviewCard({post}) {
         alt="post image"
       />}
       <Divider />
-      <CardContent>
-        <FacebookCounter onClick={(e)=> fetchReactions(e)}/>
+      <CardContent sx={{p:"0px", pt:"5px"}}>
+        <Box sx={{height:"34px", display:"flex", justifyContent:"space-between", pl:"25px", pr:"25px", alognItems:"center"}} onClick={(e)=>fetchReactions(e)}>
+          <Box>{reactionCount} Likes</Box> <Box>{commentCount} comments</Box>
+        </Box>
       </CardContent>
+      <Divider/>
       <CardActions sx={{display:"flex", paddingLeft:"16px", paddingTop:"4px", paddingRight:"16px", paddingBottom:"4px", justifyContent:"space-between", position:"relative"}}>
         <Box className="action-box like-icon" >
+          <Box sx={{display:"flex"}} onClick={(e)=> handleClick(e)}>
           {emoji}
           <Typography  sx={{color:"#5E5E5E" , fontSize:"14px", fontWeight:"600", lineHeight:"28px", fontStyle:"normal"}}>
           {reactionContent}
           </Typography>
+          </Box>
           <Box className='adjacent'><ReactionBarSelector reactions={[{label:"Like", node:<node>👍</node>, key:"Like"},
                                                                       {label:"Celebrate", node:<node>👏</node>, key:"Celebrate"},
                                                                       {label:"Support", node:<node>🫰</node>, key:"Support"},

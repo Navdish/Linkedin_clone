@@ -39,7 +39,7 @@ function Login(){
             
             <Box className='login-out2'>
                 <Box className='logo-box'><img src={logo} alt='' className="logo-img"/></Box>
-                <Stack className="signin-form">
+                <Stack className="signin-form" sx={{mb:"20px"}}>
                     <Stack
                     direction="column"
                     justifyContent="space-between"

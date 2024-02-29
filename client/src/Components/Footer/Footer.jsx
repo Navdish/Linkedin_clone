@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 
 const Footer = () => {
   return (
-    <Box className="footBox" sx={{ display:"flex", flexDirection:"row", alignItems:"center", backgroundColor:"white"}}>
+    <Box className="footBox" sx={{ display:"flex", flexDirection:"row", alignItems:"center", backgroundColor:"white", height:"40px"}}>
 
        <ul className="footer-content" type="none">
         <li>

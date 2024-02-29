@@ -13,8 +13,9 @@ exports.fetchUsers = async ({userId})=>{
 }
 
 exports.fetchRequests = async ({userId}) => {
+
+    console.log( userId);
     const response = await Connection.find({recieverId: userId, status: 'PENDING'}).populate("senderId", ["name", "description"]);
-    console.log(response, userId);
     if(!response) throw new CustomError("No requests found", 404);
     return response;
 }
@@ -41,7 +42,7 @@ exports.postConnection = async ({userId, payload}) => {
         return response;
     } 
     if(connection.status !== 'WITHDRAW') throw new CustomError("Connection/request already exists ", 409);
-    if((new Date()).getTime() - connection.updatedAt.getTime() <= 1855058823) throw new CustomError("Can't send the request before 3 weeks from withdrawing ", 409); 
+    if((new Date()).getTime() - connection.updatedAt.getTime() <= 1814400000) throw new CustomError("Can't send the request before 3 weeks from withdrawing ", 409); 
     const response = await Connection.findByIdAndUpdate(connection._id, {status: 'PENDING'}, {new: true})
     return response;
 }
