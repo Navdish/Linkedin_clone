@@ -83,7 +83,7 @@ export default function RecipeReviewCard({post}) {
   }
 
   return (
-    <Card sx={{ maxWidth: "100%" , marginTop:"10px", marginBottom:"10px", boxShadow:"none", border:"1px solid #e8e8e8"}}>
+    <Card sx={{ maxWidth: "100%" , marginTop:"10px", marginBottom:"10px", boxShadow:"none", border:"1px solid #e8e8e8", borderRadius:"0.8rem"}}>
       <CardHeader
         avatar={
           <Avatar />

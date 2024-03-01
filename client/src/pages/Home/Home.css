@@ -1,0 +1,13 @@
+.user-back{
+    width: 100%;
+    height: 56.25px;
+    border-top-left-radius: 0.8rem;
+    border-top-right-radius: 0.8rem;
+}
+
+.ad {
+    width:100%;
+    border-radius: 0.8rem;
+    margin-top:6px;
+    cursor:pointer;
+}

@@ -70,8 +70,8 @@ export default function SearchAppBar() {
   }
 
   return (
-    <Box sx={{ display:"flex",  alignItems:"center", justifyContent:"center", width:"100%", position:"sticky", top:"0", zIndex:"1", boxSizing:"border-box"}}>
-      <AppBar position="static" sx={{backgroundColor:"white" , border:"none",margin:"auto", boxShadow:"none"}}>
+    <Box sx={{ display:"flex",  alignItems:"center", justifyContent:"center", width:"100%", position:"sticky", top:"0", zIndex:"1", boxSizing:"border-box", height:"52px"}}>
+      <AppBar position="static" sx={{backgroundColor:"white" , border:"none",margin:"auto", boxShadow:"none", height:"52px"}}>
         <Toolbar sx={{justifyContent:"center", alignItems:"center", gap:'40px'}}>
           <Box sx={{display: "flex", alignItems:"center"}}>
             <IconButton
