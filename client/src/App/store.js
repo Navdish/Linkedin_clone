@@ -6,6 +6,7 @@ import storage from 'redux-persist/lib/storage'
 import commentSlice from '../features/Comment/Comment.slice'
 import  reactionSlice  from '../features/Reaction/Reaction.slice'
 import connectionSlice from '../features/Connection/connection.slice'
+import roomSlice from '../features/Room/room.slice'
 
 const persistConfig = {
     key: 'root',
@@ -20,7 +21,8 @@ export const store = configureStore({
         post : postSlice,
         comment: commentSlice,
         reaction: reactionSlice,
-        connection: connectionSlice
+        connection: connectionSlice,
+        room: roomSlice,
     }
 })
 

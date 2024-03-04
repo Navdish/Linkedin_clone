@@ -3,5 +3,6 @@ module.exports = {
     Post: require('./posts'),
     Comment: require('./comments'),
     Reaction: require('./reactions'),
-    Connection: require('./connection')
+    Connection: require('./connection'),
+    Room: require('./room')
 }

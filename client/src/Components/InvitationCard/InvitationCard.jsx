@@ -3,9 +3,12 @@ import { Avatar, Box, Button, Typography } from '@mui/material';
 import React from 'react';
 import { UpdateRequest } from '../../features/Connection/connection.action';
 import { useDispatch } from 'react-redux';
+import { createRoom } from '../../features/Room/room.action';
+import { useNavigate } from 'react-router-dom';
 
 const InvitationCard = ({request}) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const handleIgnore = async(e) => {
         e.target.disabled = true;
         const data = {
@@ -36,8 +39,13 @@ const InvitationCard = ({request}) => {
     }
 
     const handleMessage = async(e) => {
-        const response = await dispatch();
-        // send request._id in  action 
+        try {
+            dispatch(createRoom(request?.senderId));
+        } catch (error) {
+            console.log(error);
+        }
+        navigate('/Messaging')
+        // send request._id in  action
     }
     return (       
         <Box sx={{display:"flex", justifyContent:"space-between",alignItems:'center', padding:"8px", outline:"1px solid #e8e8e8"}}>

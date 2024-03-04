@@ -3,7 +3,8 @@ import { createRoom } from "./room.action"
 
 const initialState = {
     isLoading : false,
-    room : [],
+    room : {},
+    error : null
 }
 
 export const roomSlice = createSlice({
@@ -15,13 +16,15 @@ export const roomSlice = createSlice({
             state.isLoading = true;
         })
         builder.addCase(createRoom.fulfilled, (state, action)=> {
-            if(state.room.length === 0) state.room = [action.payload];
-            else {
-                state.room = [...state.room, action.payload];
-            }
+
+            state.room[action.payload._id] = action.payload.participants;
+            // if(state.room.length === 0) state.room = [action.payload];
+            // else {
+            //     state.room = [...state.room, action.payload];
+            // }
         })
         builder.addCase(createRoom.rejected, (state, action)=> {
-            
+            state.error = action.error;
         })
     }
 })
