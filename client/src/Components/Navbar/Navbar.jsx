@@ -14,10 +14,11 @@ import networksvg from '../../assets/svg/network.svg'
 import jobssvg from '../../assets/svg/jobs.svg'
 import messagingsvg from '../../assets/svg/messaging.svg'
 import notificationsvg from '../../assets/svg/notification.svg'
-import { Avatar } from '@mui/material';
+import { Avatar, Divider } from '@mui/material';
 import './Navbar.css'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import AppsIcon from '@mui/icons-material/Apps';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -72,16 +73,19 @@ export default function SearchAppBar() {
   return (
     <Box sx={{ display:"flex",  alignItems:"center", justifyContent:"center", width:"100%", position:"sticky", top:"0", zIndex:"1", boxSizing:"border-box", height:"52px"}}>
       <AppBar position="static" sx={{backgroundColor:"white" , border:"none",margin:"auto", boxShadow:"none", height:"52px"}}>
-        <Toolbar sx={{justifyContent:"center", alignItems:"center", gap:'40px'}}>
-          <Box sx={{display: "flex", alignItems:"center"}}>
+        <Toolbar sx={{justifyContent:"center", alignItems:"center", gap:'40px', minHeight:"52px",
+        '&.MuiToolbar-root':{
+          minHeight:"52px"
+        }}}>
+          <Box sx={{display: "flex", alignItems:"center", minHeight:"52px"}}>
             <IconButton
                 size="large"
                 edge="start"
                 color="inherit"
                 aria-label="open drawer"
-                sx={{ mr: 2 , margin:'0px', padding:"0px"}}
+                sx={{ mr: 2 , margin:'0px', padding:"0px", height:"41px", width:"41px"}}
             >
-              <Link to={'/Home'}>
+              <Link to={'/Home'} sx={{width:"41px", height:"41px"}}>
                 <img src={InLogo} alt=''/>
               </Link>
             </IconButton>
@@ -103,8 +107,12 @@ export default function SearchAppBar() {
             <Link to={'/Home'} style={{ textDecoration: 'none' }}><Box className="logo-label"><img className='nav-logos' src={jobssvg} alt=''/><Typography className='logo-text'>Jobs</Typography></Box></Link>
             <Link to={'/Messaging'} style={{ textDecoration: 'none' }}><Box className="logo-label"><img className='nav-logos' src={messagingsvg} alt=''/><Typography className='logo-text'>Messaging</Typography></Box></Link>
             <Link to={'/Home'} style={{ textDecoration: 'none' }}><Box className="logo-label"><img className='nav-logos' src={notificationsvg} alt=''/><Typography className='logo-text'>Notification</Typography></Box></Link>
-            <Box className="logo-label"><Avatar/></Box>
+            <Box className="logo-label"><Avatar sx={{width:"24px", height:"24px"}}/><Box sx={{display:"flex",  fontWeight:"400", fontSize:"12px", lineHeight:"18px", fontStyle:"normal"}}>Me<KeyboardArrowDownIcon sx={{width:"16px", height:"16px"}}/></Box></Box>
+            <Divider orientation='vertical' sx={{color:"black", height:"42px"}}/>
+            <Box className="logo-label" sx={{pl:"12px", pr:"12px"}} ><AppsIcon sx={{width:"24px", height:"24px"}}/><Box sx={{display:"flex"}}><Box sx={{ fontStyle:"normal", fontWeight:"400", fontSize:"12px", lineHeight:"normal"}}>For Business</Box><KeyboardArrowDownIcon sx={{width:"16px", height:"16px"}}/></Box></Box>
+            <Box sx={{textAlign:"center", textDecoration:"underline", width:"100px", fontStyle:"normal", fontWeight:"400", fontSize:"12px", lineHeight:"18px", color:"rgb(92, 59, 9)"}}>Redeem Premium for Free </Box>
           </Box>
+          
         </Toolbar>
       </AppBar>
     </Box>

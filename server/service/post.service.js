@@ -14,9 +14,15 @@ exports.addPost = async({userId, files, data})=>{
 }
 
 exports.fetchPost = async()=> {
-    const response = await Post.find().populate("userId", ["name", "description"]);
+
+    
+    // { createdAt: { $lt: (new Date(time)) } }
+    // .sort({createdAt: -1})
+    // const time = query.createdAt;
+    // if(!time) throw new CustomError("Time not given", 404)
+    const response = await Post.find().limit(4).populate("userId", ["name", "description"]);
     // using aggregation to fetch no. of likes and comments on a post
-    if(!response) throw new CustomError("Post not created", 500);
+    if(!response) throw new CustomError("Data not found", 204);
     return response;
 }
 

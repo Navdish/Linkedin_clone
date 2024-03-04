@@ -34,7 +34,7 @@ function Home() {
     },[])
     const user = useSelector((state)=> state.user);
     const posts = useSelector((state)=> state.post.posts);
-    
+    const name = useSelector((state)=> state.user.user.name)
     return (
         <Box sx={{width: "100%", display:"flex", backgroundColor: "#F4F2EE", justifyContent:"center"}}>
             
@@ -54,7 +54,7 @@ function Home() {
                                 <Avatar sx={{ position:"absolute",height:'72px', width:"72px", mb:"12px", top:"-48px", left:"0px", right:"0px", margin:"auto"}}/>
                             </Box>
                             <Box sx={{height:"24px", display:"flex", justifyContent:"center"}}>
-                                <Typography sx={{color:"#191919", fontSize:"16px", fontStyle:"normal", fontWeight:"600", lineHeight:"24px", fontColor:"rgba(0,0,0,0.9)"}}> Welcome, Navdish! </Typography>
+                                <Typography sx={{color:"#191919", fontSize:"16px", fontStyle:"normal", fontWeight:"600", lineHeight:"24px", fontColor:"rgba(0,0,0,0.9)"}}> Welcome, {name}! </Typography>
                             </Box>
                             <Box sx={{height:"15.984", mt:"4px", display:"flex", justifyContent:"center"}}>
                                 <Typography sx={{color:"#0866C6", fontSize:"12px", fontWeight:"", fontStyle:"", lineHeight:"", fontColor:""}}>Add a photo</Typography>
@@ -62,9 +62,20 @@ function Home() {
                             
                         </Box>
                         <Divider/>
-                        <Box sx={{pt:"12px", pb:"12px"}}></Box>
+                        <Box sx={{pt:"12px", pb:"12px"}}>
+                            <Box sx={{fontStyle:"normal", fontWeight:"600", fontSize:"12px", LineHeight:"16px", color:"rgba(0,0,0,0.6)" , display:"flex", justifyContent:"space-between", pl:"12px", pr:"12px", pt:"4px", pb:"4px"}}>
+                                Profile viewers
+                            </Box>
+                            <Box sx={{fontStyle:"normal", fontWeight:"600", fontSize:"12px", LineHeight:"16px", color:"rgba(0,0,0,0.6)" , display:"flex", justifyContent:"space-between", pl:"12px", pr:"12px", pt:"4px", pb:"4px"}}>
+                                <Box>Connections</Box>
+                                
+                            </Box >
+                            <Box sx={{fontStyle:"normal", fontWeight:"600", fontSize:"12px", LineHeight:"16px", color:"rgba(0,0,0,0.9)", pl:"12px", pr:"12px"}}>Connect with alumni</Box>
+                        </Box>
                         <Divider/>
-                        <Box sx={{p:"12px"}}></Box>
+                        <Box sx={{p:"12px", fontStyle:"normal", fontWeight:"600", fontSize:"12px", LineHeight:"16px", color:"rgba(0,0,0,0.6)"}}>
+                            Strengthen your profile with an AI writing assistant
+                        </Box>
                         <Divider/>
                         <Box sx={{p:"12px"}}></Box>
                     </Box>
@@ -91,7 +102,7 @@ function Home() {
                                 </Box>
                             </Box>
                         </Box>
-                        <Box>
+                        <Box sx={{width:"100%"}}>
                             {posts?.map((post)=> 
                                 <RecipeReviewCard post={post}/>
                             )}

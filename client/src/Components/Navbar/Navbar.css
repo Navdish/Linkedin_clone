@@ -4,6 +4,7 @@
     flex-direction:column;
     justify-content: center;
     align-items: center;
+    color:#666666;
 }
 
 .logo-text {
@@ -11,12 +12,14 @@
     font-weight: 400 !important;
     font-size: 12px !important;
     line-height: 18px !important;
-    color:rgba(0,0,0,0.9)
+    color:#666666;
 }
 
 .nav-logos {
     width:24px;
+    color:#666666;
 }
+
 
 .nav-logos:hover {
     fill:black;

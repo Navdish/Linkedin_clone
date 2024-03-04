@@ -32,7 +32,8 @@ exports.postConnection = async ({userId, payload}) => {
     const user = await User.find({_id : recieverId});
     if(!user) throw new CustomError("Recieving User doesn't exist anymore", 404);
     if(recieverId === userId) throw new CustomError("Bad request", 400);
-    const connection = await Connection.findOne({ $or: [ { senderId: recieverId, userId }, { recieverId: userId, recieverId }]});
+    const connection = await Connection.findOne({ $or: [ { senderId: recieverId , recieverId: userId }, { senderId: userId, recieverId: recieverId }]});
+    console.log("connection exists regularly.....")
     if(!connection){
         const response = await Connection.create({senderId: userId, recieverId});
         if(!response) throw new CustomError("Connection not created", 500);

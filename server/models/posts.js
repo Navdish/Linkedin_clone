@@ -10,7 +10,7 @@ const Post = mongoose.Schema({
     title : String,
     body : String,
     photos : [String]
-})
+}, {timestamps: true} )
 
 const Posts =  mongoose.model('PostModel', Post);
 module.exports = Posts;

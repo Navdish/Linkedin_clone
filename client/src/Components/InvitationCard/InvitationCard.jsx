@@ -34,6 +34,11 @@ const InvitationCard = ({request}) => {
         }
         
     }
+
+    const handleMessage = async(e) => {
+        const response = await dispatch();
+        // send request._id in  action 
+    }
     return (       
         <Box sx={{display:"flex", justifyContent:"space-between",alignItems:'center', padding:"8px", outline:"1px solid #e8e8e8"}}>
             <Box sx={{display:"flex"}}>
@@ -45,6 +50,7 @@ const InvitationCard = ({request}) => {
                         <LinkIcon/>
                         <Typography sx={{fontStyle:"normal", fontWeight:"400", fontSize:"12px", LineHeight:"16px", color:"rgba(0,0,0,0.6)"}}>TPC, CCET and 19 others </Typography>
                     </Box>
+                    <Button onClick={(e)=> handleMessage(e)}>Message</Button>
                 </Box>
             </Box>
             <Box>
