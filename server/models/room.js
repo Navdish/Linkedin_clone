@@ -6,9 +6,9 @@ const Room = mongoose.Schema({
     participants: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: Users
-    }]
+        }]
 
-})
+} ,{timestamps: true} )
 
 
 const Rooms = mongoose.model('RoomModel', Room);

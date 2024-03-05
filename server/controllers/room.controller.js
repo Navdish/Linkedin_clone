@@ -5,6 +5,7 @@ exports.addRoom = async(req, res)=>{
     try{
         console.log(req?.body);
         const response = await roomService.createRoom({userId : req?.user?.id, payload : req?.body});
+        console.log("response - ", response)
         return res.status(200).json(response);
     }
     catch(error){
