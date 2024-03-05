@@ -40,7 +40,9 @@ const InvitationCard = ({request}) => {
 
     const handleMessage = async(e) => {
         try {
-            dispatch(createRoom(request?.senderId));
+            dispatch(createRoom(request?.senderId)).then(response => {
+                if(response.payload) navigate('/Messaging')
+            });
         } catch (error) {
             console.log(error);
         }

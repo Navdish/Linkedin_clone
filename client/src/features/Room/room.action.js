@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { typeCreateRoom } from "./room.type";
-import { createRooms } from "../../services/room.service";
+import { typeCreateRoom, typefetchRoom } from "./room.type";
+import { createRooms, fetchRooms } from "../../services/room.service";
 
 
 export const createRoom = createAsyncThunk(
@@ -12,3 +12,11 @@ export const createRoom = createAsyncThunk(
     }
 )
 
+export const fetchRoom = createAsyncThunk(
+    typefetchRoom,
+    async()=> {
+        const response = await fetchRooms();
+        const resData = response.data;
+        return resData;
+    }
+)

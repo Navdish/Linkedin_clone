@@ -4,12 +4,14 @@ import { UpdateRequest, fetchRequests, fetchUser, postRequest } from "./connecti
 const initialState = {
     isLoadingRequests : false,
     room : [],
+    Socket : null
 }
 
 export const messageSlice = createSlice({
     name: 'message',
     initialState,
-    reducers: {},
+    reducers: {
+    },
     extraReducers: (builder)=> {
         builder.addCase()
     }

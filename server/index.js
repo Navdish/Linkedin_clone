@@ -2,11 +2,14 @@ const express = require('express');
 const cors = require('cors');
 require("dotenv").config();
 const multer = require('multer');
+const http = require('http')
 
 const app = express();
+const server = new http.createServer(app);
 app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
+require('./socker/roomManager')(server);
 
 // app.use(express.json);
 
@@ -17,7 +20,8 @@ app.use("/", require("./routes"));
 
 
 
-app.listen(process.env.PORT, function () {
+
+server.listen(process.env.PORT, function () {
     console.log(`server running at ${process.env.PORT}`);
 })
 
