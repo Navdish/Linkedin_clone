@@ -6,14 +6,17 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import GifIcon from '@mui/icons-material/Gif';
 import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
-import { io } from 'socket.io-client';
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
-const MessageVerticalTab = ({connectedUser, setConnectedUser, socket}) => {
-    const handleClick = () => {
-        socket.emit("newMessage", (content, connectedUser._id))
-    }
+const MessageVerticalTab = ({connectedUser, setConnectedUser}) => {
+    const socket = useSelector((state)=> state.room.socket)
     const [content, setContent] = useState();
+    const handleClick = () => {
+        console.log("content ")
+
+        socket.emit("newMessage", {message: content, roomId : connectedUser._id})
+    }
     return (
         <>
                   

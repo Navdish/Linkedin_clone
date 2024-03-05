@@ -12,17 +12,15 @@ import {useDispatch, useSelector} from 'react-redux'
 import axios from "axios";
 import {io} from 'socket.io-client'
 import MessageVerticalTab from "../../components/MessageVerticalTab/MessageVerticalTab";
-import  {saveSocket}  from '../../features/Room/room.slice';
-
+import {saveSocket} from '../../features/Room/room.slice'
+var socket;
 
 const Messaging = () => {
     axios.defaults.headers.common['token'] = localStorage.getItem("token");
-    var socket;
     const dispatch = useDispatch();
     const rooms = useSelector((state)=> state.room.room);
     const [connectedUser, setConnectedUser] = useState( "default");
     const user = useSelector((state)=> state.user.user);
-
     useEffect(()=> {
         console.log("useEffect");
         try {
@@ -35,7 +33,7 @@ const Messaging = () => {
     useEffect(()=> {
         socket = io.connect("http://localhost:8080");
         console.log("socket", socket);
-        dispatch(saveSocket());
+        dispatch(saveSocket(socket));
     }, [])
 
     
@@ -75,11 +73,11 @@ const Messaging = () => {
                             }}
                             />
                         </FormControl>
-                        <MessageTab  setConnectedUser = {setConnectedUser} socket = {socket}/>
+                        <MessageTab  setConnectedUser = {setConnectedUser} />
                     </Box>
                     <Box sx={{width:"100%", minHeight:"calc(100vh - 74px)", border:"1px solid #e8e8e8"}}>
                         <Box sx={{width:"100%", pl:"12px", pr:"12px", height:"41px", outline:"1px solid #e8e8e8", boxSizing:"border-box"}}>
-                            <MessageVerticalTab  connectedUser={connectedUser} setConnectedUser = {setConnectedUser} socket= {socket}/>
+                            <MessageVerticalTab  connectedUser={connectedUser} setConnectedUser = {setConnectedUser} />
                         </Box>
                     </Box>
                 </Box>

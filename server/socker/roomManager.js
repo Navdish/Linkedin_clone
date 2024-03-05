@@ -13,10 +13,11 @@ module.exports = async(server) => {
             socket.join(roomId);
             console.log("Room ....", roomId)
         })
-        socket.on("newMessage", (message, roomId)=> {
+
+        socket.on("newMessage", ({message, roomId})=> {
             // save the message in the db, then ....
             console.log(message, roomId, "-------response");
-            socket.in(roomId).broadcast.emit(message);
+            // socket.in(roomId).broadcast.emit(message);
         })
 
 

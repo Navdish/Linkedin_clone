@@ -45,5 +45,5 @@ export const roomSlice = createSlice({
         })
     }
 })
-
+export const { saveSocket } = roomSlice.actions
 export default roomSlice.reducer

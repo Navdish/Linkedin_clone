@@ -7,6 +7,8 @@ import Box from '@mui/material/Box';
 import { Avatar, Button } from '@mui/material';
 import { useSelector } from 'react-redux';
 
+
+
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -19,7 +21,7 @@ function CustomTabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box >
+        <Box>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -40,10 +42,11 @@ function a11yProps(index) {
   };
 }
 
-export default function MessageTab({ setConnectedUser, socket}) {
+export default function MessageTab({ setConnectedUser}) {
   const [value, setValue] = React.useState(0);
   const rooms = useSelector((state)=> state.room.room);
   const user = useSelector((state)=> state.user.user);
+  const socket = useSelector((state)=> state.room.socket);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
