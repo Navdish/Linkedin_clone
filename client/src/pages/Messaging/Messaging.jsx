@@ -12,8 +12,11 @@ import {useDispatch, useSelector} from 'react-redux'
 import axios from "axios";
 import {io} from 'socket.io-client'
 import MessageVerticalTab from "../../components/MessageVerticalTab/MessageVerticalTab";
-import {saveSocket} from '../../features/Room/room.slice'
-var socket;
+import {saveSocket} from '../../features/Room/room.slice';
+import { addMessage } from "../../features/Message/message.slice";
+var socket  = io.connect("http://localhost:8080");
+
+
 
 const Messaging = () => {
     axios.defaults.headers.common['token'] = localStorage.getItem("token");
@@ -25,15 +28,22 @@ const Messaging = () => {
         console.log("useEffect");
         try {
             dispatch(fetchRoom());
+            dispatch(saveSocket(socket));
         } catch (error) {
             console.log(error);
         }
     }, [])
 
     useEffect(()=> {
-        socket = io.connect("http://localhost:8080");
-        console.log("socket", socket);
-        dispatch(saveSocket(socket));
+        // socket = io.connect("http://localhost:8080");
+        // console.log("socket", socket);
+        // dispatch(saveSocket(socket));
+        socket.on('message', (data) => {
+            console.log('Received message:', data);
+            // Update UI to display the incoming message
+            addMessage(data);
+        });
+
     }, [])
 
     

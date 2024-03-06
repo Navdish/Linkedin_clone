@@ -11,11 +11,12 @@ import { useSelector } from "react-redux";
 
 const MessageVerticalTab = ({connectedUser, setConnectedUser}) => {
     const socket = useSelector((state)=> state.room.socket)
+    const user = useSelector((state)=> state.user.user)
     const [content, setContent] = useState();
     const handleClick = () => {
         console.log("content ")
 
-        socket.emit("newMessage", {message: content, roomId : connectedUser._id})
+        socket.emit("newMessage", {message: content, roomId : connectedUser._id, senderId: user._id})
     }
     return (
         <>

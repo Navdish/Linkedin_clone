@@ -1,14 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { typeCreateRoom } from "./connection.type";
-import { UpdateRequests, fetchRequest, fetchUsers, postRequests } from "../../services/connection.service";
+import { typeFetchMessage } from "./message.type";
+import { fetchMessages } from "../../services/connection,message";
 
 
-export const createRoom = createAsyncThunk(
-    typeCreateRoom,
-    async()=> {
-        const response = await createRoom();
-        const data = response.data;
-        return data;
+
+
+export const fetchMessage = createAsyncThunk(
+    typeFetchMessage,
+    async(data)=> {
+        const response = await fetchMessages(data);
+        const resData = await response.data;
+        return resData;
     }
 )
-

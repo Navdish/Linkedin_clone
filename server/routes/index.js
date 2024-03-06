@@ -10,5 +10,6 @@ router.use('/comments', require('./comment'));
 router.use('/reactions', require('./reaction'));
 router.use('/connection', require('./connection'));
 router.use('/room', require('./room'));
+router.use('/message', require('./message'))
 
 module.exports = router;

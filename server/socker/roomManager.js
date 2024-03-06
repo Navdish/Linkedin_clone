@@ -1,4 +1,5 @@
 const {Server} = require("socket.io")
+const {Message} = require('../models/index')
 
 module.exports = async(server) => {
     const io = new Server (server, {
@@ -14,12 +15,15 @@ module.exports = async(server) => {
             console.log("Room ....", roomId)
         })
 
-        socket.on("newMessage", ({message, roomId})=> {
+        socket.on("newMessage", async({message, roomId, senderId})=> {
             // save the message in the db, then ....
-            console.log(message, roomId, "-------response");
-            // socket.in(roomId).broadcast.emit(message);
+            const messageData = await Message.create({roomId, content:message, sender: senderId});
+            console.log(message, roomId, senderId, messageData, "-------response");
+            socket.in(roomId).emit('message',messageData);
         })
 
-
+        socket.on('disconnect', () => {
+            console.log('Client disconnected');
+          });
     })
 };

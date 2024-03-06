@@ -5,7 +5,8 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Avatar, Button } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchMessage } from '../../features/Message/message.action';
 
 
 
@@ -43,6 +44,7 @@ function a11yProps(index) {
 }
 
 export default function MessageTab({ setConnectedUser}) {
+  const dispatch = useDispatch();
   const [value, setValue] = React.useState(0);
   const rooms = useSelector((state)=> state.room.room);
   const user = useSelector((state)=> state.user.user);
@@ -55,6 +57,7 @@ export default function MessageTab({ setConnectedUser}) {
     setConnectedUser(room);
     console.log("rrooommmm Id", room._id)
     socket.emit("join room", room._id);
+    dispatch(fetchMessage(room._id));
   }
 
   return (

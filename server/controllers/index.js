@@ -5,5 +5,6 @@ module.exports = {
     commentController: require('./comment.controller'),
     reactionController: require('./reaction.controller'),
     connectionController: require('./connection.controller'),
-    roomController: require('./room.controller')
+    roomController: require('./room.controller'),
+    messageController: require('./message.controller')
 }
