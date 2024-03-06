@@ -6,24 +6,29 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import GifIcon from '@mui/icons-material/Gif';
 import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import  Message  from "../Message/Message";
+import { useEffect } from "react";
 
 const MessageVerticalTab = ({connectedUser, setConnectedUser}) => {
     const socket = useSelector((state)=> state.room.socket)
     const user = useSelector((state)=> state.user.user)
     const messages = useSelector((state)=> state.message.messages)
     const [content, setContent] = useState();
+    const dummy = useRef(null);
     const handleClick = () => {
         console.log("click event")
         socket.emit("newMessage", {message: content, roomId : connectedUser._id, senderId: user._id})
         setContent("");
     }
+    useEffect(() => {
+        dummy.current.scrollIntoView({ behavior: "smooth" });
+      }, [messages]);
     return (
-        <>
+        <Box>
                   
-        <Stack className='user-name' 
-                                flexDirection={'row'} 
+            <Stack flexDirection={'row'} 
                                 justifyContent={'space-between'} 
                                 alignItems={'center'} 
                                 sx={{ width: '100%', boxSizing: 'border-box', padding: '8px'}}
@@ -46,17 +51,16 @@ const MessageVerticalTab = ({connectedUser, setConnectedUser}) => {
 
                             </Stack>
                             <Divider />
-                            <Stack sx={{height: '55vh'}}>
+                            <Stack sx={{height: '62.12vh', overflow:"scroll"}}>
+                                <Divider sx={{mt:'8px', mb:'8px'}}>Today</Divider>
                                 {messages.map((message)=> {
                                     return (
-                                        <Box sx={{width:"100%", display:"flex"}}>
-                                            <Avatar/>
-                                            <Box>{message.sender}</Box>
-                                        </Box>
+                                        <Message message = {message}  room={connectedUser}/>
                                     )
                                 })}
                                 {/* {connectedUser === "default" ? connectedUser : connectedUser.participants[1].name} */}
                                 {/*  dispatch an action to fetch all messages of that room in sorted order by createdAt*/}
+                                <div ref={dummy}/>
                             </Stack>
                             <Divider />
                             <Stack className='textField' sx={{boxSizing: 'border-box', padding: '10px', height: '121px'}}>
@@ -65,6 +69,7 @@ const MessageVerticalTab = ({connectedUser, setConnectedUser}) => {
                                     minRows={4}
                                     placeholder='Write a message...'
                                     value = {content}
+                                
                                     sx={{
                                         backgroundColor: '#f5f3ee', 
                                         borderRadius: '5px', 
@@ -73,7 +78,8 @@ const MessageVerticalTab = ({connectedUser, setConnectedUser}) => {
                                         fontSize: '14px',
                                         height: '100%',
                                         overflow: 'scroll',
-                                        WebkitOverflowScrolling: 'auto'
+                                        WebkitOverflowScrolling: 'auto',
+                                        wordBreak:"break-word"
                                         }}
                                         onChange={(e)=> setContent(e.target.value)}
                                     />
@@ -104,7 +110,7 @@ const MessageVerticalTab = ({connectedUser, setConnectedUser}) => {
                                 </Stack>
 
 
-                    </>
+                    </Box>
     )
 }
 

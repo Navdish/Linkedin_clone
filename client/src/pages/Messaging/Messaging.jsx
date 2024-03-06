@@ -1,4 +1,4 @@
-import { Box, Button, Divider, FormControl, IconButton, InputAdornment, InputBase, OutlinedInput, Stack, Typography } from "@mui/material"
+import { Box, FormControl, IconButton, InputBase, Typography } from "@mui/material"
 import React, { useEffect } from "react";
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
@@ -24,7 +24,7 @@ const Messaging = () => {
     const rooms = useSelector((state)=> state.room.room);
     const [connectedUser, setConnectedUser] = useState( "default");
     const user = useSelector((state)=> state.user.user);
-    
+
     useEffect(()=> {
         console.log("useEffect");
         try {
@@ -42,11 +42,14 @@ const Messaging = () => {
             dispatch(addMessage(data));
         });
 
+        return ()=> {
+            socket.off('message');
+        }
     }, [])
 
     
     return(
-        <Box sx={{backgroundColor:"#F4F2EE", display:"flex", justifyContent:"center"}} style={{minHeight:'calc(100vh - 52px'}}>
+        <Box sx={{backgroundColor:"#F4F2EE", display:"flex", justifyContent:"center"}} style={{minHeight:'calc(100vh - 52px)'}}>
             <Box sx={{pt:"20px"}}>
             <Box sx={{ width:"1128px", display:"flex", gap:"2.4rem"}}>
             <Box sx={{ width:"782px", backgroundColor:"white", display:"flex"}}>
@@ -84,7 +87,7 @@ const Messaging = () => {
                         <MessageTab  setConnectedUser = {setConnectedUser} />
                     </Box>
                     <Box sx={{width:"100%", minHeight:"calc(100vh - 74px)", border:"1px solid #e8e8e8"}}>
-                        <Box sx={{width:"100%", pl:"12px", pr:"12px", height:"41px", outline:"1px solid #e8e8e8", boxSizing:"border-box"}}>
+                        <Box sx={{width:"100%",  height:"41px", outline:"1px solid #e8e8e8", boxSizing:"border-box"}}>
                             <MessageVerticalTab  connectedUser={connectedUser} setConnectedUser = {setConnectedUser} />
                         </Box>
                     </Box>
