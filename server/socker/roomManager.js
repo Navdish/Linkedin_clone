@@ -5,6 +5,7 @@ module.exports = async(server) => {
     const io = new Server (server, {
         cors : {
             origin: "http://localhost:3000",
+            methods:["GET", "POST", "PUT"]
         },
     })
     io.on("connection", (socket)=> {
@@ -16,14 +17,16 @@ module.exports = async(server) => {
         })
 
         socket.on("newMessage", async({message, roomId, senderId})=> {
-            // save the message in the db, then ....
+            // console.log("room mem", io.sockets.adapter.rooms.get('65e6acca569e5649cb36ead7'))
             const messageData = await Message.create({roomId, content:message, sender: senderId});
             console.log(message, roomId, senderId, messageData, "-------response");
-            socket.in(roomId).emit('message',messageData);
+            io.in(roomId).emit('message',messageData);
         })
 
+        
         socket.on('disconnect', () => {
             console.log('Client disconnected');
           });
     })
+    // console.log("room members ", io.sockets.adapter.rooms.get('65e6acca569e5649cb36ead7'))
 };

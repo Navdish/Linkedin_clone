@@ -1,4 +1,4 @@
-import { Button, Divider, InputBase, Stack, Typography } from "@mui/material"
+import { Avatar, Box, Button, Divider, InputBase, Stack, Typography } from "@mui/material"
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import VideoCallIcon from '@mui/icons-material/VideoCall';
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
@@ -12,11 +12,12 @@ import { useSelector } from "react-redux";
 const MessageVerticalTab = ({connectedUser, setConnectedUser}) => {
     const socket = useSelector((state)=> state.room.socket)
     const user = useSelector((state)=> state.user.user)
+    const messages = useSelector((state)=> state.message.messages)
     const [content, setContent] = useState();
     const handleClick = () => {
-        console.log("content ")
-
+        console.log("click event")
         socket.emit("newMessage", {message: content, roomId : connectedUser._id, senderId: user._id})
+        setContent("");
     }
     return (
         <>
@@ -46,7 +47,15 @@ const MessageVerticalTab = ({connectedUser, setConnectedUser}) => {
                             </Stack>
                             <Divider />
                             <Stack sx={{height: '55vh'}}>
-                                {connectedUser === "default" ? connectedUser : connectedUser.participants[1].name}
+                                {messages.map((message)=> {
+                                    return (
+                                        <Box sx={{width:"100%", display:"flex"}}>
+                                            <Avatar/>
+                                            <Box>{message.sender}</Box>
+                                        </Box>
+                                    )
+                                })}
+                                {/* {connectedUser === "default" ? connectedUser : connectedUser.participants[1].name} */}
                                 {/*  dispatch an action to fetch all messages of that room in sorted order by createdAt*/}
                             </Stack>
                             <Divider />

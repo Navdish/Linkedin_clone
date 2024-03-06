@@ -24,6 +24,7 @@ const Messaging = () => {
     const rooms = useSelector((state)=> state.room.room);
     const [connectedUser, setConnectedUser] = useState( "default");
     const user = useSelector((state)=> state.user.user);
+    
     useEffect(()=> {
         console.log("useEffect");
         try {
@@ -35,13 +36,10 @@ const Messaging = () => {
     }, [])
 
     useEffect(()=> {
-        // socket = io.connect("http://localhost:8080");
-        // console.log("socket", socket);
-        // dispatch(saveSocket(socket));
         socket.on('message', (data) => {
             console.log('Received message:', data);
             // Update UI to display the incoming message
-            addMessage(data);
+            dispatch(addMessage(data));
         });
 
     }, [])

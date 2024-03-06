@@ -55,7 +55,7 @@ export default function MessageTab({ setConnectedUser}) {
 
   const handleClick = (e, room) => {
     setConnectedUser(room);
-    console.log("rrooommmm Id", room._id)
+    console.log("roomm Id", room._id)
     socket.emit("join room", room._id);
     dispatch(fetchMessage(room._id));
   }
