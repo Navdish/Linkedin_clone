@@ -36,6 +36,11 @@ exports.postConnection = async ({userId, payload}) => {
     console.log("connection exists regularly.....")
     if(!connection){
         const response = await Connection.create({senderId: userId, recieverId});
+
+
+
+
+        
         if(!response) throw new CustomError("Connection not created", 500);
         console.log(response);
         return response;

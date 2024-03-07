@@ -22,7 +22,7 @@ const Messaging = () => {
     axios.defaults.headers.common['token'] = localStorage.getItem("token");
     const dispatch = useDispatch();
     const rooms = useSelector((state)=> state.room.room);
-    const [connectedUser, setConnectedUser] = useState( "default");
+    const [connectedUser, setConnectedUser] = useState(rooms[0]);
     const user = useSelector((state)=> state.user.user);
 
     useEffect(()=> {
@@ -38,7 +38,6 @@ const Messaging = () => {
     useEffect(()=> {
         socket.on('message', (data) => {
             console.log('Received message:', data);
-            // Update UI to display the incoming message
             dispatch(addMessage(data));
         });
 
@@ -88,7 +87,7 @@ const Messaging = () => {
                     </Box>
                     <Box sx={{width:"100%", minHeight:"calc(100vh - 74px)", border:"1px solid #e8e8e8"}}>
                         <Box sx={{width:"100%",  height:"41px", outline:"1px solid #e8e8e8", boxSizing:"border-box"}}>
-                            <MessageVerticalTab  connectedUser={connectedUser} setConnectedUser = {setConnectedUser} />
+                            <MessageVerticalTab  connectedUser={connectedUser} />
                         </Box>
                     </Box>
                 </Box>

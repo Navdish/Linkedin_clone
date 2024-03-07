@@ -8,6 +8,7 @@ import  reactionSlice  from '../features/Reaction/Reaction.slice'
 import connectionSlice from '../features/Connection/connection.slice'
 import roomSlice from '../features/Room/room.slice'
 import messageSlice from '../features/Message/message.slice'
+import notificationSlice from '../features/Notification/notification.slice'
 
 const persistConfig = {
     key: 'root',
@@ -24,7 +25,8 @@ export const store = configureStore({
         reaction: reactionSlice,
         connection: connectionSlice,
         room: roomSlice,
-        message: messageSlice
+        message: messageSlice,
+        notification: notificationSlice
     }
 })
 

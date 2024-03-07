@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import  Message  from "../Message/Message";
 import { useEffect } from "react";
 
-const MessageVerticalTab = ({connectedUser, setConnectedUser}) => {
+const MessageVerticalTab = ({connectedUser}) => {
     const socket = useSelector((state)=> state.room.socket)
     const user = useSelector((state)=> state.user.user)
     const messages = useSelector((state)=> state.message.messages)
@@ -34,13 +34,12 @@ const MessageVerticalTab = ({connectedUser, setConnectedUser}) => {
                                 sx={{ width: '100%', boxSizing: 'border-box', padding: '8px'}}
                                 >
                                 <Typography 
-                                sx={{
-                                fontSize: '16px', 
-                                fontWeight: '500',
-                                }}
+                                    sx={{
+                                    fontSize: '16px', 
+                                    fontWeight: '500',
+                                    }}
                                 >
-                                {/* {connectedUser.participants[0]._id === user._id ? connectedUser.participants[1].name: connectedUser.participants[0].name} */}
-                                {connectedUser === "default" ? connectedUser : connectedUser.participants[1].name}
+                                {connectedUser && connectedUser.participants[1].name}
                                 </Typography>
 
                                 <Stack flexDirection={'row'} gap={2}>
@@ -52,14 +51,12 @@ const MessageVerticalTab = ({connectedUser, setConnectedUser}) => {
                             </Stack>
                             <Divider />
                             <Stack sx={{height: '62.12vh', overflow:"scroll"}}>
-                                <Divider sx={{mt:'8px', mb:'8px'}}>Today</Divider>
+                                
                                 {messages.map((message)=> {
                                     return (
                                         <Message message = {message}  room={connectedUser}/>
                                     )
                                 })}
-                                {/* {connectedUser === "default" ? connectedUser : connectedUser.participants[1].name} */}
-                                {/*  dispatch an action to fetch all messages of that room in sorted order by createdAt*/}
                                 <div ref={dummy}/>
                             </Stack>
                             <Divider />

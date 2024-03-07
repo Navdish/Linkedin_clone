@@ -13,24 +13,28 @@ import ArticleIcon from '@mui/icons-material/Article';
 import BackLabel from '../../assets/images/profileBanner.jpg'
 import HomeRightList from '../../components/HomeRightList/HomeRightList';
 import ad from '../../assets/images/Ad.png'
+import {io} from 'socket.io-client'
+import { addNotification } from '../../features/Notification/notification.slice';
+// var socket2  = io.connect("http://localhost:4000");
 
 function Home() {
-
     axios.defaults.headers.common['token'] = localStorage.getItem("token");
     const navigate = useNavigate();
     const dispatch = useDispatch();
     useEffect(()=> {
-        (async()=>{
             try {
+                //dispatch(); // save the notification socket
+                // socket2.on('notification', (data) => {
+                //     dispatch(addNotification(data));
+                // })
                 if(!user.user){
                     navigate("/Login");
                 }
+                console.log("get all the posts ")
                 dispatch(getPosts());
             } catch (error) {
                 console.log(error);
             }
-        })();
-        
     },[])
     const user = useSelector((state)=> state.user);
     const posts = useSelector((state)=> state.post.posts);

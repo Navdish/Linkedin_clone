@@ -16,7 +16,7 @@ exports.createRoom = async({userId, payload})=> {
 }
 
 exports.getRoom = async({userId})=> {
-    console.log("get room")
+    console.log("get room", userId)
     const response = await Room.find({participants : userId}).populate('participants' );
     if(!response) throw new CustomError("No rooms found", 204);
     return response;

@@ -27,6 +27,11 @@ module.exports = async(server) => {
         socket.on('disconnect', () => {
             console.log('Client disconnected');
           });
+
+
+          function zaTYZ() {
+
+          }
     })
     // console.log("room members ", io.sockets.adapter.rooms.get('65e6acca569e5649cb36ead7'))
 };

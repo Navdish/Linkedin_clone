@@ -7,6 +7,7 @@ import Network from '../pages/Network/Network';
 import SearchAppBar from '../components/Navbar/Navbar';
 import Messaging from '../pages/Messaging/Messaging';
 import Invitation from '../pages/Invitation/Invitation';
+import Notification from '../pages/Notification/Notification';
 
 function AllRoutes() {
   return(
@@ -22,6 +23,7 @@ function AllRoutes() {
           <Route path='/Network' element={<Network />}></Route>
           <Route path='/Messaging' element={<Messaging />}></Route>
           <Route path='/Invitation' element={<Invitation />}></Route>
+          <Route path='/Notification' element={<Notification/>}></Route>
         </Routes>
       </BrowserRouter>
     </>

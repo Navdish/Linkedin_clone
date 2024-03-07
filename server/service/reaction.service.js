@@ -1,5 +1,6 @@
 const CustomError = require('../lib/error');
-const Reaction = require('../models/reactions')
+const Reaction = require('../models/reactions');
+const axios = require('axios')
 
 
 exports.createReactions= async({userId, data})=>{
@@ -18,6 +19,19 @@ exports.createReactions= async({userId, data})=>{
         return response; 
     }
     const response2 = await Reaction.create({userId , postId:id , type});
+    // send the response2 to notification server// we got userId, content and the receiver is found after populating the postId with the field name
+    console.log("Sending the notification to the notification server");
+    await response2.populate('postId', 'userId');
+    await response2.populate('userId', 'name');
+    
+    console.log("----------", response2);
+    const dataObj = {
+        notificationType: 'REACTION',
+        reciever: response2.postId.userId,
+        content: response2
+    }
+    const notificationResponse = await axios.post("http://localhost:4000/notification", dataObj);
+    conbsole.log("got back")
     if(!response2) throw new CustomError("Reaction not created", 500);
     return response2;
 };
