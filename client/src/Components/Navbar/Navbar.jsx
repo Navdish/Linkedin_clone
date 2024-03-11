@@ -19,6 +19,9 @@ import './Navbar.css'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AppsIcon from '@mui/icons-material/Apps';
+import { useEffect } from 'react';
+import {io} from 'socket.io-client'
+var socket  = io("http://localhost:4000", {autoConnect:false});
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -65,6 +68,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function SearchAppBar() {
+  
   const location = useLocation()
   if(location.pathname === "/SignUp" || location.pathname === "/Login") {
     return null

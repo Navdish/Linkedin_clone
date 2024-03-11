@@ -9,7 +9,7 @@ module.exports = async(server) => {
         },
     })
     io.on("connection", (socket)=> {
-        console.log("connection on: ", socket.id);
+        console.log("user socket id : ", socket.id);
 
         socket.on("join room", (roomId)=> {
             socket.join(roomId);

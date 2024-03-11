@@ -27,11 +27,12 @@ exports.createReactions= async({userId, data})=>{
     console.log("----------", response2);
     const dataObj = {
         notificationType: 'REACTION',
-        reciever: response2.postId.userId,
+        receiver: [response2.postId.userId],
+        sender: userId,
         content: response2
     }
     const notificationResponse = await axios.post("http://localhost:4000/notification", dataObj);
-    conbsole.log("got back")
+    console.log("got back")
     if(!response2) throw new CustomError("Reaction not created", 500);
     return response2;
 };

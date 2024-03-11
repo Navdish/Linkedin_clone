@@ -4,9 +4,12 @@ import { postPosts, fetchPosts } from "./Post.type"
 
 export const getPosts = createAsyncThunk(
     fetchPosts,
-    async()=> {
+    async(time)=> {
         try {
-            const response = await axios.get('http://localhost:8080/posts')
+            console.log(time);
+            const response = await axios.get('http://localhost:8080/posts', {params:{
+                time: time,
+            }})
             const dataj = await response.data
             return dataj;
         } catch (error) {

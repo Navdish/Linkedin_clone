@@ -9,16 +9,21 @@ module.exports = async(server) => {
     })
     io.on("connection", (socket)=> {
         console.log("connection on notification server : ", socket.id);
-        // const users = {};
-        // users[userId] = socket.id;
-
+        const users = {};
+        
+        socket.on("userDetails", (data) => {
+            users[data] = socket.id;
+        })
 
 
         
         // socket.emit([recievingusers])
-        
+        socket.on("deleteUser", (data) => {
+            delete users[data];
+        })
+
         socket.on('disconnect', () => {
-            console.log('Client disconnected');
+            console.log('Client disconnected', socket.id);
           });
     })
 };

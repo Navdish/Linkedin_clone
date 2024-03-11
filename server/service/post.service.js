@@ -13,14 +13,23 @@ exports.addPost = async({userId, files, data})=>{
     return newPost;
 }
 
-exports.fetchPost = async()=> {
+exports.fetchPost = async({query})=> {
 
-    
+    const {time} = query;
     // { createdAt: { $lt: (new Date(time)) } }
     // .sort({createdAt: -1})
     // const time = query.createdAt;
     // if(!time) throw new CustomError("Time not given", 404)
-    const response = await Post.find().limit(4).populate("userId", ["name", "description"]);
+    console.log("time", time);
+    if(time == 1) 
+    {
+        const response = await Post.find().limit(4).populate("userId", ["name", "description"]).sort({ createdAt: -1 });
+        console.log("response",response);
+        if(!response) throw new CustomError("Data not found", 204);
+        return response;
+    }
+    const response = await Post.find({ createdAt: { $lt: (new Date(time)) } }).limit(4).populate("userId", ["name", "description"]).sort({ createdAt: -1 });
+    console.log(response);
     // using aggregation to fetch no. of likes and comments on a post
     if(!response) throw new CustomError("Data not found", 204);
     return response;

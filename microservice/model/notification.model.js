@@ -8,6 +8,7 @@ const Notification = mongoose.Schema({
     receiver : [{
         type: String
     }],
+    sender : String,
     content: {
         type: Object
     }

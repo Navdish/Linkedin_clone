@@ -5,11 +5,28 @@ import Invitations from '../../components/Invitations/Invitations'
 import axios from 'axios';
 import Suggestions from '../../components/Suggestions/Suggestions';
 import NetworkPageList from '../../components/NetworkSidebar/NetworkSidebar';
-
+import {io} from 'socket.io-client'
+import { useEffect } from 'react'
+import { useSelector } from 'react-redux';
+var socket2  = io("http://localhost:4000",  {autoConnect:false});
 
 const Network = () => {
   axios.defaults.headers.common['token'] = localStorage.getItem("token");
+  const user = useSelector((state) => state.user)
+  useEffect(()=> {
+    socket2.connect();
+    socket2.emit("userDetails", user.user._id);
+    socket2.on('notification', (data) => {
+        console.log('Received notification :', data);
+        // dispatch(addMessage(data));
+    });
 
+    return ()=> {
+        socket2.off('notification');
+        socket2.emit("deleteUser", user.user._id);
+        socket2.disconnect();
+    }
+  }, [])
   return (
     
     <Box sx={{display:"flex", justifyContent:"center", gap:"22px"}} className='network-page'>

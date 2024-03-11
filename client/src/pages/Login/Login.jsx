@@ -12,24 +12,57 @@ import { useState } from "react";
 import { login } from '../../features/Auth/Auth.action';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-
-
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import * as React from 'react';
 
 function Login(){
     
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    
+    const [open, setOpen] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const isLoading = useSelector((state)=> state.isLoading);
     const error = useSelector((state)=> state.error);
 
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpen(false);
+    };
+
+    const action = (
+        <React.Fragment>
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={handleClose}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        </React.Fragment>
+    );
+
     const handleSubmit = async(e) => {
         dispatch(login({email, password})).then((response)=> {
-            if(!response.payload) console.log(response.error.message,'error')
-            localStorage.setItem("token", response.payload.user.token);
-            navigate('/Home');
+            if(!response.payload) {
+                console.log(response.error.message,'error');
+                setEmail("");
+                setPassword("");
+                // add snackbar showing wrong credentials
+                setOpen(true);
+
+                navigate("/Login");
+            }
+            else {
+                localStorage.setItem("token", response.payload.user.token);
+                navigate('/Home');
+            }
         });
         if(isLoading) return "Loading....";
     }
@@ -153,6 +186,13 @@ function Login(){
                     </Stack>
                 </Stack>
                 <Footer/>
+                <Snackbar
+                    open={open}
+                    autoHideDuration={3000}
+                    onClose={handleClose}
+                    message="Invalid credentials"
+                    action={action}
+                />
             </Box>
 
         </Box>

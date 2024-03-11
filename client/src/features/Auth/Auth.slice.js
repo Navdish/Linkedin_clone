@@ -1,4 +1,4 @@
-import {createSlice} from "@reduxjs/toolkit"
+import {createSlice, current} from "@reduxjs/toolkit"
 import { createUser, login } from "./Auth.action";
 
 const initialState = {
@@ -22,7 +22,6 @@ export const authSlice = createSlice({
         })
         builder.addCase(createUser.rejected, (state, action)=> {
             state.isLoading = false;
-            console.log(action.error);
             state.error = action.error;
         })
         builder.addCase(login.pending, (state, action)=> {

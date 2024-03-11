@@ -15,7 +15,7 @@ exports.addPost = async(req, res)=> {
 
 exports.fetchPost = async(req, res)=> {
     try {
-        const response = await postService.fetchPost();
+        const response = await postService.fetchPost({query : req?.query});
         if(!response) throw new CustomError("Posts not fetched", 500)
         res.status(200).json(response);
     } catch (error) {

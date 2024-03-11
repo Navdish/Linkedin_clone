@@ -22,12 +22,7 @@ const Reaction = mongoose.Schema({
     type: { 
         type: String,
         require: true
-    },
-    date: {
-        type: Date,
-        default: Date.now,
-        require: false
-    },
-})
+    }
+}, {timestamps: true} )
 
 module.exports= mongoose.model("reactionmodel", Reaction)

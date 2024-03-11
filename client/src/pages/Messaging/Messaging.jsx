@@ -14,8 +14,8 @@ import {io} from 'socket.io-client'
 import MessageVerticalTab from "../../components/MessageVerticalTab/MessageVerticalTab";
 import {saveSocket} from '../../features/Room/room.slice';
 import { addMessage } from "../../features/Message/message.slice";
-var socket  = io.connect("http://localhost:8080");
-
+var socket  = io("http://localhost:8080", {autoConnect:false});
+var socket2  = io("http://localhost:4000",  {autoConnect:false});
 
 
 const Messaging = () => {
@@ -36,6 +36,7 @@ const Messaging = () => {
     }, [])
 
     useEffect(()=> {
+        socket.connect();
         socket.on('message', (data) => {
             console.log('Received message:', data);
             dispatch(addMessage(data));
@@ -43,10 +44,25 @@ const Messaging = () => {
 
         return ()=> {
             socket.off('message');
+            socket.disconnect();
         }
     }, [])
 
+    useEffect(()=> {
+        socket2.connect();
+        socket2.emit("userDetails", user._id);
+        socket2.on('notification', (data) => {
+            console.log('Received notification :', data);
+            // dispatch(addMessage(data));
+        });
     
+        return ()=> {
+            socket2.off('notification');
+            socket2.emit("deleteUser", user._id);
+            socket2.disconnect();
+        }
+      }, [])
+
     return(
         <Box sx={{backgroundColor:"#F4F2EE", display:"flex", justifyContent:"center"}} style={{minHeight:'calc(100vh - 52px)'}}>
             <Box sx={{pt:"20px"}}>

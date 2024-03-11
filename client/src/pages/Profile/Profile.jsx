@@ -7,6 +7,10 @@ import EditIcon from '@mui/icons-material/EditOutlined';
 import ProfileMain from '../../components/ProfileMain/ProfileMain'
 import ProfileActivity from '../../components/ProfileActivity/ProfileActivity'
 import Experience from '../../components/Experience/Experience'
+import {io} from 'socket.io-client'
+var socket2  = io("http://localhost:4000",  {autoConnect:false});
+
+
 const Profile = () => {
 
     // const dispatch = useDispatch()
@@ -15,8 +19,21 @@ const Profile = () => {
     //     dispatch(fetchUser())
     // }, [dispatch])
 
-    // const user = useSelector((state) => state.user)
-
+    const user = useSelector((state) => state.user)
+    useEffect(()=> {
+      socket2.connect();
+      socket2.emit("userDetails", user.user._id);
+      socket2.on('notification', (data) => {
+          console.log('Received notification :', data);
+          // dispatch(addMessage(data));
+      });
+  
+      return ()=> {
+          socket2.off('notification');
+          socket2.emit("deleteUser", user.user._id);
+          socket2.disconnect();
+      }
+    }, [])
   return (
     <Box className='profile-page'>
 

@@ -17,7 +17,7 @@ export const postSlice = createSlice({
         })
         builder.addCase(getPosts.fulfilled, (state, action)=> {
             state.isLoading = false;
-            state.posts = action.payload;
+            state.posts = [...state?.posts, ...action.payload];
         })
         builder.addCase(getPosts.rejected, (state, action)=> {
             state.isLoading = false;
@@ -29,6 +29,7 @@ export const postSlice = createSlice({
         })
         builder.addCase(addPosts.fulfilled, (state, action)=> {
             state.isLoading = false;
+        
             state.posts = [...state.posts, action.payload];
         })
         builder.addCase(addPosts.rejected, (state, action)=> {

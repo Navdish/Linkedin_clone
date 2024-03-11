@@ -7,9 +7,7 @@ export const createUser = createAsyncThunk(
     typeCreateUser,
     async(data)=> {
         try {
-            console.log("data", data);
             const response = await axios.post('http://localhost:8080/auth/signup', data)
-            console.log("response", response)
             const dataj = await response.data
             return dataj;
         } catch (error) {
@@ -24,6 +22,7 @@ export const login = createAsyncThunk(
         try{
             const response = await axios.post('http://localhost:8080/auth/login', data)
             const resData = await response.data
+            console.log(resData);
             return resData
         }
         catch(error) {
