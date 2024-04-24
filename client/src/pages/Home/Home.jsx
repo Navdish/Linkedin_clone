@@ -141,9 +141,11 @@ function Home() {
                 </Box>
 
 
-                <Box sx={{ width: '300px', marginBottom: '8px', backgroundColor: "white", borderRadius: "0.8rem", boxSizing: 'border-box', height: "56.25px" }}>
+                <Box sx={{ width: '300px', marginBottom: '8px',  borderRadius: "0.8rem", boxSizing: 'border-box'}}>
                     <HomeRightList />
-                    <img src={ad} alt='' className='ad' />
+                    <Box sx={{position:'sticky', top:'52px'}}>
+                        <img src={ad} alt='' className='ad'  />
+                    </Box>
                 </Box>
 
             </Box>

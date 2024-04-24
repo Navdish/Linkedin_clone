@@ -18,7 +18,7 @@ export default function HomeRightList() {
 
   return (
     <List
-      sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', borderRadius:"0.8rem", pt:"12px", pd:"12px" }}
+      sx={{ width: '100%', maxWidth: 360, backgroundColor: "white", borderRadius:"0.8rem", pt:"12px", pd:"12px" }}
       component="nav"
       aria-labelledby="nested-list-subheader"
     >
