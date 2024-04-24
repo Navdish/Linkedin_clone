@@ -12,12 +12,10 @@ const Reaction = mongoose.Schema({
     postId: {
         type: String,
         ref: Posts,
-        require: true
     },
     commentId: {
         type: String,
         ref: Comments,
-        require: true
     },
     type: { 
         type: String,

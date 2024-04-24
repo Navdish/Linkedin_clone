@@ -105,15 +105,15 @@ export default function SearchAppBar() {
                 />
             </Search>
           </Box>
-          <Box sx={{display: "flex"}}>
+          <Box sx={{display: "flex", height:"100%"}}>
             <Link to={'/Home'} style={{ textDecoration: 'none' }}><Box className="logo-label"><img className='nav-logos' src={homesvg} alt=''/><Typography className='logo-text'>Home</Typography></Box></Link>
             <Link to={'/Network'} style={{ textDecoration: 'none' }}><Box className="logo-label"><img className='nav-logos' src={networksvg} alt=''/><Typography className='logo-text'>My Network</Typography></Box></Link>
             <Link to={'/Home'} style={{ textDecoration: 'none' }}><Box className="logo-label"><img className='nav-logos' src={jobssvg} alt=''/><Typography className='logo-text'>Jobs</Typography></Box></Link>
             <Link to={'/Messaging'} style={{ textDecoration: 'none' }}><Box className="logo-label"><img className='nav-logos' src={messagingsvg} alt=''/><Typography className='logo-text'>Messaging</Typography></Box></Link>
             <Link to={'/Notification'} style={{ textDecoration: 'none' }}><Box className="logo-label"><img className='nav-logos' src={notificationsvg} alt=''/><Typography className='logo-text'>Notification</Typography></Box></Link>
             <Box className="logo-label"><Avatar sx={{width:"24px", height:"24px"}}/><Box sx={{display:"flex",  fontWeight:"400", fontSize:"12px", lineHeight:"18px", fontStyle:"normal"}}>Me<KeyboardArrowDownIcon sx={{width:"16px", height:"16px"}}/></Box></Box>
-            <Divider orientation='vertical' sx={{color:"black", height:"42px"}}/>
-            <Box className="logo-label" sx={{pl:"12px", pr:"12px"}} ><AppsIcon sx={{width:"24px", height:"24px"}}/><Box sx={{display:"flex"}}><Box sx={{ fontStyle:"normal", fontWeight:"400", fontSize:"12px", lineHeight:"normal"}}>For Business</Box><KeyboardArrowDownIcon sx={{width:"16px", height:"16px"}}/></Box></Box>
+            <Divider orientation='vertical' sx={{color:"black", height:"100%"}}/>
+            <Box className="logo-label" sx={{pl:"12px", pr:"12px"}} ><AppsIcon sx={{width:"24px", height:"24px"}}/><Box sx={{display:"flex"}}><Box sx={{ fontStyle:"normal", fontWeight:"400", fontSize:"12px", lineHeight:"normal", whiteSpace:'nowrap'}}>For Business</Box><KeyboardArrowDownIcon sx={{width:"16px", height:"16px"}}/></Box></Box>
             <Box sx={{textAlign:"center", textDecoration:"underline", width:"100px", fontStyle:"normal", fontWeight:"400", fontSize:"12px", lineHeight:"18px", color:"rgb(92, 59, 9)"}}>Redeem Premium for Free </Box>
           </Box>
           

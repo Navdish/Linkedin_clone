@@ -7,6 +7,7 @@ exports.createReactions= async({userId, data})=>{
     const {type, postId, commentId} = data;
     if(!type) throw new CustomError("details not found", 404);
     const id = postId ? postId : commentId;
+
     if(!id) throw new CustomError("Parent Id not sent", 400);
     const reaction = await Reaction.findOne({postId:id, userId});
     if(reaction){
@@ -18,16 +19,17 @@ exports.createReactions= async({userId, data})=>{
         if(!response) throw new CustomError("Reaction not created", 500);
         return response; 
     }
-    const response2 = await Reaction.create({userId , postId:id , type});
+    const response2 = await Reaction.create({userId , postId, commentId , type});
     // send the response2 to notification server// we got userId, content and the receiver is found after populating the postId with the field name
     console.log("Sending the notification to the notification server");
-    await response2.populate('postId', 'userId');
+    if(id === postId) await response2.populate('postId', 'userId');
+    else await response2.populate('commentId', 'userId');
     await response2.populate('userId', 'name');
     
     console.log("----------", response2);
     const dataObj = {
         notificationType: 'REACTION',
-        receiver: [response2.postId.userId],
+        receiver: response2.postId ?[response2.postId.userId]: [response2.commentId.userId],
         sender: userId,
         content: response2
     }
@@ -46,11 +48,20 @@ exports.userReactions = async({userId, query})=> {
 };
 
 exports.getReactions = async({query})=>{
-    const {postId} = query;
-    if(!(postId )) throw new CustomError("details not found", 404);
-    const response = await Reaction.find({postId}).populate("userId", ["name", "description"]);
-    if(!response) throw new CustomError("Reaction not created", 500);
+    const {postId, commentId} = query;
+    if(!(postId || commentId )) throw new CustomError("details not found", 404);
+    console.log(commentId);
+    if(postId) {
+        const response = await Reaction.find({postId}).populate("userId", ["name", "description"]);
+        if(!response) throw new CustomError("Reaction not created", 500);
     return response;    
+    }
+    if(commentId) {
+        const response = await Reaction.find({commentId}).populate("userId", ["name", "description"]);
+        if(!response) throw new CustomError("Reaction not created", 500);
+    return response;    
+    }
+    
 };
 
 exports.updateReactions=async({userId, data, params})=>{

@@ -30,7 +30,8 @@ export const reactionSlice = createSlice({
         })
         builder.addCase(getReactions.fulfilled, (state, action)=> {
             state.isLoading = false;
-            state.reactions[action.payload[0].postId] = action.payload;
+            console.log("reactions of comments", action.payload)
+            state.reactions[action.payload[0]?.postId] = action.payload;
             // state.comments[action.payload[0].postId] = action.payload;
         })
         builder.addCase(getReactions.rejected, (state, action)=> {

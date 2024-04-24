@@ -21,9 +21,7 @@ export const getReactions = createAsyncThunk(
     fetchReactions,
     async(data)=> {
         try {
-            const response = await axios.get('http://localhost:8080/reactions', {params:{
-                postId : data
-            }})
+            const response = await axios.get('http://localhost:8080/reactions', {params:data})
             const dataj = await response.data
             return dataj;
         } catch (error) {

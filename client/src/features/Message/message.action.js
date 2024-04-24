@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { typeFetchMessage } from "./message.type";
-import { fetchMessages } from "../../services/connection,message";
+import { fetchMessages } from "../../services/connection.message";
 
 
 

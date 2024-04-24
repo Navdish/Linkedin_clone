@@ -30,7 +30,7 @@ const Network = () => {
   return (
     
     <Box sx={{display:"flex", justifyContent:"center", gap:"22px"}} className='network-page'>
-      <Box sx={{backgroundColor:"white", width:"300px", height:"400px"}}><NetworkPageList/></Box>
+      <Box sx={{backgroundColor:"white", width:"300px", height:"fit-content", borderRadius:'0.4rem'}}><NetworkPageList/></Box>
       <Stack 
       alignItems={'center'}
       flexDirection={'column'}

@@ -26,12 +26,15 @@ export default function CommentDisplay({com}){
       const [status, setStatus] = useState(false);
       useEffect(()=> {
         try {
-          dispatch(getReactions(com._id)).then((response)=> {
+          dispatch(getReactions({commentId: com._id, postId: null})).then((response)=> {
             if(response.payload) {
                 console.log("response of comment reaction", response.payload);
-              setReactionContent(response.payload? response.payload[0].type : "Like");
-              setEmoji(response.payload? emojis[response.payload[0].type] : emojis[defaultIcon])
-            }           
+              setReactionContent(response.payload.length !== 0? response.payload[0].type : "Like");
+              setEmoji(response.payload.length !== 0? emojis[response.payload[0].type] : emojis[defaultIcon])
+            }    
+            else {
+              console.log("ppppppppppppppppppppphat gya")
+            }       
           })
         } catch (error) {
           console.log(error);
@@ -90,7 +93,8 @@ export default function CommentDisplay({com}){
                                                                         }
                                                                         const obj = {
                                                                           type: key,
-                                                                          postId: com._id
+                                                                          commentId: com._id,
+                                                                          postId: null
                                                                         }
                                                                         dispatch(addReactions(obj));
                                                                       }}/></Box>

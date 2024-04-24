@@ -6,7 +6,6 @@ export const getPosts = createAsyncThunk(
     fetchPosts,
     async(time)=> {
         try {
-            console.log(time);
             const response = await axios.get('http://localhost:8080/posts', {params:{
                 time: time,
             }})

@@ -67,7 +67,7 @@ const NetworkPageList = () => {
         </Collapse>
         <ListItemButton onClick={handleClick}>
         
-        <ListItemText primary="Toggle" />
+        <ListItemText  />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       </ListItem>

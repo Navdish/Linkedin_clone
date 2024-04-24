@@ -17,7 +17,7 @@ import SendIcon from '@mui/icons-material/Send';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import { Box, Divider } from '@mui/material';
 import { useState } from 'react';
-import CommentCard from '../commentCard/commentCard.jsx';
+import CommentCard from '../CommentCard/CommentCard.jsx';
 import './Card.css';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -72,7 +72,7 @@ export default function RecipeReviewCard({post}) {
   };
 
   const fetchReactions = async(e) => {
-    dispatch(getReactions(post._id))
+    dispatch(getReactions({postId: post._id}))
   }
 
   const handleClick = () => {

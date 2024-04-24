@@ -19,7 +19,7 @@ const MessageVerticalTab = ({connectedUser}) => {
     const dummy = useRef(null);
     const handleClick = () => {
         console.log("click event")
-        socket.emit("newMessage", {message: content, roomId : connectedUser._id, senderId: user._id})
+        socket.emit("newMessage", {message: content, roomId : connectedUser?._id, senderId: user?._id})
         setContent("");
     }
     useEffect(() => {

@@ -19,7 +19,7 @@ exports.create = async({data})=> {
 exports.login = async function({data}) {
     const {email, password} = data;
     if(!(email && password)) throw new CustomError("User credentials not found", 422);
-    const user = await User.findOne({email : email}).exec();
+    const user = await User.findOne({email : email});
     if(!user) throw new CustomError("User doesn't exist", 404);
     if(!( await bcrypt.compare(password, user.password))) throw new CustomError("User password is wrong", 401)
     const token = jwt.sign({id : user._id}, 'Zenmonk', {
@@ -28,6 +28,5 @@ exports.login = async function({data}) {
     if(!token) throw new CustomError("Token not generating", 500);
     const {_id, ...userTrimmed} = user._doc;
     console.log("userTrimmed", userTrimmed);
-    //REMOVE PASSWORD AND _id FROM USER 
-    return {token, user};
+    return {token, user:userTrimmed};
 }

@@ -4,6 +4,8 @@ const {User} = require('../models');
 
 exports.updateUser = async({userId, data})=> {
     const user = await User.findById(userId);
+    console.log('userId: ', userId);
+    
     if(!user) throw new CustomError("User not found", 404);
     if(String(user._id) !== userId) throw new CustomError("Not authorized to change this user", 401);
     //if data contains password, 400, bad request, password should not be changed

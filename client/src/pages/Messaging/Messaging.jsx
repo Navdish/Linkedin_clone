@@ -22,7 +22,7 @@ const Messaging = () => {
     axios.defaults.headers.common['token'] = localStorage.getItem("token");
     const dispatch = useDispatch();
     const rooms = useSelector((state)=> state.room.room);
-    const [connectedUser, setConnectedUser] = useState(rooms[0]);
+    const [connectedUser, setConnectedUser] = useState(rooms[0]||null);
     const user = useSelector((state)=> state.user.user);
 
     useEffect(()=> {
@@ -108,7 +108,6 @@ const Messaging = () => {
                     </Box>
                 </Box>
                 <Box sx={{width:"322px",minHeight:"calc(100vh - 74px)"}}>
-                
                 </Box>
             </Box>
             </Box>
